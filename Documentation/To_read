@@ -10,3 +10,17 @@ RFC HTPP :
 https://www.nginx.com/resources/wiki/start/
 https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
 https://wiki.debian.org/Nginx/DirectoryStructure
+
+🔨 POUR DEMARRER
+
+EXAMPLE DE WEB SERVER EN C++ :
+	https://www.tutorialspoint.com/cplusplus/cpp_web_programming.htm
+
+QU'EST CE QU'UN CGI :
+	https://fr.wikipedia.org/wiki/Common_Gateway_Interface
+
+CREER UN SOCKET SERVEUR :
+
+	1 - https://ocamil.com/index.php/c-c/c-c-les-sockets#:~:text=On%20cr%C3%A9e%20une%20socket%20par,table%20des%20descripteurs%20des%20processus
+	2 - https://fr.acervolima.com/programmation-de-sockets-en-c-c/
+
