@@ -213,3 +213,58 @@ LISTE DES FONCTIONS AUTORISEES AVEC DESCRIPTION :
 *	POLLWRBAND															*
 *		Des données prioritaires peuvent être écrites.					*
 ************************************************************************/
+
+/************************************************************************
+*								- socket -								*
+*************************************************************************
+*																		*
+*	#include <sys/types.h>												*
+*	#include <sys/socket.h>												*
+*																		*
+*	int socket(int domain, int type, int protocol);						*
+*																		*
+*	socket() crée un point de communication, et renvoie un descripteur.	*
+*	Le paramètre domain indique le domaine de communication pour le		*
+*	dialogue ; ceci sélectionne la famille de protocole à employer.		*
+*	Elles sont définies dans le fichier <sys/socket.h>. Les formats		*
+*	actuellement proposés sont :										*
+*	Nom						Utilisation					Page			*
+*	PF_UNIX, PF_LOCAL		Communication locale		unix(7)			*
+*	PF_INET					Protocoles Internet IPv4	ip(7)			*
+*	PF_INET6				Protocoles Internet IPv6	ipv6(7)			*
+*	PF_IPX					IPX - Protocoles Novell						*
+*	PF_NETLINK				Interface utilisateur noyau	netlink(7)		*
+*	PF_X25					Protocole ITU-T X.25 / ISO-8208	x25(7)		*
+*	PF_AX25					Protocole AX.25 radio amateur				*
+*	PF_ATMPVC				Accès direct ATM PVCs						*
+*	PF_APPLETALK			Appletalk					ddp(7)			*
+*	PF_PACKET				Interface paquet bas-niveau	packet(7)		*
+*																		*
+*	La socket a le type indiqué, ce qui définit la sémantique des		*
+*	communications. Les types actuellement définis sont :				*
+*																		*
+*	SOCK_STREAM															*
+*	Support de dialogue garantissant l'intégrité, fournissant un flux	*
+*	de données binaires, et intégrant un mécanisme pour les				*
+*	transmissions de données hors-bande.								*
+*																		*
+*	SOCK_DGRAM															*
+*	Transmissions sans connexion, non garantie, de datagrammes de		*
+*	longueur maximale fixe.												*
+*																		*
+*	SOCK_SEQPACKET														*
+*	Dialogue garantissant l'intégrité, pour le transport de				*
+*	datagrammes de longueur fixe. Le lecteur doit lire le paquet de		*
+*	données complet à chaque appel système récupérant l'entrée.			*
+*																		*
+*	SOCK_RAW															*
+*	Accès direct aux données réseau.									*
+*																		*
+*	SOCK_RDM															*
+*	Transmission fiable de datagrammes, sans garantie de l'ordre		*
+*	de délivrance.														*
+*																		*
+*	SOCK_PACKET															*
+*	Obsolète, à ne pas utiliser dans les programmes actuels.			*
+*																		*
+************************************************************************/

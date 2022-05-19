@@ -5,6 +5,8 @@ Les requests for comments (RFC), littéralement « demande de commentaires », s
 RFC HTPP :
 	http://www.faqs.org/rfcs/rfc2616.html
 
+Les RFC importantes a lire sont les RFC 7230 7231 7232 7233 723 7235 en plus du 2616. 
+
 📡 NGINX
 
 https://www.nginx.com/resources/wiki/start/
@@ -24,3 +26,45 @@ CREER UN SOCKET SERVEUR :
 	1 - https://ocamil.com/index.php/c-c/c-c-les-sockets#:~:text=On%20cr%C3%A9e%20une%20socket%20par,table%20des%20descripteurs%20des%20processus
 	2 - https://fr.acervolima.com/programmation-de-sockets-en-c-c/
 
+
+
+
+ETAPES :
+
+1	- Implémentation du TCP (Transport layer of HTTP)
+	Pour cela, on va devoir apprendre comment fonctionne les sockets en TCP.
+	Les sockets permettent a des programmes d'échanger entre différentes machines via un réseau.
+	Les étapes seront :
+
+		-	Créer les sockets
+		-	Identifierles sockets
+		-	Partie server : attendre la connection
+		-	Envoyer et recevoir des messages
+		-	Fermer le socket
+	
+	==============================================================
+	Créer les socket :
+		int server_fd = socket(domain, type, protocol);
+		
+		domain -> AF_INET (IP), AF_INET6 (IPv6), AF_UNIX (local channel similar to pipes),
+					AF_ISO (ISO protocols), AF_NS (Xerox Network Systems protocols);
+
+		type -> SOCK_STREAM (virtual circuit service), SOCK_DGRAM(datagram service), SOCK_RAW(direct IP 		service)
+
+		protocol -> == 0 (pcq protocol TCP)
+	==============================================================
+
+	LA SUITE DEMAIN ! (Pensez a écrire les étapes et partager la doc sur le git, ne gardez pas tout de votre coté. Victor vient tous les jours a l'école si tu peux que ce soit en journée avec JP ou la nuit avec moi. Vendredi je prends une petite journée off, je ferai que lire de la documentation de mon coté. Ca serait cool de commencer a se répartir les taches. Demain j'aurai le protocole complet de la réalisation du webserv ! JP tu peux aussi register au projet et nous ajouter vu que tu es le chef de groupe ! A demain mes loups)
+
+
+
+
+======== DOC JP ===========
+	****************
+===========================
+
+
+
+======= DOC VICTOR ========
+	****************
+===========================
