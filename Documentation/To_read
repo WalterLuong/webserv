@@ -73,6 +73,12 @@ ETAPES :
 	pour lancer la demo : make && ./webserv
 	ensuite ouvrir un navigateur et se rendre sur http:://localhost:8080/index.html
 
+	Documentation : 
+	https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms#introduction
+	Ce doc il explique clairement le parsing du fichier .conf 
+	D'ailleurs vous pouvez vous amusez a identifier dans la demo les valeurs qui dependent
+	du parsing de ce fichier. 
+
 	Je vous envoie un mail pour faire le bilan et faire quelques planifications
 	TODO : pleins de trucs lol cf mail bisous
 
