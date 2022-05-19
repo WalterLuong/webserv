@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/19 19:11:13 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/05/19 23:33:53 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # include <arpa/inet.h>
 # include <stdlib.h>
 # include <iostream>
+# include <istream>
+# include <fstream>
 # include <cstring>
 # include <string>
 # include <unistd.h>
@@ -27,7 +29,7 @@ int		main(void) {
 	int addrlen = sizeof(address);
 	const int PORT = 8080;
 	char buff[30000 + 1];
-	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\nHello world!";
+	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
 
 	if (server_fd < 0) {
 		std::cout << "SOCKET CREATION FAILED" << std::endl; // error management
@@ -49,15 +51,30 @@ int		main(void) {
 	}
 	while (1) {
 		std::cout << "~~~~ Waiting for new connection ~~~~\n\n";
+		/* Accept:  */
 		new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 		if (new_socket < 0) {
 			std::cout << "ACCEPT FAILED" << std::endl;
 			return 1;
 		}
+
+		/* Read data from client request */
 		int valread = read(new_socket, buff, 30000);
 		buff[valread] = '\0';
 		printf("%s\n", buff);
+		
+		/* For this demo code we suppose the request is ok and correspond
+		to a file index.html in www directory*/
+		std::ifstream is("./www/index.html"); // open a file and get stream
+		std::string line; //c++ buffer style
+		if (is.is_open()) {
+			while (std::getline(is, line)) { //get a line
+				header += line + '\n';
+			}
+		}
+		is.close();
 		write(new_socket, header.c_str(), strlen(header.c_str()));
+		std::cout << header << std::endl;
 		std::cout << "~~~~ Message sent ~~~~" << std::endl;
 		close(new_socket);
 	}
