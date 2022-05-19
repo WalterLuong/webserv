@@ -64,7 +64,18 @@ ETAPES :
 
 
 ======== DOC JP ===========
-	****************
+	- Dossier Project ajoute avec une demo
+	- main.cpp contient l'implementation du doc "HTTP Server: Everything you nee to [...] " 
+	- le serv retourne toujours la meme reponse, valide 200, ainsi que le code html de index.html
+	- Cette demo montre la creation d'un socket et comment transmettre les datas
+	- Le serv fait, actuellement, autant de fois la meme et unique reponse que de requete client. 
+
+	pour lancer la demo : make && ./webserv
+	ensuite ouvrir un navigateur et se rendre sur http:://localhost:8080/index.html
+
+	Je vous envoie un mail pour faire le bilan et faire quelques planifications
+	TODO : pleins de trucs lol cf mail bisous
+
 ===========================
 
 

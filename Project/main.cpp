@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/19 23:33:53 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/05/20 00:26:59 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,21 @@
 # include <stdio.h>
 
 int		main(void) {
-	int	server_fd = socket(AF_INET, SOCK_STREAM, 0);
+	
 	int	new_socket;
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
 	const int PORT = 8080;
-	char buff[30000 + 1];
+	
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
 
+	/* socket TCP connection Protocole IPV4 */
+	int	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_fd < 0) {
 		std::cout << "SOCKET CREATION FAILED" << std::endl; // error management
 		return 1;
 	}
-	
+	char buff[30000 + 1];
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY; //INADDR_ANY = 0.0.0.0
 	address.sin_port = htons(PORT);
@@ -51,7 +53,7 @@ int		main(void) {
 	}
 	while (1) {
 		std::cout << "~~~~ Waiting for new connection ~~~~\n\n";
-		/* Accept:  */
+		/* Accept: exrtract first connection request */
 		new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 		if (new_socket < 0) {
 			std::cout << "ACCEPT FAILED" << std::endl;
