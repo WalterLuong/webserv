@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/19 15:19:58 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/05/19 15:41:28 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <iostream>
 # include <cstring>
 # include <unistd.h>
+# include <string.h>
+# include <stdio.h>
 
 int		main(void) {
 	int	server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -23,7 +25,7 @@ int		main(void) {
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
 	const int PORT = 8080;
-	char buff[4096 + 1];
+	char buff[30000 + 1];
 
 	if (server_fd < 0) {
 		std::cout << "SOCKET CREATION FAILED" << std::endl; // error management
@@ -31,9 +33,9 @@ int		main(void) {
 	}
 	
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(INADDR_ANY); //INADDR_ANY = 0.0.0.0
+	address.sin_addr.s_addr = INADDR_ANY; //INADDR_ANY = 0.0.0.0
 	address.sin_port = htons(PORT);
-	std::memset((char *)&address, 0, sizeof(address));
+	std::memset(address.sin_zero, '\0', sizeof(address.sin_zero));
 
 	if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
 		std::cout << "BIND FAILED" << std::endl; // error management
@@ -50,7 +52,7 @@ int		main(void) {
 			std::cout << "ACCEPT FAILED" << std::endl;
 			return 1;
 		}
-		int valread = read(new_socket, buff, 4096);
+		int valread = read(new_socket, buff, 30000);
 		buff[valread] = '\0';
 		printf("%s\n", buff);
 		write(new_socket, "Hello fron server!", 18);
