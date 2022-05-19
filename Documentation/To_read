@@ -64,7 +64,7 @@ ETAPES :
 
 
 ======== DOC JP ===========
-	- Dossier Project ajoute avec une demo
+	- Dossier Project ajoute avec une demo de creation de socket TCP
 	- main.cpp contient l'implementation du doc "HTTP Server: Everything you nee to [...] " 
 	- le serv retourne toujours la meme reponse, valide 200, ainsi que le code html de index.html
 	- Cette demo montre la creation d'un socket et comment transmettre les datas
