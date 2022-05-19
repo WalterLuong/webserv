@@ -78,8 +78,14 @@ ETAPES :
 				STATE DIAGRAM FOR SERVER AND CLIENT MODEL OF SOCKET
 			-	Description des fonctions de relation.	
 
-	
-	
+	-Multi_client using select() :
+		-	data structure name fd_set (how to use):
+			``` fd_set readfds; ```
+				// clear an fd_set : FD_ZERO(&readfds);
+				// add a descriptor to an fd_set : FD_SET(master_sock, &readfds);	
+				// remove a descriptor form an fd_set : FD_CLR(master_sock, &readfds);
+				// if something happend on the master socket, then its an incoming connection :
+					 FD_ISSET(master_sock, &readfds);
 
 	
 ===========================
