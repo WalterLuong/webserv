@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 05:00:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/05/19 05:05:40 by wluong           ###   ########.fr       */
+/*   Updated: 2022/05/19 17:11:57 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int main(int argc, char const *argv[])
 	}
 	
 	valread = read( new_socket , buffer, 1024);
-	printf("%s\n",buffer );
+	printf("%s\nstring upper from valread\n",buffer );
 	send(new_socket , hello , strlen(hello) , 0 );
-	printf("Hello message sent\n");
+	printf("Hello message sent from server.cpp\n");
 	return 0;
 }
