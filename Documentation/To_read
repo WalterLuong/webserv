@@ -52,15 +52,59 @@ ETAPES :
 		type -> SOCK_STREAM (virtual circuit service), SOCK_DGRAM(datagram service), SOCK_RAW(direct IP 		service)
 
 		protocol -> == 0 (pcq protocol TCP)
+
+
+				#include <sys/socket.h>
+				...
+				...
+				if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+				{
+					perror("cannot create socket");
+					return 0;
+				}
+
+
+	==============================================================
+	Identifier un socket :
+
+		Nommer un socket c'est associer un port au socket -> fonction bind
+		Utilisation de la struct sockaddr.
+
+				int bind(int socket, const struct sockaddr *address, socklen_t address_len);
+
+			1er Parametre : Le socket créé avec la fonction socket.
+
+			2eme Parametre : La structure sockaddr. Pour les adresses IP, on utilisera
+			une struct sockaddr_in -> #include <netinet/in.h>
+
+					struct sockaddr_in
+					{
+						__uint8_t		sin_len;
+						sa_family_t		sin_family;
+						in_port_t		sin_port;
+						struct in_addr	sin_addr;
+						char			sin_zero[8];
+					} 
+			Il faut initialiser cette structure avant de pouvoir utiliser bind.
+				
+				sin_family -> AF_INET
+
+				sin_port -> parser le port, sinon le définir explicitement
+
+				sin_addr -> adresse IP de la machine
+
+
+	
+	
 	==============================================================
 
-	LA SUITE DEMAIN ! (Pensez a écrire les étapes et partager la doc sur le git, ne gardez pas tout de votre coté.
-	Victor vient tous les jours a l'école si tu peux que ce soit en journée avec JP ou la nuit avec moi.
-	Vendredi je prends une petite journée off, je ferai que lire de la documentation de mon coté. Ca serait cool de
-	commencer a se répartir les taches. Demain j'aurai le protocole complet de la réalisation du webserv !
-	JP tu peux aussi register au projet et nous ajouter vu que tu es le chef de groupe ! A demain mes loups)
+======== INFO WALTER ===========
 
+	Vidéo interessante a regarder (y'a plusieurs parties)
 
+	-> https://www.youtube.com/watch?v=YwHErWJIh6Y
+
+===========================
 
 
 ======== DOC JP ===========
