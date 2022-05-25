@@ -98,6 +98,11 @@ ETAPES :
 	
 	==============================================================
 
+
+============== Config File =============
+ -redirections et pages d'erreur ont des port predefini selon la norme HTTP
+ -> https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
+
 ======== INFO WALTER ===========
 
 	Vidéo interessante a regarder (y'a plusieurs parties)
