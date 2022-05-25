@@ -9,30 +9,31 @@
 /* if a variable can be variables, then us vector */
 
 class location_block {
-    std::string     path;
-    std::string     root;
-    std::string     index;
-    std::string     autoindex;
-    int             max_client
-    std::vector<std::string>             allow_methods;
-    std::pair<std::sting, std::string>   error_page;
-    std::pair<std::sting, std::string>   redirection;
+    std::string     uri; //(6.3)
+    std::string     root; //(6.1)
+    std::string     index; //(6.5)
+    std::string     autoindex; //(6.4)
+    int             max_client; //(5)
+    std::vector<std::string>             allow_methods; //(6.1)
+    std::vector<std::pair<std::sting, std::string> >  error_page;
+    std::vector<std::pair<std::sting, std::string> >  redirection;
     // need getter to, same as server_block
 }
 
 
 class   server_block {
     public :
-    std::string     server_name;
-    std::string     root;
+    std::string     server_name; //(2)
+    std::string     root; // (6.1)
     std::string     index;
-    std::string     autoindex;
-    std::string     port;
-    int             max_client;
-    std::pair<std::sting, std::string>   error_page;
-    std::pair<std::sting, std::string>   redirection;
-    std::vector<std::string>    allow_methods;
-    std::vector<location_block> location;
+    std::string     autoindex; // (6.4)
+    std::string     port; //(1)
+    int             max_client; //(5)
+	/*pair link code error and root error_page, there can be multiple error_page define (vector)*/
+    std::vector<std::pair<std::sting, std::string> >  error_page; //(6.2) (4)  
+    std::vector<std::pair<std::sting, std::string> >  redirection; // (6.2)
+    std::vector<std::string>    allow_methods; //(6.5)
+    std::vector<location_block> location; //(6.3)
 
     // need getter
     // using string.size() to determine if string is empty can be usefull ex: error_page
