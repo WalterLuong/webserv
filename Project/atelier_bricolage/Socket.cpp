@@ -6,11 +6,18 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 03:14:46 by wluong            #+#    #+#             */
-/*   Updated: 2022/05/25 05:14:35 by wluong           ###   ########.fr       */
+/*   Updated: 2022/05/26 03:29:22 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Socket.hpp"
+
+Socket::Socket() {
+	this->_error = 0;
+	fill_sockaddr(8080);
+	this->_addr_len = sizeof(this->_addr);
+	create_socket();
+}
 
 Socket::Socket(int port) {
 	this->_error = 0;

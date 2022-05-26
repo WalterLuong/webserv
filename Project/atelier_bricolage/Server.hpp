@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Socket.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/21 05:23:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/05/26 03:08:26 by wluong           ###   ########.fr       */
+/*   Created: 2022/05/26 03:01:49 by wluong            #+#    #+#             */
+/*   Updated: 2022/05/26 05:01:12 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOCKET_HPP
-# define SOCKET_HPP
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
 # include <sys/socket.h>
 # include <arpa/inet.h>
@@ -24,39 +24,26 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
+# include <vector>
+# include "Socket.hpp"
 
-# define BIND_ERROR 1
-# define LISTEN_ERROR 2
-# define SOCKET_ERROR 3
-
-class Socket
+class Server
 {
+
 	private:
 
-		int				_server_fd;
-		int				_error;
-		sockaddr_in		_addr;
-		socklen_t		_addr_len;
+		fd_set				_fdset;
+		Socket				_ms;
+		std::vector<int>	_clients;
+		
+
 
 	public:
 
-		Socket();
-		Socket(int port);
-		Socket(Socket const & src);
-		~Socket();
+		Server();
+		~Server();
 
-		// Socket& operator=(Socket const & other);
-
-		void		create_socket();
-		void	fill_sockaddr(int port);
-		void		binding();
-		void		listening(int backlog);
-
-		sockaddr_in		getAddr() const;
-		socklen_t	*	getAdLen();
-		int				getSocket() const;
-		int				getError() const;
-		struct sockaddr		* castAddr() const;
+		RunServer();
 
 };
 
