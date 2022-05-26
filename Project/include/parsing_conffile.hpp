@@ -15,10 +15,10 @@ class location_block {
     std::string     autoindex; //(6.4)
     int             max_client; //(5)
     std::vector<std::string>             allow_methods; //(6.1)
-    std::vector<std::pair<std::sting, std::string> >  error_page;
-    std::vector<std::pair<std::sting, std::string> >  redirection;
+    std::vector<std::pair<std::string, std::string> >  error_page;
+    std::vector<std::pair<std::string, std::string> >  redirection;
     // need getter to, same as server_block
-}
+};
 
 
 class   server_block {
@@ -30,8 +30,8 @@ class   server_block {
     std::string     port; //(1)
     int             max_client; //(5)
 	/*pair link code error and root error_page, there can be multiple error_page define (vector)*/
-    std::vector<std::pair<std::sting, std::string> >  error_page; //(6.2) (4)  
-    std::vector<std::pair<std::sting, std::string> >  redirection; // (6.2)
+    std::vector<std::pair<std::string, std::string> >  error_page; //(6.2) (4)  
+    std::vector<std::pair<std::string, std::string> >  redirection; // (6.2)
     std::vector<std::string>    allow_methods; //(6.5)
     std::vector<location_block> location; //(6.3)
 
@@ -53,7 +53,7 @@ class   server_conf {
     // need getter to determine index of target
     bool    is_autoindex_on(int server_index, int location_index) const;
     const std::vector<std::string>    get_allow_methods(int server_index, int location_index) const;
-    const std::string   get_root(int server_index, int location_index) const 
+    const std::string   get_root(int server_index, int location_index) const;
     const std::string   get_index(int server_index, int location_index) const;
     const std::string   get_server_name(int server_index) const;
     int                 get_max_clien(int server_index, int location_index) const;
