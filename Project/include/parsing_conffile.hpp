@@ -27,7 +27,7 @@ class   server_block {
     std::string     root; // (6.1)
     std::string     index;
     std::string     autoindex; // (6.4)
-    std::string     port; //(1)
+    std::vector<std::pair<std::string, std::string> >     port_ip; //(1) un serveur peu listen sur plusieur port et ip
     int             max_client; //(5)
 	/*pair link code error and root error_page, there can be multiple error_page define (vector)*/
     std::vector<std::pair<std::string, std::string> >  error_page; //(6.2) (4)  
