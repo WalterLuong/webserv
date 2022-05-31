@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
+#    By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/05/25 05:09:57 by wluong           ###   ########.fr        #
+#    Updated: 2022/05/30 19:14:45 by jdidier          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= webserv
 
 SRC			= 	main.cpp \
-				Socket.cpp \
+				cgi.cpp \
 
 OBJ			= $(SRC:.cpp=.o)
 DEP			= $(OBJ:.o=.d)
