@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:23:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/05/26 03:08:26 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/01 02:07:36 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,29 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
+#include <fcntl.h>
+# include <vector>
 
 # define BIND_ERROR 1
 # define LISTEN_ERROR 2
 # define SOCKET_ERROR 3
 
+# define _RED "\033[1;31m"
+# define _GRE "\033[1;32m"
+# define _BLU "\033[1;35m"
+# define _YEL "\033[1;33m"
+# define _NOR "\033[m"
+
 class Socket
 {
 	private:
 
-		int				_server_fd;
-		int				_error;
-		sockaddr_in		_addr;
-		socklen_t		_addr_len;
+		int					_server_fd;
+		int					_error;
+		sockaddr_in			_addr;
+		socklen_t			_addr_len;
+		std::vector<int>	_clients_fd;
+		
 
 	public:
 
@@ -45,12 +55,15 @@ class Socket
 		Socket(Socket const & src);
 		~Socket();
 
-		// Socket& operator=(Socket const & other);
+		Socket& operator=(Socket const & other);
 
+		int			setup(int backlog);
 		void		create_socket();
-		void	fill_sockaddr(int port);
+		void		fill_sockaddr(int port);
 		void		binding();
 		void		listening(int backlog);
+		int			accepting();
+		void		close();
 
 		sockaddr_in		getAddr() const;
 		socklen_t	*	getAdLen();
