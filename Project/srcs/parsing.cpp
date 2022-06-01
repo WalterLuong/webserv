@@ -3,80 +3,11 @@
 #include <string>
 
 
+
 int	default_conf(server_conf *stc) {
 	return (1);
 }
 
-size_t skip_white_space(std::string str) {
-	size_t i = 0;
-	while (i < str.size())
-	{
-		if (str[i] != '\f' && str[i] != '\n' && str[i] != '\t' && str[i] != '\r' && str[i] != '\v' && str[i] != ' ')
-			break;
-		i++;
-	}
-	return i;
-}
-
-int	check_declaration_server_line(std::string line) {
-	size_t start = 0;
-	size_t braket = 0;
-
-	start = skip_white_space(line);
-	line.erase(0, start);
-	if (line.find("server") == 0)
-	{
-	//	std::cout << "1 step good" <<std::endl;
-		line.erase(0, 6);
-		if (line.size() == 0) {
-			std::cout << "miss bracket after server" << std::endl;
-			return (1);
-		}
-		start = skip_white_space(line);
-		line.erase(0, start);
-	//	std::cout << "2 step good" <<std::endl;
-		if (line.size() == 0) {
-			std::cout << "miss bracket after server" << std::endl;
-			return (1);
-		}
-	//	std::cout << "3 step good" <<std::endl;
-		if (line[0] != '{')
-		{
-			std::cout << "miss bracket after server : line=" << line<< std::endl;
-			return (1);
-		}
-	//	std::cout << "4 step good" <<std::endl;
-		line.erase(0,1);
-		start = skip_white_space(line);	
-		if (start != line.size())
-		{
-			std::cout << "some after the bracket :" << line << std::endl;
-			return 1;
-		}
-	}
-	else
-	{
-		std::cout << "line " << line << std::endl;
-		return 1;
-	}
-	std::cout << "declaration server good" << std::endl;
-	return (0);
-}
-
-int	fill_serv(server_conf *stc, int index, std::ifstream file, std::string line) {
-	size_t	start = 0;
-	while (getline(file, line))
-	{
-		if (line.size() != 0 && (start = skip_white_space(line)) != line.size())
-		{
-			line.erase(0, start);
-
-		}
-		else 
-			std::cout << "line skip" << std::endl;
-	}
-	return (0);
-}
 
 int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 	std::ifstream file(file_name);
@@ -88,6 +19,7 @@ int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 
 	while (getline(file, line)) {
 		/*first for empty line*/
+		server_block	serv_to_fill;
 		if ((line.size() != 0) && (skip_white_space(line) != line.size())) {
 			std::cout << line << std::endl;
 			/*check for server {*/
@@ -99,10 +31,15 @@ int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 				}
 				open_serv = 1;
 				server_index++;
-				fill_serv(stc, server_index - 1, file, line);
+				if (fill_serv(&serv_to_fill, &file, line) != 0) {
+					std::cout << "bad config_file" << std::endl;
+					return (1);
+				}
+				stc->server.push_back(serv_to_fill);
+			}
 		}
 		else
-			std::cout << "skip line" << std::endl;
+			std::cout << "skip line, line empty" << std::endl;
 	}
 	return (0);
 }
