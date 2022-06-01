@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/26 03:01:24 by wluong           ###   ########.fr       */
+/*   Updated: 2022/05/31 14:33:02 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,21 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdio.h>
-# include "Socket.hpp"
+# include "cgi.hpp"
 
 int		main(void) {
 
+	Cgi test("./test");
+	std::cout << test.execute() << std::endl;
+	
+	/*
 	int	new_socket;
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
 	const int PORT = 8080;
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
 
-	/* socket TCP connection Protocole IPV4 */
+
 	int	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_fd < 0) {
 		std::cout << "SOCKET CREATION FAILED" << std::endl; // error management
@@ -53,20 +57,16 @@ int		main(void) {
 	}
 	while (1) {
 		std::cout << "~~~~ Waiting for new connection ~~~~\n\n";
-		/* Accept: exrtract first connection request */
 		new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 		if (new_socket < 0) {
 			std::cout << "ACCEPT FAILED" << std::endl;
 			return 1;
 		}
 
-		/* Read data from client request */
 		int valread = read(new_socket, buff, 30000);
 		buff[valread] = '\0';
 		printf("%s\n", buff);
 		
-		/* For this demo code we suppose the request is ok and correspond
-		to a file index.html in www directory*/
 		std::ifstream is("./www/index.html"); // open a file and get stream
 		std::string line; //c++ buffer style
 		if (is.is_open()) {
@@ -80,7 +80,7 @@ int		main(void) {
 		std::cout << "~~~~ Message sent ~~~~" << std::endl;
 		close(new_socket);
 	}
-
+*/
 	return 0;
 }
 

@@ -6,7 +6,7 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/05/25 05:09:57 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/01 02:14:26 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ			= $(SRC:.cpp=.o)
 DEP			= $(OBJ:.o=.d)
 
 CC			= c++
-FLAGS		= -Wall -Werror -Wextra -std=c++98 -g3 -fsanitize=address
+FLAGS		= -Wall -Werror -Wextra -std=c++98 #-g3 -fsanitize=address
 
 all:		$(NAME)
 
