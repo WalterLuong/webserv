@@ -21,7 +21,7 @@ int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 		/*first for empty line*/
 		server_block	serv_to_fill;
 		if ((line.size() != 0) && (skip_white_space(line) != line.size())) {
-			std::cout << line << std::endl;
+			std::cout << "main loop line:" <<  line << std::endl;
 			/*check for server {*/
 			if (open_serv == 0) {
 				index = line.find("server");
@@ -29,7 +29,6 @@ int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 					std::cout << "first you should have a server" << std::endl;
 					return (1);
 				}
-				open_serv = 1;
 				server_index++;
 				if (fill_serv(&serv_to_fill, &file, line) != 0) {
 					std::cout << "bad config_file" << std::endl;
