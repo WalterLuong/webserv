@@ -9,7 +9,8 @@
 /* if a variable can be variables, then us vector */
 
 class location_block {
-    std::string     uri; //(6.3)
+	public :
+   /* done */ std::string     uri; //(6.3)
     std::string     root; //(6.1)
     std::string     index; //(6.5)
     std::string     autoindex; //(6.4)
@@ -18,7 +19,9 @@ class location_block {
     std::vector<std::pair<std::string, std::string> >  error_page;
     std::vector<std::pair<std::string, std::string> >  redirection;
 
-	std::vector<location_block>	loc;
+	std::vector<location_block>	location;
+
+	location_block() : uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), location() {};
     // need getter to, same as server_block
 };
 
@@ -33,7 +36,7 @@ class   server_block {
 	// pair pour port et ip, ex : 8000 127.0.0.1; par defaut, ip 127.0.0.1
  /* done */   int             max_client; //(5)
 	/*pair link code error and root error_page, there can be multiple error_page define (vector)*/
-    std::vector<std::pair<std::string, std::string> >  error_page; //(6.2) (4)  
+  /* done */  std::vector<std::pair<std::string, std::string> >  error_page; //(6.2) (4)  
   /* done */  std::vector<std::pair<std::string, std::string> >  redirection; // (6.2)
    /* done */ std::vector<std::string>    allow_methods; //(6.5)
     std::vector<location_block> location; //(6.3)
