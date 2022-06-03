@@ -187,4 +187,16 @@ int	main(int ac, char **av)
 	std::cout << std::endl;
 	print_stc(serv_conf);
 
+
+	std::cout << "test" << std::endl;
+
+/*	location_block bite;
+	bite = serv_conf.server[0].find_uri("catfkdlsjf");
+	if (bite.uri.size() == 0) {
+		std::cout << "pas d'uri trouve" << std::endl;
+		return  (0);
+	}
+	std::cout << "res du find " << bite.root << std::endl;*/
+
+	std::cout << "pos uri to find " << serv_conf.server[0].pos_uri("cafhdst") << std::endl;
 }

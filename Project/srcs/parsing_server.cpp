@@ -111,9 +111,8 @@ int	check_redirection(std::string line, std::pair<std::string, std::string> *to_
 int check_methods(std::string line, std::vector<std::string> *to_fill) {
 	if (count_word(line) > 3) {
 		std::cout << "too much arg for methods" << std::endl;
-		return (0);
+		return (1);
 	}	
-	std::cout << "line check methods after erase ws end strings:" << line << "|" << std::endl;
 	int j = 0;
 	int tf = 1;
 	for (int i = 0; i < line.size(); i++) {
@@ -126,7 +125,6 @@ int check_methods(std::string line, std::vector<std::string> *to_fill) {
 				}
 				else
 					to_fill->push_back(cpy);
-				std::cout << "print cpy line methods : " << cpy << "|" << std::endl;
 				//to_fill->push_back(cpy);
 				tf = 0;
 			}
@@ -146,7 +144,6 @@ int check_methods(std::string line, std::vector<std::string> *to_fill) {
 		}
 		else
 			to_fill->push_back(bytes);
-		std::cout << "print bytes line methods: " << bytes << "|" << std::endl;
 	}
 	return (0);
 }
@@ -171,7 +168,6 @@ int check_autoindex(std::string line, std::string *str) {
 		std::cout << "autoindex completion by on, off" << std::endl;
 		return 1;
 	}
-	std::cout << "good autoindex" << std::endl;
 	*str = line;
 	return (0);
 }
@@ -193,7 +189,6 @@ int	check_server_name(std::string line, std::string *ret) {
 	}
 	line = erase_ws_end_string(line);
 	*ret = line;
-	std::cout << "print line: " << line << "|" << std::endl;
 	return (0);
 }
 
@@ -346,7 +341,6 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, location_block *stc) 
 				std::cout << "bad redirection in a server" << std::endl;
 				return 1;
 		}
-		std::cout << "print redirection pair->first:" << redir.first << "|pair->sec:" << redir.second << "|" << std::endl;
 		stc->redirection.push_back(redir);
 	}
 
@@ -358,7 +352,6 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, location_block *stc) 
 				std::cout << "bad error in a server" << std::endl;
 				return 1;
 		}
-		std::cout << "print error pair->first:" << error.first << "|pair->sec:" << error.second << "|" << std::endl;
 		stc->error_page.push_back(error);
 	}
 
@@ -472,7 +465,6 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, server_block *stc) {
 				std::cout << "bad redirection in a server" << std::endl;
 				return 1;
 		}
-		std::cout << "print redirection pair->first:" << redir.first << "|pair->sec:" << redir.second << "|" << std::endl;
 		stc->redirection.push_back(redir);
 	}
 
@@ -484,7 +476,6 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, server_block *stc) {
 				std::cout << "bad error in a server" << std::endl;
 				return 1;
 		}
-		std::cout << "print error pair->first:" << error.first << "|pair->sec:" << error.second << "|" << std::endl;
 		stc->error_page.push_back(error);
 	}
 
@@ -532,7 +523,6 @@ int	check_location_line(std::string line, std::string *to_fill) {
 }
 
 int	check_location_block(std::ifstream *file, std::string line, location_block *to_fill) {
-	std::cout << "entre in a location block" << std::endl;
 	size_t	start = 0;
 	int	location_index = 0;
 	std::vector<std::string>::iterator first;
@@ -588,24 +578,8 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 				return (1);
 			}
 		}
-		else 
-			std::cout << "line skip" << std::endl;
-
-
-
-
-
-
-		/*
-		std::cout << "plop" << std::endl;
-		i = skip_white_space(line);	
-		line.erase(0,i);
-		if (line == "}") // to precise
-			break ;
-			*/
 	}
 	return (0);
-
 }
 
 
@@ -614,9 +588,6 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 	int	location_index = 0;
 	std::vector<std::string>::iterator first;
 
-	std::cout << std::endl;
-	std::cout << "fill serv fonction" << std::endl;
-	std::cout << std::endl;
 	while (getline(*file, line)) {
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
 			line.erase(0, start);
@@ -657,8 +628,6 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 				return (1);
 			}
 		}
-		else 
-			std::cout << "line skip" << std::endl;
 	}
 	return (0);
 }
@@ -673,10 +642,6 @@ int	check_declaration_server_line(std::string line) {
 	line.erase(0, start);
 	if (line.find("server") == 0) {
 		line.erase(0, 6);
-/*		if (line.size() == 0) {
-			std::cout << "miss bracket after server" << std::endl;
-			return (1);
-		} */
 		start = skip_white_space(line);
 		line.erase(0, start);
 		if (line.size() == 0) {
@@ -698,7 +663,6 @@ int	check_declaration_server_line(std::string line) {
 		std::cout << "bad line: " << line << std::endl;
 		return 1;
 	}
-	// std::cout << "declaration server good" << std::endl;
 	return (0);
 }
 
