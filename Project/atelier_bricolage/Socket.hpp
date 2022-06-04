@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:23:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/01 02:07:36 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/03 05:08:58 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@
 # define _YEL "\033[1;33m"
 # define _NOR "\033[m"
 
+struct Client
+{
+	bool			connected;
+	sockaddr_in		address;
+	int				client_fd;
+	fd_set			client_data;
+	socklen_t		client_addr_len;
+};
+
+
+
 class Socket
 {
 	private:
@@ -45,7 +56,8 @@ class Socket
 		int					_error;
 		sockaddr_in			_addr;
 		socklen_t			_addr_len;
-		std::vector<int>	_clients_fd;
+		int					_max_clients;
+		Client				_clients_fd[_max_clients];
 		
 
 	public:
@@ -62,13 +74,17 @@ class Socket
 		void		fill_sockaddr(int port);
 		void		binding();
 		void		listening(int backlog);
-		int			accepting();
-		void		close();
+		bool		accept_client(Client *current);
+		int			accept_connections();
+		void		disconnect(Client *current);
+		bool		client_receive(Client *current);
+		void		receive_data();
+		int			send_data(Client *current, char *buff, in len);
 
-		sockaddr_in		getAddr() const;
-		socklen_t	*	getAdLen();
-		int				getSocket() const;
-		int				getError() const;
+		sockaddr_in			getAddr() const;
+		socklen_t	*		getAdLen();
+		int					getSocket() const;
+		int					getError() const;
 		struct sockaddr		* castAddr() const;
 
 };

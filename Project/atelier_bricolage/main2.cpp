@@ -1,190 +1,363 @@
-#include <algorithm>
-#include <arpa/inet.h>
-#include <errno.h>
-#include <fcntl.h>
+#include <fstream>
 #include <iostream>
-#include <netdb.h>
-#include <netinet/in.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/epoll.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <vector>
-#define PORT 8080
-#define MAX_EVENTS 32
+#include <string>
 
-/**
- * It sets up the server socket and binds it to the port
- *
- * @param server_fd This is the file descriptor of the socket created by the socket() function.
- * @param address This is the address of the server.
- */
-void setupserv(int &server_fd, struct sockaddr_in &address)
+// DEFINITIONS //
+
+#define		PORT 4000		// Define the port to connect to
+#define		MAX_CLIENTS 10	// Define the maximum number of clients we can receive
+#define		BUFFER_SIZE 256 // Define the buffer size of the messages
+
+// STRUCTURES //
+
+struct _client
 {
+	bool		connected;
+	sockaddr_in	address;
+	SOCKET		socket;
+	fd_set		socket_data;
+	int			address_length;
 
-	int opt = 1;
-
-	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
-	{
-		perror("setsockopt");
-		exit(EXIT_FAILURE);
-	}
-	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(PORT);
-
-	if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
-	{
-		perror("bind failed");
-		exit(EXIT_FAILURE);
-	}
-
-	if (listen(server_fd, 3) < 0)
-	{
-		perror("listen");
-		exit(EXIT_FAILURE);
-	};
+	char		template_name[15];
+	char		screen_name[15];
+	char		siegepos[45];
 };
 
-/**
- * It adds a file descriptor to the epoll instance
- *
- * @param epfd the epoll file descriptor
- * @param fd The file descriptor to add to the epoll instance.
- * @param events The events we want to monitor for the file descriptor fd.
- */
-void epoll_ctl_add(int epfd, int fd, uint32_t events)
+// GLOBAL VARIABLES //
+
+sockaddr_in	server_address;
+sockaddr	server_socket_address;
+SOCKET		server_socket;
+
+_client		client[MAX_CLIENTS];
+int			clients_connected = 0;
+
+// FUNCTION DECLARATIONS //
+
+bool	accept_client ( _client *current_client );
+int		accept_connections ();
+int		disconnect_client ( _client *current_client );
+void	echo_message ( char *message );
+void	end_server();
+void	midcopy ( char* input, char* output, int start_pos, int stop_pos );
+int		receive_client ( _client *current_client, char *buffer, int size );
+void	receive_data();
+int		send_data ( _client *current_client, char *buffer, int size );
+void	start_server();
+
+// FUNCTION DEFINITIONS //
+
+bool accept_client ( _client *current_client )
 {
-	struct epoll_event ev;
-	ev.events = events;
-	ev.data.fd = fd;
-	if (epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev) == -1)
+	// Accept incoming connections
+	current_client->address_length = sizeof ( sockaddr );
+	current_client->socket = accept ( server_socket, ( sockaddr * ) &current_client->address, &current_client->address_length );
+
+	if ( current_client->socket == 0 )
 	{
-		perror("epoll_ctl()\n");
-		exit(1);
+		// No data in socket
+		return ( FALSE );
 	}
-}
-
-/**
- * It sets the socket to non-blocking mode
- *
- * @param sockfd The socket file descriptor to set to non-blocking.
- */
-void nonblockingfd(int sockfd)
-{
-	int flags;
-
-	flags = fcntl(sockfd, F_GETFL, 0);
-	flags |= O_NONBLOCK;
-	fcntl(sockfd, F_SETFL, flags);
-}
-/**
- * It reads data from the socket, prints it to the screen, and then writes it back to the socket
- *
- * @param event the event that triggered the callback
- */
-
-void readdata(struct epoll_event &event)
-{
-	char buf[1024];
-
-	while (true)
+	else if ( current_client->socket == SOCKET_ERROR )
 	{
-		memset(buf, 0, sizeof(buf));
-		int n = read(event.data.fd, buf, sizeof(buf));
-		if (n <= 0)
-			break;
-		else
+		// Socket error
+		return ( FALSE );
+	}
+	else
+	{
+		// Occupy the client slot
+		current_client->connected = TRUE;
+		FD_ZERO ( &current_client->socket_data );
+		FD_SET ( current_client->socket, &current_client->socket_data );
+
+		return ( TRUE );
+	}
+
+	return ( FALSE );
+}
+
+int accept_connections()
+{
+	if ( clients_connected < MAX_CLIENTS )
+	{
+		for ( int j = 0; j < MAX_CLIENTS; j++ )
 		{
-			printf("[+] data: %s\n", buf);
-			write(event.data.fd, buf, strlen(buf));
+			if ( !client[j].connected )
+			{
+				if ( accept_client ( &client[j] ) )
+				{
+					// Increment the client count
+					clients_connected++;
+
+					// Grab the ip address of the client ... just for fun
+					char *client_ip_address = inet_ntoa ( client[j].address.sin_addr );
+
+					// Output connection
+					cout << "ACCEPTING CLIENT to array position [" << j << "] with IP ADDRESS " << client_ip_address << endl;
+				}
+			}
 		}
-	};
-};
+	}
 
-/**
- * It accepts a new connection, sets the socket to non-blocking, and adds it to the epoll instance
- *
- * @param server_fd the server socket file descriptor
- * @param cli_addr the client's address
- * @param epfd the epoll file descriptor
- * @param socklen the length of the client address
- */
-void addconnexion(int server_fd, struct sockaddr_in cli_addr, int epfd, unsigned int socklen)
-{
-	char buf[1024];
-
-	int conn_sock = accept(server_fd, (struct sockaddr *)&cli_addr, &socklen);
-	inet_ntop(AF_INET, (char *)&(cli_addr.sin_addr), buf, sizeof(cli_addr));
-	printf("[+] connected with %s:%d\n", buf, ntohs(cli_addr.sin_port));
-	nonblockingfd(conn_sock);
-	epoll_ctl_add(epfd, conn_sock, EPOLLIN | EPOLLET | EPOLLRDHUP | EPOLLHUP);
-};
-
-/**
- * It closes the connection and removes the file descriptor from the epoll instance
- *
- * @param epfd the epoll file descriptor
- * @param event the event that triggered the callback
- */
-void closeconnexion(int epfd, struct epoll_event &event)
-{
-	epoll_ctl(epfd, EPOLL_CTL_DEL, event.data.fd, NULL);
-	printf("[+] connection closed\n");
-	close(event.data.fd);
+	return ( 1 );
 }
 
-/**
- * It waits for events on the epoll file descriptor, and when it receives one, it checks if it's a
- * new connection, if it's data to read, or if it's a closed connection
- *
- * @param epfd the epoll file descriptor
- * @param server_fd the server's socket file descriptor
- */
-void serv_running(int epfd, int server_fd)
-{
-	struct epoll_event events[MAX_EVENTS];
-	struct sockaddr_in cli_addr;
-	unsigned int socklen = sizeof(cli_addr);
+int disconnect_client ( _client *current_client )
+{ // Disconnect a client
+	if ( current_client->connected == TRUE )
+	{ // Close the socket for the client
+		closesocket ( current_client->socket );
+	}
 
-	while (true)
+	// Set the new client state
+	current_client->connected = FALSE;
+
+	// Clear the address length
+	current_client->address_length = -1;
+
+	// Decrement the current number of connected clients
+	clients_connected--;
+
+	// Declare a variable to store the disconnect message into
+	char raw_data[BUFFER_SIZE];
+
+	// Parse in the client data to send
+	sprintf ( raw_data, "~4 %s", current_client->screen_name );
+
+	// Echo out the disconnect message so all clients drop this client
+	echo_message ( raw_data );
+
+	cout << "Disconnecting client[]" << endl;
+
+	return ( 1 );
+}
+
+void echo_message ( char *message )
+{
+	for ( int j = 0; j < MAX_CLIENTS; j++ )
 	{
-		int nfds = epoll_wait(epfd, events, MAX_EVENTS, -1);
-		for (int i = 0; i < nfds; i++)
-		{
-			if (events[i].data.fd == server_fd)
-				addconnexion(server_fd, cli_addr, epfd, socklen);
-			else if (events[i].events & EPOLLIN)
-				readdata(events[i]);
-			else
-				printf("[+] unexpected\n");
-			if (events[i].events & (EPOLLRDHUP | EPOLLHUP))
-				closeconnexion(epfd, events[i]);
+		if ( client[j].connected )
+		{ // Echo the message to all clients
+			send_data ( &client[j], message, BUFFER_SIZE );
 		}
 	}
 }
-int main(int argc, char const *argv[])
+
+void end_server()
+{ // Shut down the server by disconnecting all clients and clearing winsock
+	// Disconnect all clients
+	for ( int j = 0; j < MAX_CLIENTS, j++;) { disconnect_client ( &client[j] ); }
+
+	// Close the listening socket for the server
+	closesocket ( server_socket );
+
+	// Clean up winsock
+	WSACleanup();
+}
+
+void midcopy ( char* input, char* output, int start_pos, int stop_pos )
 {
-	struct sockaddr_in srv_addr;
-	int server_fd;
-	struct sockaddr_in address;
-	int epfd;
+	int index = 0;
 
-	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+	for ( int i = start_pos; i < stop_pos; i++ )
 	{
-		perror("socket failed");
-		exit(EXIT_FAILURE);
+		output[index] = input[i];
+		index++;
 	}
-	setupserv(server_fd, address);
-	epfd = epoll_create(1);
-	epoll_ctl_add(epfd, server_fd, EPOLLIN | EPOLLOUT | EPOLLET);
 
-	serv_running(epfd, server_fd);
+	output[index] = 0;
+}
 
-	close(server_fd);
-	shutdown(server_fd, SHUT_RDWR);
+int receive_client ( _client *current_client, char *buffer, int size )
+{
+	if ( FD_ISSET ( current_client->socket, &current_client->socket_data ) )
+	{
+		// Store the return data of what we have sent
+		current_client->address_length = recv ( current_client->socket, buffer, size, 0 );
+
+		if ( current_client->address_length == 0 )
+		{ // Data error on client
+			disconnect_client ( current_client );
+
+			return ( FALSE );
+		}
+
+		return ( TRUE );
+	}
+
+	return ( FALSE );
+}
+
+void receive_data()
+{
+	char buffer[BUFFER_SIZE];
+
+	for ( int j = 0; j < MAX_CLIENTS; j++ )
+	{
+		if ( client[j].connected )
+		{
+			if ( receive_client ( &client[j], buffer, BUFFER_SIZE ) )
+			{
+				if ( buffer[0] == '~' )
+				{ // All data should be buffered by a '~' just because
+
+					if ( buffer[1] == '1' ) // Add Client Command
+					{
+						// Declare the buffer to store new client information into
+						char raw_data[BUFFER_SIZE];
+
+						// Parse out the 'Add Client' command
+						midcopy ( buffer, raw_data, 3, strlen ( buffer ) );
+
+						// Store the client information into our RAM client database
+						sscanf ( raw_data, "%s %s %s", client[j].template_name, client[j].screen_name, client[j].siegepos );
+
+						for ( int k = 0; k < MAX_CLIENTS; k++ )
+						{
+							if ( ( client[k].connected ) && ( j != k ) )
+							{
+								// Parse in the client data to send
+								sprintf ( raw_data, "~1 %s %s %s", client[k].template_name, client[k].screen_name, client[k].siegepos );
+
+								// Send the client data
+								send_data ( &client[j], raw_data, BUFFER_SIZE );
+							}
+						}
+					}
+					else if ( buffer[1] == '2' ) // Move Client Command
+					{
+						// Declare the buffer to store new client information into
+						char raw_data[BUFFER_SIZE];
+
+						// Parse out the 'Move Client' command
+						midcopy ( buffer, raw_data, 3, strlen ( buffer ) );
+
+						// Update the client information into our RAM client database
+						sscanf ( raw_data, "%s %s", client[j].screen_name, client[j].siegepos );
+					}
+					else if ( buffer[1] == '3' ) // Chat Client Command
+					{
+						// ECHO THE MESSAGE BACK TO ALL CLIENTS
+					}
+					else if ( buffer[1] == '4' ) // Remove Client Command
+					{
+						// Disconnect the current client
+						disconnect_client ( &client[j] );
+					}
+
+					// Display all data received
+					// cout << buffer << endl;
+
+					// Echo the message to the other clients
+					echo_message ( buffer );
+
+					// Clear the buffer
+					buffer[0] = '/0';
+				}
+			}
+		}
+	}
+}
+
+int send_data ( _client *current_client, char *buffer, int size )
+{
+	// Store the return information about the sending
+	current_client->address_length = send ( current_client->socket, buffer, size, 0 );
+
+	if ( ( current_client->address_length == SOCKET_ERROR ) || ( current_client->address_length == 0 ) )
+	{ // Check for errors while sending
+		disconnect_client ( current_client );
+
+		return ( FALSE );
+	}
+	else return ( TRUE );
+}
+
+void start_server()
+{ // Initialize the server and start listening for clients
+	// LOCAL VARIABLES //
+	int res, i = 1;
+
+	// Set up the address structure
+	server_address.sin_family = AF_INET;
+	server_address.sin_addr.s_addr = INADDR_ANY;
+	server_address.sin_port = htons ( PORT);
+
+	// IM GUESSING : Copy over some addresses, conversions of some sort ?
+	memcpy ( &server_socket_address, &server_address, sizeof ( SOCKADDR_IN ) );
+
+	// Create a listening socket for the server
+	server_socket = socket ( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+
+	if ( server_socket == INVALID_SOCKET )
+	{
+		cout << "SOCKET ERROR : Invalid socket." << endl;
+	}
+	else if ( server_socket == SOCKET_ERROR )
+	{
+		cout << "SOCKET ERROR : Socket error." << endl;
+	}
+	else
+	{
+		cout << "SOCKET ESTABLISHED" << endl;
+	}
+
+	// Sets the option to re-use the address the entire run of the program
+	setsockopt ( server_socket, SOL_SOCKET, SO_REUSEADDR, ( char * ) &i, sizeof ( i ) );
+
+	// Bind the socket to the address
+	res = bind ( server_socket, &server_socket_address, sizeof ( server_socket_address ) );
+
+	cout << "Binding socket:" << res << endl;
+
+	if ( res != 0 )
+	{
+		cout << "BINDING ERROR : Failed to bind socket to address." << endl;
+	}
+	else
+	{
+		cout << "Socket Bound to port : "<< PORT << endl;
+	}
+
+	// Start listening for connection requests
+	res = listen ( server_socket, 8 );
+
+	// This makes the server non blocking, hence it won't wait for a response
+	unsigned long b = 1;
+	ioctlsocket ( server_socket, FIONBIO, &b );
+
+	// Clear all clients state
+	for ( int j = 0; j < MAX_CLIENTS; j++ ) { client[j].connected = FALSE; }
+}
+
+////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+
+// MAIN FUNCTION //
+
+int main()
+{
+	cout << "\txmen90s Non-Blocking Multi-Client Echo Server for Dungeon Siege\n" << endl;
+
+	// Initialize winsock and start listening
+	start_server();
+
+	// Loop forever
+	bool looping = TRUE;
+
+	while ( looping )
+	{
+		// Accept all incoming client connections
+		accept_connections();
+
+		// Receive all data from clients
+		receive_data();
+	}
+
+	// Shut down winsock
+	end_server();
+
 	return 0;
 }
