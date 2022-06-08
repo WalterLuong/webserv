@@ -7,8 +7,6 @@
 # include <string>
 # include <cstdlib>
 
-static std::vector<std::string> lst_server_option = {"listen", "server_name", "index", "max_body_client", "error_page", "location", "autoindex", "root", "cgi_path", "methods", "return", "}" };
-static std::vector<std::string> lst_location_option = {"index", "autoindex", "cgi_path", "methods", "root", "error_page", "return", "location", "}"};
 
 int parsing(server_conf *stc, int ac, char **av);
 

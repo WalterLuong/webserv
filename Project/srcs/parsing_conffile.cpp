@@ -3,7 +3,9 @@
 
 /*---location block class---*/
 
-location_block::location_block() :  uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), location() {}
+location_block::location_block() :  uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), location() {
+	init_lst_location_option();
+}
 
 location_block::location_block(location_block &cpy) {
 		uri = cpy.uri;
@@ -15,6 +17,7 @@ location_block::location_block(location_block &cpy) {
 		error_page= cpy.error_page;
 		redirection= cpy.redirection;
 		location= cpy.location;
+		lst_location_option = cpy.lst_location_option;
 }
 
 location_block::~location_block() {};
@@ -30,10 +33,24 @@ location_block	&location_block::operator=(location_block &cpy) {
 		ret.error_page= cpy.error_page;
 		ret.redirection= cpy.redirection;
 		ret.location= cpy.location;
+		ret.lst_location_option = cpy.lst_location_option;
 		return ret;
 }
 
 /*---location block function---*/
+
+void	location_block::init_lst_location_option() {
+	lst_location_option.push_back("index");
+	lst_location_option.push_back("error_page");
+	lst_location_option.push_back("location");
+	lst_location_option.push_back("autoindex");
+	lst_location_option.push_back("root");
+	lst_location_option.push_back("cgi_path");
+	lst_location_option.push_back("methods");
+	lst_location_option.push_back("return");
+	lst_location_option.push_back("}");
+
+}
 
 location_block	location_block::find_uri(std::string uri_to_find) {
 		std::vector<location_block>::iterator it;
@@ -66,7 +83,11 @@ int location_block::pos_uri(std::string uri_to_find) {
 
 /*---server_block class---*/
 
-server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), allow_methods(), location() {};
+server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), allow_methods(), location() {
+	init_lst_server_option();
+}
+
+
 
 server_block::server_block(server_block &cpy) {
 		server_name = cpy.server_name;
@@ -79,6 +100,7 @@ server_block::server_block(server_block &cpy) {
 		redirection = cpy.redirection;
 		allow_methods = cpy.allow_methods;
 		location = cpy.location;
+		lst_server_option = cpy.lst_server_option;
 }
 
 server_block::~server_block() {}
@@ -95,10 +117,26 @@ server_block &server_block::operator=(server_block &cpy) {
 		ret.redirection = cpy.redirection;
 		ret.allow_methods = cpy.allow_methods;
 		ret.location = cpy.location;
+		ret.lst_server_option = cpy.lst_server_option;
 		return ret;
 }
 
 /*---location block function---*/
+
+void	server_block::init_lst_server_option() {
+	lst_server_option.push_back("listen");
+	lst_server_option.push_back("server_name");
+	lst_server_option.push_back("index");
+	lst_server_option.push_back("max_body_client");
+	lst_server_option.push_back("error_page");
+	lst_server_option.push_back("location");
+	lst_server_option.push_back("autoindex");
+	lst_server_option.push_back("root");
+	lst_server_option.push_back("cgi_path");
+	lst_server_option.push_back("methods");
+	lst_server_option.push_back("return");
+	lst_server_option.push_back("}");
+}
 
 int	server_block::nbr_location() const { return location.size(); }
 

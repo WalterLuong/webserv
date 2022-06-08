@@ -6,6 +6,8 @@
 
 int	default_conf(server_conf *stc) {
 	/*implement a default config file with open*/
+	if (stc)
+		return (1);
 	return (1);
 }
 
