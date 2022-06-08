@@ -29,7 +29,7 @@ int	count_word(std::string line) {
 	int nbr_word = 0;
 	int tf = 1;
 
-	for (int i = 0; i < line.size(); i++) {
+	for (size_t i = 0; i < line.size(); i++) {
 		if (line[i] == ' ' || line[i] == '\f' || line[i] == '\t' || line[i] == '\n' || line[i] == '\r' || line[i] == '\v') {
 			tf = 1;	
 		}
@@ -49,7 +49,7 @@ int check_max_body_client(std::string line, int *nbr) {
 		return (1);
 	}
 	line = erase_ws_end_string(line);	
-	for (int i = 0; i < line.size(); i++) {
+	for (size_t i = 0; i < line.size(); i++) {
 		if (line[i] > '9' || line[i] < '0')
 			return (1);
 	}
@@ -115,7 +115,7 @@ int check_methods(std::string line, std::vector<std::string> *to_fill) {
 	}	
 	int j = 0;
 	int tf = 1;
-	for (int i = 0; i < line.size(); i++) {
+	for (size_t i = 0; i < line.size(); i++) {
 		if (line[i] == ' ' || line[i] == '\f' || line[i] == '\t' || line[i] == '\n' || line[i] == '\r' || line[i] == '\v') {
 			if (tf == 1) {
 				std::string cpy(line, j, i-j);	
@@ -193,7 +193,6 @@ int	check_server_name(std::string line, std::string *ret) {
 }
 
 int	check_listen(std::string line, std::pair<int, std::string> *to_fill) {
-	char *str;
 	int	nbr;	
 
 	nbr = atoi(line.c_str());
@@ -217,7 +216,7 @@ int	check_listen(std::string line, std::pair<int, std::string> *to_fill) {
 		int point = 1;
 		int nbr_point = 0;
 
-		for (int i = 0; i < line.size(); i++) {
+		for (size_t i = 0; i < line.size(); i++) {
 			if (line[i] == '.'){
 				if (point == 1) {
 					std::cout << "ip invalide, . first or . ." << std::endl;
@@ -493,7 +492,7 @@ int	check_location_line(std::string line, std::string *to_fill) {
 		std::cout << "uri of location need to start with /" << std::endl;
 		return 1;
 	}
-	for (int i = 0; i < line.size(); i++) {
+	for (size_t i = 0; i < line.size(); i++) {
 		if (line[i] == ' ' || line[i] == '\f' || line[i] == '\t' || line[i] == '\n' || line[i] == '\r' || line[i] == '\v') {
 			if (i == 1) {
 				std::cout << "need uri in location line" << std::endl;
@@ -524,7 +523,6 @@ int	check_location_line(std::string line, std::string *to_fill) {
 
 int	check_location_block(std::ifstream *file, std::string line, location_block *to_fill) {
 	size_t	start = 0;
-	int	location_index = 0;
 	std::vector<std::string>::iterator first;
 
 	std::string uri;
@@ -537,12 +535,11 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 	}
 	to_fill->uri = uri;
 
-	int i = 0;
 	while (getline(*file, line)) {
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
 			line.erase(0, start);
 				
-			for (first = lst_location_option.begin(); first != lst_location_option.end(); first++) {	
+			for (first = to_fill->location.begin()->lst_location_option.begin(); first != to_fill->location.begin()->lst_location_option.end(); first++) {	
 				start = line.find(*first);
 				if (start != std::string::npos && start == 0) {
 					if (*first == "}") {
@@ -573,7 +570,7 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 					break;
 				}
 			}
-			if (first == lst_location_option.end()) {
+			if (first == to_fill->location.begin()->lst_location_option.end()) {
 				std::cout << "bad option: " << line << std::endl; 
 				return (1);
 			}
@@ -585,14 +582,13 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 
 int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string line) {
 	size_t	start = 0;
-	int	location_index = 0;
 	std::vector<std::string>::iterator first;
 
 	while (getline(*file, line)) {
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
 			line.erase(0, start);
 				
-			for (first = lst_server_option.begin(); first != lst_server_option.end(); first++) {	
+			for (first = server_to_fill->lst_server_option.begin(); first != server_to_fill->lst_server_option.end(); first++) {	
 				start = line.find(*first);
 				if (start != std::string::npos && start == 0) {
 					if (*first == "}") {
@@ -623,7 +619,7 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 					break;
 				}
 			}
-			if (first == lst_server_option.end()) {
+			if (first == server_to_fill->lst_server_option.end()) {
 				std::cout << "bad option: " << line << std::endl; 
 				return (1);
 			}
@@ -636,7 +632,6 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 
 int	check_declaration_server_line(std::string line) {
 	size_t start = 0;
-	size_t braket = 0;
 
 	start = skip_white_space(line);
 	line.erase(0, start);

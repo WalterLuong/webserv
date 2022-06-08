@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include "webserve.hpp"
 #include <iostream>
 
 
@@ -26,10 +25,12 @@ class location_block {
 	std::vector<location_block>	location;
 
 	location_block();	
-	location_block(location_block &cpy);
+	location_block(location_block  const &cpy);
 	~location_block();
 
-	location_block &operator=(location_block &cpy);    // need getter to, same as server_block
+	location_block &operator=(location_block const &cpy);    // need getter to, same as server_block
+
+	void init_lst_location_option();
 	location_block	find_uri(std::string uri_to_find);
 
 	int	pos_uri(std::string uri_to_find);
@@ -56,12 +57,14 @@ class   server_block {
     // using string.size() to determine if string is empty can be usefull ex: error_page
     // 
 	server_block();
-	server_block(server_block &cpy);
+	server_block(server_block const &cpy);
 	~server_block();
 
-	server_block &operator=(server_block &cpy);
+	server_block &operator=(server_block const &cpy);
 
-	int nbr_location();
+	void init_lst_server_option();
+
+	int nbr_location() ;
 
 	location_block	find_uri(std::string uri_to_find);
 
@@ -75,10 +78,10 @@ class   server_conf {
     std::vector<server_block> server;
 
 	server_conf();
-	server_conf(server_conf &cpy);
+	server_conf(server_conf const &cpy);
 	~server_conf();
 
-	server_conf &operator=(server_conf &cpy);
+	server_conf &operator=(server_conf const &cpy);
 
 };
 

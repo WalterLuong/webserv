@@ -7,7 +7,7 @@ location_block::location_block() :  uri(), root(), index(), autoindex(), max_cli
 	init_lst_location_option();
 }
 
-location_block::location_block(location_block &cpy) {
+location_block::location_block(location_block const &cpy) {
 		uri = cpy.uri;
 		root= cpy.root;
 		autoindex= cpy.autoindex;
@@ -22,19 +22,18 @@ location_block::location_block(location_block &cpy) {
 
 location_block::~location_block() {};
 
-location_block	&location_block::operator=(location_block &cpy) {
-		location_block ret;
-		ret.uri = cpy.uri;
-		ret.root= cpy.root;
-		ret.autoindex= cpy.autoindex;
-		ret.index= cpy.index;
-		ret.max_client= cpy.max_client;
-		ret.allow_methods= cpy.allow_methods;
-		ret.error_page= cpy.error_page;
-		ret.redirection= cpy.redirection;
-		ret.location= cpy.location;
-		ret.lst_location_option = cpy.lst_location_option;
-		return ret;
+location_block	&location_block::operator=(location_block const &cpy) {
+		uri = cpy.uri;
+		root= cpy.root;
+		autoindex= cpy.autoindex;
+		index= cpy.index;
+		max_client= cpy.max_client;
+		allow_methods= cpy.allow_methods;
+		error_page= cpy.error_page;
+		redirection= cpy.redirection;
+		location= cpy.location;
+		lst_location_option = cpy.lst_location_option;
+		return *this;
 }
 
 /*---location block function---*/
@@ -61,7 +60,7 @@ location_block	location_block::find_uri(std::string uri_to_find) {
 				return (*it);
 			it++;
 		}
-		return (location_block());
+		return (*it);
 }
 
 int location_block::pos_uri(std::string uri_to_find) {
@@ -89,7 +88,7 @@ server_block::server_block() : server_name(), root(), index(), autoindex(), port
 
 
 
-server_block::server_block(server_block &cpy) {
+server_block::server_block(server_block const &cpy) {
 		server_name = cpy.server_name;
 		root = cpy.root;
 		index = cpy.index;
@@ -105,20 +104,19 @@ server_block::server_block(server_block &cpy) {
 
 server_block::~server_block() {}
 
-server_block &server_block::operator=(server_block &cpy) {
-		server_block ret;
-		ret.server_name = cpy.server_name;
-		ret.root = cpy.root;
-		ret.index = cpy.index;
-		ret.autoindex = cpy.autoindex;
-		ret.port_ip = cpy.port_ip;
-		ret.max_client = cpy.max_client;
-		ret.error_page = cpy.error_page;
-		ret.redirection = cpy.redirection;
-		ret.allow_methods = cpy.allow_methods;
-		ret.location = cpy.location;
-		ret.lst_server_option = cpy.lst_server_option;
-		return ret;
+server_block &server_block::operator=(server_block const &cpy) {
+		server_name = cpy.server_name;
+		root = cpy.root;
+		index = cpy.index;
+		autoindex = cpy.autoindex;
+		port_ip = cpy.port_ip;
+		max_client = cpy.max_client;
+		error_page = cpy.error_page;
+		redirection = cpy.redirection;
+		allow_methods = cpy.allow_methods;
+		location = cpy.location;
+		lst_server_option = cpy.lst_server_option;
+		return *this;
 }
 
 /*---location block function---*/
@@ -138,9 +136,9 @@ void	server_block::init_lst_server_option() {
 	lst_server_option.push_back("}");
 }
 
-int	server_block::nbr_location() const { return location.size(); }
+int	server_block::nbr_location() { return location.size(); }
 
-location_block	&server_block::find_uri(std::string uri_to_find) {
+location_block	server_block::find_uri(std::string uri_to_find) {
 			std::vector<location_block>::iterator it;
 
 			it = location.begin();
@@ -150,7 +148,7 @@ location_block	&server_block::find_uri(std::string uri_to_find) {
 				}
 				it++;
 			}
-			return (location_block());
+			return (*it);
 }
 
 int	server_block::pos_uri(std::string uri_to_find) {
@@ -174,14 +172,13 @@ int	server_block::pos_uri(std::string uri_to_find) {
 
 server_conf::server_conf() : server() {}
 
-server_conf::server_conf(server_conf &cpy) {
+server_conf::server_conf(server_conf const &cpy) {
 		server = cpy.server;
 }
 
-server_conf::server_block &operator=(server_block &cpy) {
-	server_conf ret;
-	ret.server = cpy.sever;
-	return ret;
+server_conf	&server_conf::operator=(server_conf const &cpy) {
+	server = cpy.server;
+	return *this;
 }
 
 server_conf::~server_conf() {}
