@@ -26,7 +26,7 @@ server {
 
 		autoindex off
 
-		location bob_le_bricoleur {
+		location /bob_le_bricoleur {
 			index bob.jpeg
 		}
 	}
@@ -38,18 +38,18 @@ server {
 
 	}
 
-	location /snake { ### mettre une root vers un dossier avec des fichiers python ###
+	location /snake { 
 		cgi_path	.py	/bin/py_cgi
 	}
 	
-	location /other_cgi { ### mettre une root vers un dossier avec des fichiers php
+	location /other_cgi { 
 		cgi_path	.php /bin/php_cgi
 	}
 }
 
 server {
 	
-	lister 8001
+	listen 8001
 
 	index	other_server.html
 

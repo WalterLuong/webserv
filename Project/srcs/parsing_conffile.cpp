@@ -84,6 +84,7 @@ int location_block::pos_uri(std::string uri_to_find) {
 
 server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), allow_methods(), location() {
 	init_lst_server_option();
+	init_lst_location_option();
 }
 
 
@@ -100,6 +101,7 @@ server_block::server_block(server_block const &cpy) {
 		allow_methods = cpy.allow_methods;
 		location = cpy.location;
 		lst_server_option = cpy.lst_server_option;
+		lst_location_option = cpy.lst_location_option;
 }
 
 server_block::~server_block() {}
@@ -116,6 +118,7 @@ server_block &server_block::operator=(server_block const &cpy) {
 		allow_methods = cpy.allow_methods;
 		location = cpy.location;
 		lst_server_option = cpy.lst_server_option;
+		lst_location_option = cpy.lst_location_option;
 		return *this;
 }
 
@@ -134,6 +137,19 @@ void	server_block::init_lst_server_option() {
 	lst_server_option.push_back("methods");
 	lst_server_option.push_back("return");
 	lst_server_option.push_back("}");
+}
+
+void	server_block::init_lst_location_option() {
+	lst_location_option.push_back("index");
+	lst_location_option.push_back("error_page");
+	lst_location_option.push_back("location");
+	lst_location_option.push_back("autoindex");
+	lst_location_option.push_back("root");
+	lst_location_option.push_back("cgi_path");
+	lst_location_option.push_back("methods");
+	lst_location_option.push_back("return");
+	lst_location_option.push_back("}");
+
 }
 
 int	server_block::nbr_location() { return location.size(); }

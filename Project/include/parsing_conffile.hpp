@@ -52,6 +52,7 @@ class   server_block {
 		std::vector<std::string>    allow_methods; //(6.5)
 		std::vector<location_block> location; //(6.3)
 		std::vector<std::string> lst_server_option;
+		std::vector<std::string> lst_location_option;
 
     // need getter
     // using string.size() to determine if string is empty can be usefull ex: error_page
@@ -63,6 +64,7 @@ class   server_block {
 	server_block &operator=(server_block const &cpy);
 
 	void init_lst_server_option();
+	void init_lst_location_option();
 
 	int nbr_location() ;
 

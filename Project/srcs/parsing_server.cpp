@@ -504,7 +504,7 @@ int	check_location_line(std::string line, std::string *to_fill) {
 			line.erase(0, i);
 			break ;
 		}
-
+		std::cout  << "here we go again" << std::endl;
 	}
 	int start = skip_white_space(line);
 	line.erase(0, start);
@@ -533,14 +533,20 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 		std::cout  << "bad location line" << std::endl;
 		return (1);
 	}
+	std::cout << "wtf" << std::endl;
 	to_fill->uri = uri;
+	std::cout << "wtf" << std::endl;
 
 	while (getline(*file, line)) {
+		std::cout << "test1" << std::endl;
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
+		std::cout << "test2" << std::endl;
 			line.erase(0, start);
 				
-			for (first = to_fill->location.begin()->lst_location_option.begin(); first != to_fill->location.begin()->lst_location_option.end(); first++) {	
+		std::cout << "test4" << std::endl;
+			for (first = to_fill->lst_location_option.begin(); first != to_fill->lst_location_option.end(); first++) {	
 				start = line.find(*first);
+				std::cout << "test4" << std::endl;
 				if (start != std::string::npos && start == 0) {
 					if (*first == "}") {
 						line.erase(0,1);
@@ -570,10 +576,12 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 					break;
 				}
 			}
-			if (first == to_fill->location.begin()->lst_location_option.end()) {
+			std::cout << " ?? " << std::endl;
+			if (first == to_fill->lst_location_option.end()) {
 				std::cout << "bad option: " << line << std::endl; 
 				return (1);
 			}
+			std::cout << " ?? " << std::endl;
 		}
 	}
 	return (0);
@@ -587,7 +595,7 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 	while (getline(*file, line)) {
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
 			line.erase(0, start);
-				
+			std::cout << "test in server block" << std::endl;	
 			for (first = server_to_fill->lst_server_option.begin(); first != server_to_fill->lst_server_option.end(); first++) {	
 				start = line.find(*first);
 				if (start != std::string::npos && start == 0) {
