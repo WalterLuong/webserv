@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/31 14:33:02 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/08 03:10:24 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 
 int		main(void) {
 
-	Cgi test("./test");
-	std::cout << test.execute() << std::endl;
+	// Cgi test("./test");
+	// std::cout << test.execute() << std::endl;
 	
-	/*
+	
 	int	new_socket;
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
@@ -80,7 +80,7 @@ int		main(void) {
 		std::cout << "~~~~ Message sent ~~~~" << std::endl;
 		close(new_socket);
 	}
-*/
+
 	return 0;
 }
 
