@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 03:51:03 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 02:43:05 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 04:43:33 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,6 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <vector>
-
-// # include "parsing_conffile.hpp"
-// # include "webserve.hpp"
-# include "Socket.hpp"
-// # include "Server.hpp"
-# include "Service.hpp"
-
 
 # define BIND_ERROR		1
 # define LISTEN_ERROR	2

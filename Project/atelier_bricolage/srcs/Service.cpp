@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 03:29:00 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 05:26:08 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	Service::check_opened_sd() {
 
 	_max_sd = 0;
 	FD_ZERO(&_fdset);
-	for (std::vector<Socket>::iterator it = _servers.begin(); it != _servers.end(); it++)
+	for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
 	{
-		if (it->getSocket() > _max_sd)
-			_max_sd = it->getSocket();
-		FD_SET(it->getSocket(), &_fdset);
+		if (it->_serv_sock.getSocket() > _max_sd)
+			_max_sd = it->_serv_sock.getSocket();
+		FD_SET(it->_serv_sock.getSocket(), &_fdset);
 	}
 	for (int i(0); i < 512; i++)
 	{
@@ -100,17 +100,17 @@ bool	Service::accepting_connections() {
 
 	int		new_connection;
 
-	for (std::vector<Socket>::iterator it = _servers.begin(); it != _servers.end(); it++)
+	for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
 	{
-		if (FD_ISSET(it->getSocket(), &_fdset))
+		if (FD_ISSET(it->_serv_sock.getSocket(), &_fdset))
 		{
-			new_connection = accept(it->getSocket(), it->castAddr(), it->getAdLen());
+			new_connection = accept(it->_serv_sock.getSocket(), it->_serv_sock.castAddr(), it->_serv_sock.getAdLen());
 			if (new_connection < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "ACCEPT ERROR" << std::endl;
 				return false;
 			}
-			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->getAddr().sin_port) << std::endl;
+			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->_serv_sock.getAddr().sin_port) << std::endl;
 		}
 		for (int i(0); i < 512; i++)
 		{
@@ -144,6 +144,7 @@ void	Service::receive() {
 				_clients_sd[i] = 0;
 			}
 			_buffer[len_recv] = 0;
+			std::cout << _buffer << std::endl;
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
@@ -152,7 +153,7 @@ void	Service::receive() {
 }
 
 void	Service::sending(int i) {
-	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
+	std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n";
 	std::ifstream is("../../www/index.html");
 	std::string line; //c++ buffer style
 	if (is.is_open()) {

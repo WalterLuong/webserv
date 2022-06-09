@@ -6,7 +6,7 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/09 02:02:26 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/09 04:55:18 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,12 @@ NAME		= webserv
 
 SRC			= 	main.cpp \
 				srcs/Socket.cpp \
+				srcs/Server.cpp \
 				srcs/Service.cpp \
+				srcs/parsing_conffile.cpp \
+				srcs/parsing_server.cpp \
+				srcs/utils_parsing.cpp \
+				srcs/parsing.cpp
 
 OBJ			= $(SRC:.cpp=.o)
 DEP			= $(OBJ:.o=.d)

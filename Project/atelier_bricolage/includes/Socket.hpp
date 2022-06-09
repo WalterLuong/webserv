@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:23:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/08 04:27:03 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 04:40:32 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,7 @@
 
 # include "define.hpp"
 
-struct Client
-{
-	bool			connected;
-	sockaddr_in		address;
-	int				client_fd;
-	fd_set			client_data;
-	socklen_t		client_addr_len;
-};
-
-
+class Server;
 
 class Socket
 {
