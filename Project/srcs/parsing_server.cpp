@@ -365,13 +365,17 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, server_block *stc) {
 	std::string str;
 	int			nbr;
 	if (cmd == "listen") {
+		if (stc->port_ip.size() > 0) {
+			std::cout << "on port per server" << std::endl;
+			return 1;
+		}
 		line = skip_word_and_ws(line, cmd);
 		
 		if (check_listen(line, &listen_port) != 0) {
 			std::cout << "bad listen option" << std::endl;
 			return (1);
 		}	
-		std::cout << listen_port.first << " " << listen_port.second  <<  std::endl;
+//		std::cout << listen_port.first << " " << listen_port.second  <<  std::endl;
 		stc->port_ip.push_back(listen_port);	
 	}
 
@@ -499,12 +503,10 @@ int	check_location_line(std::string line, std::string *to_fill) {
 				return (1);
 			}
 			std::string cpy(line, 1, i - 1);
-			std::cout << "copy of uri =" << cpy << "|" << std::endl;
 			*to_fill =  cpy;
 			line.erase(0, i);
 			break ;
 		}
-		std::cout  << "here we go again" << std::endl;
 	}
 	int start = skip_white_space(line);
 	line.erase(0, start);
@@ -533,20 +535,14 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 		std::cout  << "bad location line" << std::endl;
 		return (1);
 	}
-	std::cout << "wtf" << std::endl;
 	to_fill->uri = uri;
-	std::cout << "wtf" << std::endl;
 
 	while (getline(*file, line)) {
-		std::cout << "test1" << std::endl;
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
-		std::cout << "test2" << std::endl;
 			line.erase(0, start);
 				
-		std::cout << "test4" << std::endl;
 			for (first = to_fill->lst_location_option.begin(); first != to_fill->lst_location_option.end(); first++) {	
 				start = line.find(*first);
-				std::cout << "test4" << std::endl;
 				if (start != std::string::npos && start == 0) {
 					if (*first == "}") {
 						line.erase(0,1);
@@ -576,12 +572,10 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 					break;
 				}
 			}
-			std::cout << " ?? " << std::endl;
 			if (first == to_fill->lst_location_option.end()) {
 				std::cout << "bad option: " << line << std::endl; 
 				return (1);
 			}
-			std::cout << " ?? " << std::endl;
 		}
 	}
 	return (0);
@@ -595,7 +589,6 @@ int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string lin
 	while (getline(*file, line)) {
 		if (line.size() != 0 && (start = skip_white_space(line)) != line.size()) {
 			line.erase(0, start);
-			std::cout << "test in server block" << std::endl;	
 			for (first = server_to_fill->lst_server_option.begin(); first != server_to_fill->lst_server_option.end(); first++) {	
 				start = line.find(*first);
 				if (start != std::string::npos && start == 0) {

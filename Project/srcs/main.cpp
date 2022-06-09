@@ -118,7 +118,7 @@ void	print_stc(server_conf serv) {
 			std::vector<std::pair<int, std::string> >::iterator ip_it;
 			ip_it = it->port_ip.begin();
 			while (ip_it != it->port_ip.end()) {
-				std::cout << "	" << ip_it->first << " " << ip_it->second << "|" << std::endl; 
+//				std::cout << "	" << ip_it->first << " " << ip_it->second << "|" << std::endl; 
 				ip_it++;
 			}
 		}
@@ -185,10 +185,16 @@ int	main(int ac, char **av)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << std::endl;
-	print_stc(serv_conf);
+//	print_stc(serv_conf);
 
 
-	std::cout << "test" << std::endl;
+/*
+	server_conf test(serv_conf);
+	server_conf bite;
+	bite = serv_conf;
+
+*/
+	
 
 /*	location_block bite;
 	bite = serv_conf.server[0].find_uri("catfkdlsjf");
@@ -198,5 +204,5 @@ int	main(int ac, char **av)
 	}
 	std::cout << "res du find " << bite.root << std::endl;*/
 
-	std::cout << "pos uri to find " << serv_conf.server[0].pos_uri("cafhdst") << std::endl;
+//	std::cout << "pos uri to find " << serv_conf.server[0].pos_uri("cafhdst") << std::endl;
 }
