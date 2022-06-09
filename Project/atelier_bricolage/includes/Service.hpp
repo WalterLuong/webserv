@@ -6,34 +6,37 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:11:24 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/08 07:19:30 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 03:22:31 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVICE_HPP
 # define SERVICE_HPP
 
+# include "Socket.hpp"
 # include "define.hpp"
+
+class Socket;
 
 class Service
 {
 
 	private:
 
-		std::vector<Socket>		_servers;
-		char					_buffer[1025];
+		char					_buffer[10025];
 		int						_clients_sd[512];
 		int						_max_sd;
 		fd_set					_fdset;
 		struct timeval 			_timeout;
 
 	public:
+		std::vector<Socket>		_servers;
 
 		Service();
-		Service( Service const & src );
+		// Service( Service const & src );
 		~Service();
 
-		Service & operator=( Service const& other );
+		// Service & operator=( Service const& other );
 
 		void	setup_cluster();
 		void	check_opened_sd();
@@ -41,9 +44,9 @@ class Service
 		bool	selecting();
 		bool	accepting_connections();
 		void	receive();
-		bool	sending(int i);
+		void	sending(int i);
 
-		std::vector<Socket>		getServers() const;
+		std::vector<Socket>		&getServers() const;
 
 };
 

@@ -6,14 +6,15 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/08 04:20:56 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/09 02:02:26 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= webserv
 
 SRC			= 	main.cpp \
-				Socket.cpp \
+				srcs/Socket.cpp \
+				srcs/Service.cpp \
 
 OBJ			= $(SRC:.cpp=.o)
 DEP			= $(OBJ:.o=.d)

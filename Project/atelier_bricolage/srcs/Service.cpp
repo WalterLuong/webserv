@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/08 07:19:58 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 03:29:00 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 *
 */
 
-Service::Service() : _servers(), _max_sd(0) {
+Service::Service() : _max_sd(0), _servers() {
 	_timeout.tv_sec = 5;
 	_timeout.tv_usec = 0;
 	setup_cluster();
@@ -31,11 +31,11 @@ Service::Service() : _servers(), _max_sd(0) {
 =				TO		DO				=
 =======================================*/
 
-Service::Service( Service const & src ) {}
+// Service::Service( Service const & src ) {}
 
 Service::~Service() {}
 
-Service & Service::operator=( Service const& other ) {}
+// Service & Service::operator=( Service const& other ) {}
 
 /*=======================================
 =					END					=
@@ -53,18 +53,18 @@ void	Service::check_opened_sd() {
 	int		socket_d;
 
 	_max_sd = 0;
-	FD_ZERO(_fdset);
+	FD_ZERO(&_fdset);
 	for (std::vector<Socket>::iterator it = _servers.begin(); it != _servers.end(); it++)
 	{
-		if (*it->getSocket() > _max_sd)
-			_max_sd = *it->getSocket();
-		FD_SET(*it->getSocket(), _fdset);
+		if (it->getSocket() > _max_sd)
+			_max_sd = it->getSocket();
+		FD_SET(it->getSocket(), &_fdset);
 	}
 	for (int i(0); i < 512; i++)
 	{
 		socket_d = _clients_sd[i];
 		if (socket_d > 0)
-			FD_SET(socket_d, _fdset)
+			FD_SET(socket_d, &_fdset);
 		if (socket_d > _max_sd)
 			_max_sd = socket_d;
 	}
@@ -74,8 +74,10 @@ void	Service::run_service() {
 	while (TRUE)
 	{
 		this->check_opened_sd();
-		this->selecting();
-		this->accepting_connections();
+		if (!this->selecting())
+			exit(EXIT_FAILURE);
+		if (!this->accepting_connections())
+			exit(EXIT_FAILURE);
 		this->receive();
 	}
 }
@@ -100,22 +102,21 @@ bool	Service::accepting_connections() {
 
 	for (std::vector<Socket>::iterator it = _servers.begin(); it != _servers.end(); it++)
 	{
-		if (FD_ISSET(*it->getSocket(), &_fdset))
+		if (FD_ISSET(it->getSocket(), &_fdset))
 		{
-			new_connection = accept(*it->getSocket(), *it->castAddr(), *it->getAdLen());
+			new_connection = accept(it->getSocket(), it->castAddr(), it->getAdLen());
 			if (new_connection < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "ACCEPT ERROR" << std::endl;
 				return false;
 			}
-			std::cout << _GR << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_socket << ", PORT IS: " << ntohs(master_socket.getAddr().sin_port) << std::endl;
+			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->getAddr().sin_port) << std::endl;
 		}
 		for (int i(0); i < 512; i++)
 		{
 			if (_clients_sd[i]== 0)
 			{
 				_clients_sd[i] = new_connection;
-				std::cout << "Socket added at position " << i << std::endl;
 				break ;
 			}
 		}
@@ -131,24 +132,26 @@ void	Service::receive() {
 	{
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
-			len_recv = recv(_clients_sd[i], _buffer, 1024, 0);
+			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 			if (len_recv < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
 				continue;
 			}
-			if (len_recv == 0 || (len_recv == 1 && _buffer[0] = 4))
+			if (len_recv == 0 || (len_recv == 1 && _buffer[0] == 4))
 			{
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
 			_buffer[len_recv] = 0;
 		}
+		// parsing request sur _buffer 
+		// sending doit recevoir la stc du parsing request
 		sending(i);
 	}
 }
 
-bool	Service::sending(int i) {
+void	Service::sending(int i) {
 	std::string header = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
 	std::ifstream is("../../www/index.html");
 	std::string line; //c++ buffer style
@@ -158,9 +161,9 @@ bool	Service::sending(int i) {
 		}
 	}
 	is.close();
-	send(new_socket, header.c_str(), header.length(), 0);
+	send(_clients_sd[i], header.c_str(), header.length(), 0);
 }
 
-std::vector<Socket>		Service::getServers() const {
-	return _servers;
-}
+// std::vector<Socket>		&Service::getServers() const {
+// 	return _servers;
+// }

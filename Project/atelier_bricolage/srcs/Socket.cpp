@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 03:14:46 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/08 07:21:46 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 03:13:19 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ Socket::Socket(int port)
 
 Socket::Socket(Socket const & src)
 {
-	this->_addr = src._addr;
-	this->_addr_len = src._addr_len;
-	this->_error = src._error;
-	this->_server_fd = src._server_fd;
+	// this->_addr = src._addr;
+	// this->_addr_len = src._addr_len;
+	// this->_error = src._error;
+	// this->_server_fd = src._server_fd;
+	*this = src;
 }
 
 Socket::~Socket() 
 {
-	close(this->_server_fd);
+	std::cout << "DESTRUCTEUR SOCKET CALLED" << std::endl;
+	// close(this->_server_fd);
 }
 
 Socket& Socket::operator=(Socket const & other) 
