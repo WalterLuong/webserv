@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 05:26:08 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/09 06:01:54 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	Service::receive() {
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
-		sending(i);
+		// sending(i);
 	}
 }
 
