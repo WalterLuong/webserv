@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 06:01:54 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/10 04:38:08 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,21 +148,44 @@ void	Service::receive() {
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
-		// sending(i);
+		sending(i);
 	}
 }
 
 void	Service::sending(int i) {
-	std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n";
-	std::ifstream is("../../www/index.html");
-	std::string line; //c++ buffer style
-	if (is.is_open()) {
-		while (std::getline(is, line)) { //get a line
-			header += line + '\n';
-		}
-	}
-	is.close();
+	std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n\n";
+
+	header += "<!DOCTYPE html>\n";
+	header += "<html>\n";
+	header += "<style>\n";
+	header += "body {\n";
+	header += "background-image: url('./wallpaper.jpg');\n";
+	header += "background-size: cover; \n";
+	header += "background-attachment: fixed;\n";
+	header += "background-position: center;\n";
+	header += "}\n";
+	header += "div {\n";
+	header += "margin-top: 60%;\n";
+	header += "text-align: center;\n";
+	header += "position: center;\n";
+	header += "}\n";
+	header += "img {\n";
+	header += "width:  25%;\n";
+	header += "height: 25%;\n";
+	header += "}\n";
+	header += "</style>\n";
+	header += "<body>\n";
+	header += "<div>\n";
+	header += "<img ";
+	header += "src=\"./ErrorPage404.png\" ";
+	header += "alt=\"error message 404\">\n";
+	header += "</div>\n";
+	header += "</body>\n";
+	header += "</html>\n";
+
 	send(_clients_sd[i], header.c_str(), header.length(), 0);
+	close(_clients_sd[i]);
+	_clients_sd[i] = 0;
 }
 
 // std::vector<Socket>		&Service::getServers() const {
