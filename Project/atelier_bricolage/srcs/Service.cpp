@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/10 04:38:08 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/11 03:55:30 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,8 @@ void	Service::receive() {
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
-		sending(i);
+		if (_buffer[0])
+			sending(i);
 	}
 }
 
@@ -159,7 +160,7 @@ void	Service::sending(int i) {
 	header += "<html>\n";
 	header += "<style>\n";
 	header += "body {\n";
-	header += "background-image: url('./wallpaper.jpg');\n";
+	header += "background-image: url('https://4.bp.blogspot.com/-W0_HZx9NWfI/XD45qcBbaII/AAAAAAAAAn4/paWYCWR06l092c0vcBV2G9HAChXB3nhRwCKgBGAs/w919/astronaut-space-13-4k.jpg');\n";
 	header += "background-size: cover; \n";
 	header += "background-attachment: fixed;\n";
 	header += "background-position: center;\n";
@@ -177,7 +178,7 @@ void	Service::sending(int i) {
 	header += "<body>\n";
 	header += "<div>\n";
 	header += "<img ";
-	header += "src=\"./ErrorPage404.png\" ";
+	header += "src=\"https://toppng.com/uploads/preview/erreur-404-11550708744oo95egrxlp.png\" ";
 	header += "alt=\"error message 404\">\n";
 	header += "</div>\n";
 	header += "</body>\n";
