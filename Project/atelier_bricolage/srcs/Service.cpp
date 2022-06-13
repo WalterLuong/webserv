@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/11 03:55:30 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/13 04:27:35 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	Service::receive() {
 			if (len_recv < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
-				continue;
+				break;
 			}
 			if (len_recv == 0 || (len_recv == 1 && _buffer[0] == 4))
 			{
@@ -148,7 +148,7 @@ void	Service::receive() {
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
-		if (_buffer[0])
+		// if (_buffer[0])
 			sending(i);
 	}
 }

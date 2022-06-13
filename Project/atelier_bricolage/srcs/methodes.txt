@@ -1,0 +1,33 @@
+POUR LA REPONSE, TOUJOURS CHECK SI TU AS LE DROIT A LA METHODE
+
+GET
+
+regarder les locations
+si pas de location et que la requete est \
+	-> si autoindex est activé : rediriger vers l'index
+	-> sinon renvoyer la page 404
+
+si location
+	body append le fichier .html de la location
+	si le fichier ou la location n'existe pas -> error 404
+
+si pas d'erreur 404
+	-> renvoyer code 200 OK
+	-> append le bon header dans la reponse
+	-> append le body dans la reponse
+
+====================================================================================================
+POST
+
+ecrire dans un fichier l'upload et c'est tout
+
+====================================================================================================
+DELETE
+
+check si le fichier a delete existe
+	si non, error 404
+check si on a l'autorisation de delete
+	si non error 403
+check si le remove s'est bien passé
+	si non -> error 500
+	si oui -> code 204
