@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/13 04:27:35 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/13 23:40:55 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,13 @@ void	Service::receive() {
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
+
+		// METHOD TREATMENT: after parsing
+		// GET : CGI ? -> Create CGI 
+		// check ressource at / 
+		// 
+
+
 		// if (_buffer[0])
 			sending(i);
 	}

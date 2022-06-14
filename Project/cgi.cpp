@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 14:00:22 by jdidier           #+#    #+#             */
-/*   Updated: 2022/05/31 14:32:20 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/14 00:32:39 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Cgi::Cgi(std::string const& script): _script(script) {
 	this->_env["CONTENT_LENGTH"] = "";
 	this->_env["HTTP_COOKIE"] = "";
 	this->_env["HTTP_USER_AGENT"] = "";
-	this->_env["PAth_INFO"] = "";
+	this->_env["PATH_INFO"] = "";
 	this->_env["QUERY_STRING"] = "";
 	this->_env["REMOTE_ADDR"] = "";
 	this->_env["REMOTE_HOST"] = "";

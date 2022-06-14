@@ -70,7 +70,7 @@ std::map<std::string, std::string> request::init_file_type() {
 
 	return ret;
 
-}
+};
 
 
 
@@ -145,4 +145,4 @@ std::map<std::string, std::string> request::init_default_error() {
     ret[ "511" ] = "Network Authentication Required";
 
     return ret;
-}
+};
