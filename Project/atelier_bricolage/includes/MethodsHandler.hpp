@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 23:42:19 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/14 21:12:34 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/14 21:40:59 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class MethodsHandler {
 	private:
 		server_conf						_sconf;
 		std::map<std::string, std::string (MethodsHandler::*)()>	_methods;
+		std::map<std::string, std::string>							_headers;
 		
 
 		std::string		make_header(int const& code);
@@ -39,6 +40,7 @@ class MethodsHandler {
 		~MethodsHandler();
 		MethodsHandler	&operator=(MethodsHandler const& rhs);
 
+		std::map<std::string, std::string>	getHeaders(void) const;
 		std::string	execute(void);
 		std::string	exec_get(void);
 		std::string	exec_post(void);

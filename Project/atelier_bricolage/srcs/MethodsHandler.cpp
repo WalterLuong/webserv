@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 23:45:35 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/14 21:34:35 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/14 21:42:15 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,13 @@ MethodsHandler::~MethodsHandler() {}
 
 MethodsHandler	&MethodsHandler::operator=(MethodsHandler const& rhs) {
 	if (this != &rhs) {
-
+		this->_headers = rhs.getHeaders();
 	}
 	return *this;
+}
+
+std::map<std::string, std::string>		MethodsHandler::getHeaders(void) const {
+	return this->_headers;
 }
 
 std::string		MethodsHandler::make_header(int const& code) {
