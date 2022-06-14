@@ -6,13 +6,17 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 23:45:35 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/14 02:02:45 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/14 02:41:24 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/MethodsHandler.hpp"
 
-MethodsHandler::MethodsHandler() {}
+MethodsHandler::MethodsHandler() {
+	this->_methods["GET"] = &exec_get;
+	this->_methods["POST"] = &exec_post;
+	this->_methods["DELETE"] = &exec_delete;
+}
 
 MethodsHandler::MethodsHandler(MethodsHandler const& src) {
 	*this = src;
@@ -28,10 +32,13 @@ MethodsHandler	&MethodsHandler::operator=(MethodsHandler const& rhs) {
 }
 
 MethodsHandler::body		MethodsHandler::execute(void) {
-	// CHECK METHOD : 
-	std::string		method;
-	return(METHODS_LIST[method]());
-
+	// CHECK METHOD :
+	MethodsHandler::body	error; 
+	std::string		m; //method value from parsing
+	if (METHODS_LIST[m])
+		return this->_methods[m]();
+	else
+		return error;
 }
 
 MethodsHandler::body		MethodsHandler::exec_get(void) {
@@ -45,13 +52,7 @@ MethodsHandler::body		MethodsHandler::exec_post(void) {
 MethodsHandler::body		MethodsHandler::exec_delete(void) {
 	
 }
-std::map<std::string, MethodsHandler::body(*)()>		METHODS_LIST = {
-	{"GET", &MethodsHandler::exec_get},
-	{"POST", &MethodsHandler::exec_post},
-	{"DELETE", &MethodsHandler::exec_delete},
-};
 
-/*
 std::map<std::string, bool>		METHODS_LIST = {
 	{"GET", true},
 	{"HEAD", false},
@@ -63,4 +64,3 @@ std::map<std::string, bool>		METHODS_LIST = {
 	{"TRACE", false},
 	{"PATCH", false},
 };
-*/

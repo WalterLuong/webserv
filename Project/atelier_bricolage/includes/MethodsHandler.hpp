@@ -6,7 +6,7 @@
 /*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 23:42:19 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/14 02:01:28 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/14 02:41:10 by jdidier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 class MethodsHandler {
 	public:
 		typedef	std::string			body;
+		typedef	body (*exec_method)(void);
 	private:
-		server_conf		_sconf;
+		server_conf						_sconf;
+		std::map<std::string, exec_method>		_methods;
 	public:
-		static std::map<std::string, body(*)()>	METHODS_LIST;
+		static std::map<std::string, bool>	METHODS_LIST;
 		MethodsHandler();
 		MethodsHandler(MethodsHandler const& src);
 		~MethodsHandler();
