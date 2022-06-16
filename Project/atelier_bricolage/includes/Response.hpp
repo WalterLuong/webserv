@@ -30,7 +30,8 @@ class Response
 		Response(/* args */);
 		~Response();
 
-
+		std::string		getHeader()
+		std::string		
 
 };
 

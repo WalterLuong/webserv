@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   MethodsHandler.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 23:45:35 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/14 21:42:15 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/15 02:46:24 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/MethodsHandler.hpp"
 
 MethodsHandler::MethodsHandler() {
+
 	this->_methods["GET"] = exec_get;
 	this->_methods["POST"] = exec_post;
 	this->_methods["DELETE"] = exec_delete;
@@ -29,6 +30,7 @@ MethodsHandler::MethodsHandler() {
 	this->_headers["Server"] = "";
 	this->_headers["Transfer-Encoding"] = "";
 	this->_headers["WWW-Authenticate"] = "";
+	
 }
 
 MethodsHandler::MethodsHandler(MethodsHandler const& src) {
