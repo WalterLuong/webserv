@@ -2,6 +2,7 @@
 # define WEBSERVE_HPP 
 
 # include "parsing_conffile.hpp"
+# include "parsing_request.hpp"
 # include <iostream>
 # include <fstream>
 # include <string>

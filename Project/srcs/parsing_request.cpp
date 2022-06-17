@@ -1,6 +1,112 @@
 #include "parsing_request.hpp"
 
+request::request() : methods(), path(), http_version(),  chunked(-1), validity(200) {
+	init_default_error();
+	init_file_type();
+	init_instruction();
 
+	std::string test = "GET / HTTP/1.0";
+
+	if (pars_request(test) != 0) {
+		std::cout << "bad request" << std::endl;
+	}
+	else
+		std::cout << "first line good" << std::endl;
+}
+
+request::request(request const & cpy) {
+	methods = cpy.methods;
+	path = cpy.path;
+	http_version = cpy.http_version;
+	chunked = cpy.chunked;
+	validity = cpy.validity;
+	map_error = cpy.map_error;
+	map_file_type= cpy.map_file_type;
+	instruction = cpy.instruction;
+}
+
+request &request::operator=(request const & cpy) {
+	methods = cpy.methods;
+	path = cpy.path;
+	http_version = cpy.http_version;
+	chunked = cpy.chunked;
+	validity = cpy.validity;
+	map_error = cpy.map_error;
+	map_file_type= cpy.map_file_type;
+	instruction = cpy.instruction;
+	return (*this);
+}
+
+request::~request() {}
+
+
+int	request::get_method(std::string *line) {
+	size_t start;
+
+	if ((start = line->find("GET")) == 0) {
+		methods = line->substr(0, 3);
+		line->erase(0, 3);
+		return 0;
+	} 
+	if ((start = line->find("POST")) == 0) {
+		methods = line->substr(0, 4);
+		line->erase(0, 4);
+		return 0;
+	}
+	if ((start = line->find("DELETE")) == 0) {
+		methods = line->substr(0, 6);
+		line->erase(0, 6);
+		return 0;
+	}
+	return (1);
+}
+
+int	request::get_path(std::string *line) {
+	size_t start;
+	if (line->find(" ") != 0) {
+		return 1;
+	}
+	line->erase(0,1);
+	if ((start = line->find(" ")) == std::string::npos)
+		return 1;
+	if (line->find("/") != 0)
+		return 1;
+	path = line->substr(0, start);
+	line->erase(0, start);
+	return 0;
+}
+
+int	request::get_http_version(std::string *line) {
+	if (line->find(" ") != 0)
+		return 1;
+	line->erase(0, 1);
+	if (*line != "HTTP/1.0" && *line != "HTTP/1.0") {
+		return 1;
+	}
+	http_version = *line;
+	return 0;
+}
+
+int	request::get_first_line(std::string line) {
+	if (get_method(&line) != 0) {
+		return 1;
+	}
+	if (get_path(&line) != 0) {
+		return 1;
+	}	
+	if (get_http_version(&line) != 0) {
+		return 1;
+	}
+	return 0;
+}
+
+
+
+int	request::pars_request(std::string line) {
+	if (get_first_line(line) != 0)
+		return 1;
+	return 0;
+}
 
 void	request::init_instruction() {
 	instruction["Accept-Charsets"] = "";

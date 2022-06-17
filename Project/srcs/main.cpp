@@ -185,8 +185,10 @@ int	main(int ac, char **av)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << std::endl;
-	print_stc(serv_conf);
+//	print_stc(serv_conf);
 
+
+	request test;
 
 /*
 	server_conf test(serv_conf);

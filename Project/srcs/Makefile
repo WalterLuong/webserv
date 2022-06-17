@@ -13,6 +13,7 @@ SRCS =   main.cpp	\
 		 parsing_conffile.cpp \
 		 utils_parsing.cpp	\
 		 parsing_server.cpp \
+		 parsing_request.cpp	\
 
 
 # --  Redirection in OBJS  -- #
