@@ -26,6 +26,12 @@ class request {
 		std::map<std::string, std::string>	instruction;
 
 		int	pars_request(std::string *line);
+		int	pars_request(std::string line);
+		std::string	get_methods();
+		std::string	get_path();
+		std::string	get_http_version();
+
+		void	print_instruction();
 
 	private :
 
@@ -42,6 +48,8 @@ class request {
 
 		int	check_connection();
 		int	check_length();
+
+		void	print_var();
 };
 
 
