@@ -5,13 +5,30 @@ request::request() : methods(), path(), http_version(),  chunked(-1), validity(2
 	init_file_type();
 	init_instruction();
 
-	std::string test = "GET / HTTP/1.0";
+	std::string test = "Accept-Cha rsets: bite";
 
-	if (pars_request(test) != 0) {
+	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
+		std::cout << "instruction: " << ite->first << " , " << ite->second << std::cout;
+		std::cout << std::endl;
+	}
+
+	int res;
+	if ((res = pars_request(&test)) != 0) {
 		std::cout << "bad request" << std::endl;
 	}
 	else
 		std::cout << "first line good" << std::endl;
+	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
+		std::cout << "instruction: " << ite->first << " , " ;
+		if (ite->second  != "")
+			std::cout << ite->second;
+		std::cout << std::endl;
+	}
+	if (res == 0)	
+		std::cout << "good request" << std::endl;
+	else
+		std::cout << "bad request" << std::endl;
+
 }
 
 request::request(request const & cpy) {
@@ -39,6 +56,7 @@ request &request::operator=(request const & cpy) {
 
 request::~request() {}
 
+/*-------------Class Coplienne------------*/
 
 int	request::get_method(std::string *line) {
 	size_t start;
@@ -87,23 +105,44 @@ int	request::get_http_version(std::string *line) {
 	return 0;
 }
 
-int	request::get_first_line(std::string line) {
-	if (get_method(&line) != 0) {
+int	request::get_first_line(std::string *line) {
+	if (get_method(line) != 0) {
 		return 1;
 	}
-	if (get_path(&line) != 0) {
+	if (get_path(line) != 0) {
 		return 1;
 	}	
-	if (get_http_version(&line) != 0) {
+	if (get_http_version(line) != 0) {
 		return 1;
 	}
 	return 0;
 }
 
+int	request::get_line(std::string *line) {
+	size_t	pos;
+	std::string		sub_line;
+	std::map<std::string, std::string>::iterator last(instruction.end());
+	std::map<std::string, std::string>::iterator	ite; 
+
+	if ((pos = line->find(": ")) == std::string::npos) {
+		return 1;
+	}
+	if (line->find(" ") != pos+1) {
+		return 1;
+	}
+	if ((ite = instruction.find(line->substr(0, pos))) != last) {
+		instruction[(line->substr(0, pos))] = line->substr(pos + 2);
+	}
+	return 0;
 
 
-int	request::pars_request(std::string line) {
-	if (get_first_line(line) != 0)
+}
+
+
+int	request::pars_request(std::string *line) {
+/*	if (get_first_line(line) != 0)
+		return 1; */
+	if (get_line(line) != 0)
 		return 1;
 	return 0;
 }

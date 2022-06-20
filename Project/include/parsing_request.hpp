@@ -25,7 +25,7 @@ class request {
 		std::map<std::string, std::string>	map_file_type;
 		std::map<std::string, std::string>	instruction;
 
-		int	pars_request(std::string line);
+		int	pars_request(std::string *line);
 
 	private :
 
@@ -34,7 +34,8 @@ class request {
 		void	init_instruction();
 
 		/* get_first_line */
-		int get_first_line(std::string line);
+		int get_first_line(std::string *line);
+		int get_line(std::string *line);
 		int get_method(std::string *line);
 		int get_path(std::string *line);
 		int get_http_version(std::string *line);
