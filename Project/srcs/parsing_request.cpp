@@ -5,6 +5,7 @@ request::request() : methods(), path(), http_version(),  chunked(-1), validity(2
 	init_file_type();
 	init_instruction();
 
+	std::string first_line = "GET / HTTP/1.0"
 	std::string test = "Accept-Cha rsets: bite";
 
 	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
@@ -145,26 +146,36 @@ int	request::pars_request(std::string *line) {
 	if (get_line(line) != 0)
 		return 1;
 	return 0;
+
+	if (http_version = "HTTP/1.1") {
+
+		if (instruction["Host"] = "") {
+			return 400;
+		}
+		else {
+
+		}
+	}
 }
 
 void	request::init_instruction() {
-	instruction["Accept-Charsets"] = "";
+	instruction["Accept-Charsets"] = ""; // list des caracteres 
 	instruction["Auth-Scheme"] = "";
 	instruction["Authorization"] = "";
 	instruction["Content-Language"] = "";
-	instruction["Content-Length"] = "";
+	instruction["Content-Length"] = ""; // max body size // only num
 	instruction["Content-Location"] = "";
 	instruction["Content-Type"] = "";
 	instruction["Date"] = "";
-	instruction["Host"] = "";
+	instruction["Host"] = ""; // Host: <host>:<port> post optionnel
 	instruction["Last-Modified"] = "";
 	instruction["Location"] = "";
 	instruction["Referer"] = "";
 	instruction["Retry-After"] = "";
-	instruction["Transfer-Encoding"] = "";
+	instruction["Transfer-Encoding"] = ""; // if chunked follow by the lengt in hexa, 0 is the last chunked; Content-Lenght is ommited
 	instruction["User-Agent"] = "";
-	instruction["Connection"] = "";
-	instruction["Accept"] = "";
+	instruction["Connection"] = ""; // keep-Alive || close; par defaut close en http/1.0 et keep-Alive en http1.1
+	instruction["Accept"] = ""; // map file type accepted
 	instruction["Accept-Encoding"] = "";
 	instruction["From"] = "";
 
