@@ -40,6 +40,8 @@ class request {
 		int get_path(std::string *line);
 		int get_http_version(std::string *line);
 
+		int	check_connection();
+		int	check_length();
 };
 
 

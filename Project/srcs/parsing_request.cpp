@@ -5,8 +5,8 @@ request::request() : methods(), path(), http_version(),  chunked(-1), validity(2
 	init_file_type();
 	init_instruction();
 
-	std::string first_line = "GET / HTTP/1.0"
-	std::string test = "Accept-Cha rsets: bite";
+	std::string first_line = "GET / HTTP/1.0";
+	std::string test = "Accept-Charsets: bite";
 
 	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
 		std::cout << "instruction: " << ite->first << " , " << ite->second << std::cout;
@@ -139,6 +139,32 @@ int	request::get_line(std::string *line) {
 
 }
 
+int	request::check_connection() {
+	if (instruction["Connection"] == "") {
+		if (http_version == "HTTP/1.1") {
+			instruction["Connection"] = "keep-alive";
+		}
+		else
+			instruction["Connection"] = "close";
+
+	}
+	else {
+		if (instruction["Connection"] != "keep-alive" && instruction["Connection"] != "close") {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+
+int	request::check_length() {
+	if (instruction["Content-length"] != "") {
+		if (instruction["Content-length"].find_first_not_of("0123456789") != std::string::npos) {
+			return 1;
+		}
+	}
+	return 0;
+}
 
 int	request::pars_request(std::string *line) {
 /*	if (get_first_line(line) != 0)
@@ -147,14 +173,17 @@ int	request::pars_request(std::string *line) {
 		return 1;
 	return 0;
 
-	if (http_version = "HTTP/1.1") {
+	if (http_version == "HTTP/1.1") {
 
-		if (instruction["Host"] = "") {
+		if (instruction["Host"] == "") {
 			return 400;
 		}
-		else {
-
-		}
+	}
+	if (check_connection() != 0) {
+		return 1;
+	}
+	if (check_length() != 0) {
+		return 1;
 	}
 }
 
