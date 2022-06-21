@@ -3,17 +3,18 @@
 // check request a finir
 // check host a fair
 
-request::request() : methods(), path(), http_version(),  chunked(-1), validity(200), _end(0) {
+request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), _end(0) {
 	init_default_error();
 	init_file_type();
 	init_instruction();
 
 
 	std::string test_request1 = "GET /hello.htm HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+	std::string test_request2 = "GET /hello.htm HTTP/1.1\r\nContent-Length: 12\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
 
 
 	int res;
-	if ((res = pars_request(test_request1)) != 0) {
+	if ((res = pars_request(test_request2)) != 0) {
 		std::cout << "bad request" << std::endl;
 		return;
 	}
@@ -33,6 +34,7 @@ request::request(request const & cpy) {
 	methods = cpy.methods;
 	path = cpy.path;
 	http_version = cpy.http_version;
+	body = cpy.body;
 	chunked = cpy.chunked;
 	validity = cpy.validity;
 	map_error = cpy.map_error;
@@ -45,6 +47,7 @@ request &request::operator=(request const & cpy) {
 	methods = cpy.methods;
 	path = cpy.path;
 	http_version = cpy.http_version;
+	body = cpy.body;
 	chunked = cpy.chunked;
 	validity = cpy.validity;
 	map_error = cpy.map_error;
@@ -76,6 +79,7 @@ void	request::print_var() {
 	std::cout << "host: " << get_host() << std::endl;
 	std::cout << "body_size: " << get_body_size() << std::endl;
 	std::cout << "connection: " << get_connection_status() << std::endl;
+	std::cout << "body:" << body << std::endl;
 
 }
 
@@ -264,6 +268,21 @@ int	request::check_request() {
 
 }
 
+int	request::fill_body(std::string line) {
+	body += line;
+	return 1;
+}
+
+int	request::pars_body(std::string line) {
+	fill_body(line);
+	if (line.length() > static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
+		std::cout << "ca depasse" << std::endl;
+		return 1;
+	}
+	return 0;
+
+}
+
 /*--------------start----------------*/
 
 int	request::fill_string(std::string str) {
@@ -279,23 +298,34 @@ int	request::fill_string(std::string str) {
 	while (str.find("\r\n\r\n") != 0) {
 		line_len = str.find("\r\n");
 		end	= str.find("\r\n\r\n");
-
 		
 		line = str.substr(0, line_len);
+		if (line_len == 0) {
+			if (_end == 0) {
+				return 400;
+			}
+			else
+				start++;
+		}
 		std::cout << "line a lire: " << line << "|" <<std::endl;
 		if (start == 0){
 			start++;
 			if (get_first_line(&line) != 0)
 				return 400;
 		}
-		else {
+		else if (start == 1) {
 			if (get_line(&line) != 0) 
 				return 400;
 		}
-
 		str = str.substr(line_len + 2);
 		if (line_len == end)
 			break;
+	}
+	std::cout << "heh:" << str << "|" << std::endl;
+	if (str != "\r\n") {
+		std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
+		pars_body(str.substr(2));
+		
 	}
 	return 0;
 }
@@ -323,7 +353,7 @@ void	request::init_instruction() {
 	instruction["Content-Language"] = "";
 	instruction["Content-Length"] = ""; // max body size // only num
 	instruction["Content-Location"] = "";
-	instruction["Content-Type"] = "";
+	instruction["Content-Type"] = ""; // to pars aussi
 	instruction["Date"] = "";
 	instruction["Host"] = ""; // Host: <host>:<port> post optionnel
 	instruction["Last-Modified"] = "";

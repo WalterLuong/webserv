@@ -12,6 +12,7 @@ class request {
 		std::string	methods;
 		std::string path;
 		std::string	http_version;
+		std::string	body;
 		int		chunked;
 		int		validity; //code status pour la map error;
 
@@ -44,6 +45,8 @@ class request {
 		void	init_instruction();
 
 		int fill_string(std::string str);
+		int pars_body(std::string str);
+		int	fill_body(std::string str);
 
 		/* get_first_line */
 		int get_first_line(std::string *line);
