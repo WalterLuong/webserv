@@ -1,14 +1,13 @@
 #include "parsing_request.hpp"
 
+// check request a finir
+// check host a fair
 
-
-request::request() : methods(), path(), http_version(),  chunked(-1), validity(200) {
+request::request() : methods(), path(), http_version(),  chunked(-1), validity(200), _end(0) {
 	init_default_error();
 	init_file_type();
 	init_instruction();
 
-	std::string first_line = "GET / HTTP/1.0";
-	std::string test = "Accept-Charsets: bite";
 
 	std::string test_request1 = "GET /hello.htm HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 
@@ -22,6 +21,7 @@ request::request() : methods(), path(), http_version(),  chunked(-1), validity(2
 		std::cout << "first line good" << std::endl;
 	print_instruction();
 	print_var();
+	
 	if (res == 0)	
 		std::cout << "good request" << std::endl;
 	else
@@ -38,6 +38,7 @@ request::request(request const & cpy) {
 	map_error = cpy.map_error;
 	map_file_type= cpy.map_file_type;
 	instruction = cpy.instruction;
+	_end = cpy._end;
 }
 
 request &request::operator=(request const & cpy) {
@@ -49,14 +50,15 @@ request &request::operator=(request const & cpy) {
 	map_error = cpy.map_error;
 	map_file_type= cpy.map_file_type;
 	instruction = cpy.instruction;
+	_end = cpy._end;
 	return (*this);
 }
 
 request::~request() {}
 
-/*-------------Class Coplienne------------*/
+/*-------------Class Coplienne end------------*/
 
-
+/*-------------printer-------------------*/
 void	request::print_instruction() {
 	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
 		std::cout << "instruction: " << ite->first << " , " ;
@@ -65,6 +67,21 @@ void	request::print_instruction() {
 		std::cout << std::endl;
 	}
 }
+
+void	request::print_var() {
+	std::cout << "methods: " << get_methods() << std::endl;
+	std::cout << "path: " << get_path() << std::endl;
+	std::cout << "http_version: " << get_http_version() << std::endl;
+
+	std::cout << "host: " << get_host() << std::endl;
+	std::cout << "body_size: " << get_body_size() << std::endl;
+	std::cout << "connection: " << get_connection_status() << std::endl;
+
+}
+
+/*-------------printer end-------------------*/
+
+/*------------------getter------------------*/
 
 std::string	request::get_methods() {
 	return methods;
@@ -78,25 +95,21 @@ std::string request::get_http_version() {
 	return http_version;
 }
 
-
-
-void	request::print_var() {
-	std::cout << "methods: " << get_methods() << std::endl;
-	std::cout << "path: " << get_path() << std::endl;
-	std::cout << "http_version: " << get_http_version() << std::endl;
-
+std::string request::get_host() {
+	return instruction["Host"];
 }
 
+std::string request::get_body_size() {
+	return instruction["body_size"];
+}
 
+std::string request::get_connection_status() {
+	return instruction["Connection"];
+}
 
+/*------------------getter end------------------*/
 
-
-
-
-
-
-
-
+/*-----------------parsing first line---------*/
 
 int	request::get_method(std::string *line) {
 	size_t start;
@@ -157,6 +170,9 @@ int	request::get_first_line(std::string *line) {
 	}
 	return 0;
 }
+/*-----------------parsing first line end---------*/
+
+/*---------------------get_line-------------------*/
 
 int	request::get_line(std::string *line) {
 	size_t	pos;
@@ -178,6 +194,9 @@ int	request::get_line(std::string *line) {
 
 }
 
+/*---------------------get_line end-------------------*/
+
+/*--------------checker--------------------*/
 int	request::check_connection() {
 	if (instruction["Connection"] == "") {
 		if (http_version == "HTTP/1.1") {
@@ -197,31 +216,25 @@ int	request::check_connection() {
 
 
 int	request::check_length() {
-	if (instruction["Content-length"] != "") {
-		if (instruction["Content-length"].find_first_not_of("0123456789") != std::string::npos) {
+	if (instruction["Content-Length"] != "") {
+		if (instruction["Content-Length"].find_first_not_of("0123456789") != std::string::npos) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-int	request::pars_request(std::string *line) {
-
-	
-
-
-
-
-
-
-
-
-	if (get_first_line(line) != 0)
-		return 1; 
-	if (get_line(line) != 0)
-		return 1;
+int	request::check_method_post() {
+	if (instruction["Content-Length"] == "" && instruction["Transfer-Encoding"] == "chunked") {
+		// prevoir pour le cas chunked
+		_end = 1;
+	}
+	else if (check_length() != 0)
+		return 411;
 	return 0;
+}
 
+int	request::check_request() {
 	if (http_version == "HTTP/1.1") {
 
 		if (instruction["Host"] == "") {
@@ -231,12 +244,29 @@ int	request::pars_request(std::string *line) {
 	if (check_connection() != 0) {
 		return 1;
 	}
-	if (check_length() != 0) {
-		return 1;
+	if (methods == "POST") {
+		return check_method_post();
 	}
+	else if (methods == "GET" || methods == "DELETE") {
+		return 0;
+	}
+
+
+
+
+
+	if (_end == 0 && methods == "POST") {
+		std::string str(instruction["Content-Type"]);
+
+	}
+	return 0;
+
+
 }
 
-int	request::pars_request(std::string str) {
+/*--------------start----------------*/
+
+int	request::fill_string(std::string str) {
 	std::string line;
 
 	int			start = 0;
@@ -244,7 +274,7 @@ int	request::pars_request(std::string str) {
 	size_t		line_len;
 	if (str.find("\r\n\r\n") == std::string::npos) {
 		std::cout << "request have not end" << std::endl;
-		return 1;
+		return 400;
 	}
 	while (str.find("\r\n\r\n") != 0) {
 		line_len = str.find("\r\n");
@@ -255,33 +285,36 @@ int	request::pars_request(std::string str) {
 		std::cout << "line a lire: " << line << "|" <<std::endl;
 		if (start == 0){
 			start++;
-			get_first_line(&line);
+			if (get_first_line(&line) != 0)
+				return 400;
 		}
 		else {
-			get_line(&line);
+			if (get_line(&line) != 0) 
+				return 400;
 		}
 
 		str = str.substr(line_len + 2);
 		if (line_len == end)
 			break;
 	}
-	std::cout << "toute les lignes sont lues" << std::endl;
-
-	if (http_version == "HTTP/1.1") {
-
-		if (instruction["Host"] == "") {
-			return 400;
-		}
-	}
-	if (check_connection() != 0) {
-		return 1;
-	}
-	if (check_length() != 0) {
-		return 1;
-	}
 	return 0;
 }
 
+int	request::pars_request(std::string str) {
+	int ret;
+
+	if ((ret = fill_string(str)) != 0)
+		return ret;
+	std::cout << "toute les lignes sont lues" << std::endl;
+
+	int res;
+	if ((res = check_request()) != 0)
+		return res;
+
+	return 0;
+}
+/*--------------start----------------*/
+/*----------------------------------init instruction-----------------*/
 
 void	request::init_instruction() {
 	instruction["Accept-Charsets"] = ""; // list des caracteres 

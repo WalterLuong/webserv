@@ -25,19 +25,25 @@ class request {
 		std::map<std::string, std::string>	map_file_type;
 		std::map<std::string, std::string>	instruction;
 
-		int	pars_request(std::string *line);
 		int	pars_request(std::string line);
 		std::string	get_methods();
 		std::string	get_path();
 		std::string	get_http_version();
+		std::string	get_host();
+		std::string	get_body_size();
+		std::string	get_connection_status();
 
 		void	print_instruction();
 
 	private :
 
+		int	_end;
+
 		void	init_default_error();
 		void	init_file_type();
 		void	init_instruction();
+
+		int fill_string(std::string str);
 
 		/* get_first_line */
 		int get_first_line(std::string *line);
@@ -46,8 +52,11 @@ class request {
 		int get_path(std::string *line);
 		int get_http_version(std::string *line);
 
+
+		int	check_request();
 		int	check_connection();
 		int	check_length();
+		int	check_method_post();
 
 		void	print_var();
 };
