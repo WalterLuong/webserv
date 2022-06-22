@@ -63,6 +63,9 @@ int	read_conffile_fill_stc(server_conf *stc,const  char *file_name){
 			stc->server.push_back(serv_to_fill);
 		}
 	}
+	if (allow_methods.size() == 0) {
+		allow_methods.insert("GET");
+	}
 	return (0);
 }
 
