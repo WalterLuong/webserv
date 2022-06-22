@@ -4,6 +4,9 @@
 #include "webserve.hpp"
 #include <vector>
 #include <map>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
 class request {
 
@@ -27,6 +30,7 @@ class request {
 		std::map<std::string, std::string>	instruction;
 
 		int	pars_request(std::string line);
+		std::string	responce();
 		std::string	get_methods();
 		std::string	get_path();
 		std::string	get_http_version();
@@ -62,6 +66,8 @@ class request {
 		int	check_method_post();
 
 		void	print_var();
+		char * itoa(int num, char *str, int base);
+		void	reverse(char str[], int length);
 };
 
 

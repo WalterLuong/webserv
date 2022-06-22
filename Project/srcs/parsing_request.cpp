@@ -9,8 +9,8 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 	init_instruction();
 
 
-	std::string test_request1 = "GET /hello.htm HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
-	std::string test_request2 = "GET /hello.htm HTTP/1.1\r\nContent-Length: 12\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
+	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
 
 
 	int res;
@@ -104,7 +104,7 @@ std::string request::get_host() {
 }
 
 std::string request::get_body_size() {
-	return instruction["body_size"];
+	return instruction["Content-Length"];
 }
 
 std::string request::get_connection_status() {
@@ -275,7 +275,7 @@ int	request::fill_body(std::string line) {
 
 int	request::pars_body(std::string line) {
 	fill_body(line);
-	if (line.length() > static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
+	if (line.length() != static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
 		std::cout << "ca depasse" << std::endl;
 		return 1;
 	}
@@ -283,6 +283,81 @@ int	request::pars_body(std::string line) {
 
 }
 
+/*-------ret for responce------*/
+char* request::itoa(int num, char* buffer, int base) {
+    int curr = 0;
+ 
+    if (num == 0) {
+        // Base case
+        buffer[curr++] = '0';
+        buffer[curr] = '\0';
+        return buffer;
+    }
+ 
+    int num_digits = 0;
+ 
+    if (num < 0) {
+        if (base == 10) {
+            num_digits ++;
+            buffer[curr] = '-';
+            curr ++;
+            // Make it positive and finally add the minus sign
+            num *= -1;
+        }
+        else
+            // Unsupported base. Return NULL
+            return NULL;
+    }
+ 
+    num_digits += (int)floor(log(num) / log(base)) + 1;
+ 
+    // Go through the digits one by one
+    // from left to right
+    while (curr < num_digits) {
+        // Get the base value. For example, 10^2 = 1000, for the third digit
+        int base_val = (int) pow(base, num_digits-1-curr);
+ 
+        // Get the numerical value
+        int num_val = num / base_val;
+ 
+        char value = num_val + '0';
+        buffer[curr] = value;
+ 
+        curr ++;
+        num -= base_val * num_val;
+    }
+    buffer[curr] = '\0';
+    return buffer;
+}
+
+
+std::string request::responce(){
+	std::string ret;
+	char validity_c[256];
+	std::cout << "test" << std::endl;
+	itoa(validity, validity_c, 10);
+	std::cout << "test" << std::endl;
+	std::string	validity_s = std::string(validity_c);
+	std::string validity_ret(map_error[validity_s]);
+
+	ret = http_version + " " + validity_s + " " + validity_ret + "\r\n";
+	for (std::map<std::string, std::string>::iterator ite = instruction.begin(); ite != instruction.end(); ite++) {
+		if (ite->second != "") {
+			ret += ite->first + ": ";
+			ret += ite->second + "\r\n";
+		}
+	}
+	ret += "\r\n";
+	if (body != "" && chunked == -1) {
+		ret += body;
+	}
+	if (chunked != -1) {
+		ret += body;
+	}
+	return ret;
+}
+
+/*-------ret for responce end------*/
 /*--------------start----------------*/
 
 int	request::fill_string(std::string str) {
@@ -321,12 +396,18 @@ int	request::fill_string(std::string str) {
 		if (line_len == end)
 			break;
 	}
+
 	std::cout << "heh:" << str << "|" << std::endl;
 	if (str != "\r\n") {
 		std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
-		pars_body(str.substr(2));
+		if (pars_body(str.substr(2)) != 0) {
+			std::cout << "pars_body invalide" << std::endl;
+			return 1;
+		}
 		
 	}
+	std::cout << "go to responce" << std::endl;
+	std::cout << responce() << std::endl;
 	return 0;
 }
 
