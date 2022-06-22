@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:14:14 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/16 04:40:45 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/22 03:13:59 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ class ResponseHeader
 		std::string		getContentType() const;
 		std::string		getHeader() const;
 
-		void			setStatus( std::string const & str );
+		void			setStatus( std::string const & statuscode, std::string const & status );
 		void			setDate( std::string const & str );
 		void			setServerName( std::string const & str );
 		void			setLastModified( std::string const & str );
@@ -52,8 +52,6 @@ class ResponseHeader
 		void			setContentType( std::string const & str );
 
 		void			generateHeader();
-		void			clearHeader();
-		void			initHeader();
 
 };
 

@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 03:51:03 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/16 04:30:24 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/22 03:21:20 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@
 # define _BLU 			"\033[1;35m"
 # define _YEL 			"\033[1;33m"
 # define _NOR 			"\033[m"
+
+# define MAX_CLIENTS	512
 
 # define N_LINE			"\r\n"
 

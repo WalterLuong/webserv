@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/16 05:10:07 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/22 03:15:20 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,28 @@ std::string		ResponseHeader::getHeader() const {
 	return this->_header;
 }
 
-void			ResponseHeader::setStatus( std::string const & str ) {
-	this->_status += str;
+void			ResponseHeader::setStatus( std::string const & statuscode, std::string const & status ) {
+	this->_status = "HTTP/1.1 " + statuscode + status;
 }
 
 void			ResponseHeader::setDate( std::string const & str ) {
-	this->_date += str;
+	this->_date = "Date: " + str;
 }
 
 void			ResponseHeader::setServerName( std::string const & str ) {
-	this->_serverName += str;
+	this->_serverName = "Server: " + str;
 }
 
 void			ResponseHeader::setLastModified( std::string const & str ) {
-	this->_lastModified += str;
+	this->_lastModified = "Last-Modified: " + str;
 }
 
 void			ResponseHeader::setContentLength( std::string const & str ) {
-	this->_contentLength += str;
+	this->_contentLength = "Content-Length: " + str;
 }
 
 void			ResponseHeader::setContentType( std::string const & str ) {
-	this->_contentType += str;
+	this->_contentType = "Content-Type: " + str;
 }
 
 void			ResponseHeader::generateHeader() {

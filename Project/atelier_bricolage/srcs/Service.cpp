@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdidier <jdidier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/13 23:40:55 by jdidier          ###   ########.fr       */
+/*   Updated: 2022/06/22 03:21:42 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ Service::~Service() {}
 =======================================*/
 
 void	Service::setup_cluster() {
-	for (int i(0); i < 512; i++)
+	for (int i(0); i < MAX_CLIENTS; i++)
 	{
 		_clients_sd[i] = 0;
 	}
@@ -60,7 +60,7 @@ void	Service::check_opened_sd() {
 			_max_sd = it->_serv_sock.getSocket();
 		FD_SET(it->_serv_sock.getSocket(), &_fdset);
 	}
-	for (int i(0); i < 512; i++)
+	for (int i(0); i < MAX_CLIENTS; i++)
 	{
 		socket_d = _clients_sd[i];
 		if (socket_d > 0)
@@ -78,7 +78,10 @@ void	Service::run_service() {
 			exit(EXIT_FAILURE);
 		if (!this->accepting_connections())
 			exit(EXIT_FAILURE);
-		this->receive();
+		for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
+		{
+			this->receive();
+		}
 	}
 }
 
@@ -110,9 +113,10 @@ bool	Service::accepting_connections() {
 				std::cout << _BL_RED << "ERROR : " << _NOR << "ACCEPT ERROR" << std::endl;
 				return false;
 			}
+			fcntl(new_connection, F_SETFL, O_NONBLOCK);
 			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->_serv_sock.getAddr().sin_port) << std::endl;
 		}
-		for (int i(0); i < 512; i++)
+		for (int i(0); i < MAX_CLIENTS; i++)
 		{
 			if (_clients_sd[i]== 0)
 			{
@@ -128,7 +132,7 @@ void	Service::receive() {
 
 	int		len_recv;
 
-	for (int i(0); i < 512; i++)
+	for (int i(0); i < MAX_CLIENTS; i++)
 	{
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{

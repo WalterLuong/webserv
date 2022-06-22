@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/18 19:08:43 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/22 02:33:31 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "ResponseHeader.hpp"
 # include "define.hpp"
+# include <fstream>
 
 class Response
 {

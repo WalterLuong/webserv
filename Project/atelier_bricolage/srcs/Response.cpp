@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/18 19:20:43 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/22 03:12:24 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ void			Response::responseGet() {
 			responseAutoIndex();
 		this->_body = setErrorPage();
 	}
-	else if (location)
-	{
-		this->_body = readFromFile("location");
-	}
 	std::string responsehead = "200 OK";
 	this->_header.setStatus(responsehead);
 	//fill the header
@@ -70,5 +66,21 @@ void			Response::responseAutoIndex() {
 }
 
 std::string		Response::readFromFile(std::string path) {
+	std::ifstream		ifs(path);
+	std::string			ret_buffer;
+	std::string			tmp;
 
+	if (!ifs)
+	{
+		std::cout << "This file doesn't exist." << std::endl;
+		return ("");
+	}
+	while (!ifs.eof())
+	{
+		std::getline(ifs, tmp);
+		ret_buffer += tmp;
+		ret_buffer += "\n";
+	}
+	ifs.close();
+	return ret_buffer;
 }
