@@ -9,7 +9,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 	init_instruction();
 
 
-	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+/*	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
 
 
@@ -26,6 +26,33 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 	if (res == 0)	
 		std::cout << "good request" << std::endl;
 	else
+		std::cout << "bad request" << std::endl;
+*/
+}
+
+request::request(std::string line) : methods(), path(), http_version(), body(), chunked(-1), validity(200), _end(0) {
+	init_default_error();
+	init_file_type();
+	init_instruction();
+
+
+//	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+//	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
+
+
+	int res;
+	if ((res = pars_request(line)) != 0) {
+		std::cout << "bad request" << std::endl;
+		return;
+	}
+//	else
+//		std::cout << "first line good" << std::endl;
+//	print_instruction();
+//	print_var();
+	
+//	if (res == 0)	
+//		std::cout << "good request" << std::endl;
+	if (res != 0)
 		std::cout << "bad request" << std::endl;
 
 }
@@ -334,9 +361,9 @@ char* request::itoa(int num, char* buffer, int base) {
 std::string request::responce(){
 	std::string ret;
 	char validity_c[256];
-	std::cout << "test" << std::endl;
+//	std::cout << "test" << std::endl;
 	itoa(validity, validity_c, 10);
-	std::cout << "test" << std::endl;
+//	std::cout << "test" << std::endl;
 	std::string	validity_s = std::string(validity_c);
 	std::string validity_ret(map_error[validity_s]);
 
@@ -382,7 +409,7 @@ int	request::fill_string(std::string str) {
 			else
 				start++;
 		}
-		std::cout << "line a lire: " << line << "|" <<std::endl;
+//		std::cout << "line a lire: " << line << "|" <<std::endl;
 		if (start == 0){
 			start++;
 			if (get_first_line(&line) != 0)
@@ -397,16 +424,16 @@ int	request::fill_string(std::string str) {
 			break;
 	}
 
-	std::cout << "heh:" << str << "|" << std::endl;
+	//std::cout << "heh:" << str << "|" << std::endl;
 	if (str != "\r\n") {
-		std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
+	//	std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
 		if (pars_body(str.substr(2)) != 0) {
 			std::cout << "pars_body invalide" << std::endl;
 			return 1;
 		}
 		
 	}
-	std::cout << "go to responce" << std::endl;
+//	std::cout << "go to responce" << std::endl;
 	std::cout << responce() << std::endl;
 	return 0;
 }
@@ -416,7 +443,7 @@ int	request::pars_request(std::string str) {
 
 	if ((ret = fill_string(str)) != 0)
 		return ret;
-	std::cout << "toute les lignes sont lues" << std::endl;
+//	std::cout << "toute les lignes sont lues" << std::endl;
 
 	int res;
 	if ((res = check_request()) != 0)

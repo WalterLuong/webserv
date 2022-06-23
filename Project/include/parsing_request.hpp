@@ -20,6 +20,7 @@ class request {
 		int		validity; //code status pour la map error;
 
 		request();
+		request(std::string line);
 		request(request const & cpy); 
 		request &operator=(request const & cpy);
 		~request();
