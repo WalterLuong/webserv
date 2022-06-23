@@ -8,7 +8,12 @@ INC_DIR        =    ../include
 SRC_DIR     =    $(shell find . -type d)
 vpath %.cpp $(foreach dir, $(SRC_DIR), $(dir):)
 
-SRCS =   data_generator.cpp	\
+SRCS =   main.cpp	\
+		 parsing.cpp \
+		 parsing_conffile.cpp \
+		 utils_parsing.cpp	\
+		 parsing_server.cpp \
+		 parsing_request.cpp	\
 
 
 # --  Redirection in OBJS  -- #
