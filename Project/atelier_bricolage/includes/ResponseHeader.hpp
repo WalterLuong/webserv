@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:14:14 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/22 03:13:59 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 04:45:25 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class ResponseHeader
 		ResponseHeader( ResponseHeader const & src );
 		~ResponseHeader();
 
-		ResponseHeader & operator=( ResponseHeader const & other );
+		// ResponseHeader & operator=( ResponseHeader const & other );
 
 		std::string		getStatus() const;
 		std::string		getDate() const;

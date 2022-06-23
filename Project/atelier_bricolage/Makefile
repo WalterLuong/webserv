@@ -6,7 +6,7 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/23 02:16:29 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/23 04:22:21 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ SRC			= 	main.cpp \
 				srcs/parsing_server.cpp \
 				srcs/parsing_request.cpp \
 				srcs/utils_parsing.cpp \
-				srcs/parsing.cpp
+				srcs/parsing.cpp \
+				srcs/Response.cpp \
+				srcs/ResponseHeader.cpp 
 
 OBJ			= $(SRC:.cpp=.o)
 DEP			= $(OBJ:.o=.d)

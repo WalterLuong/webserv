@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 03:01:49 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 04:48:10 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 03:59:03 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Server
 		Socket			_serv_sock;
 		server_block	infos;
 
-		Server( int port, server_block serv_info );
+		Server( int port, std::string ip, server_block serv_info );
 		// Server( Server const & src );
 		~Server();
 

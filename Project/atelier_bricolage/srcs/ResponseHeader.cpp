@@ -6,14 +6,13 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/22 03:15:20 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 04:45:19 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ResponseHeader.hpp"
 
-ResponseHeader::ResponseHeader() : _status(), _serverName(), _date(), _lastModified(), _contentLength(), _contentType(), _header() {
-	this->initHeader();
+ResponseHeader::ResponseHeader() : _status(), _date(), _serverName(), _lastModified(), _contentLength(), _contentType(), _header() {
 }
 
 ResponseHeader::ResponseHeader( ResponseHeader const & src ) {
@@ -22,10 +21,10 @@ ResponseHeader::ResponseHeader( ResponseHeader const & src ) {
 
 ResponseHeader::~ResponseHeader() {}
 
-ResponseHeader & ResponseHeader::operator=( ResponseHeader const & other ) {
-	*this = other;
-	return *this;
-}
+// ResponseHeader & ResponseHeader::operator=( ResponseHeader const & other ) {
+// 	*this = other;
+// 	return *this;
+// }
 
 std::string		ResponseHeader::getStatus() const {
 	return this->_status;
@@ -87,18 +86,4 @@ void			ResponseHeader::generateHeader() {
 	this->_header += this->_contentLength + N_LINE;
 	this->_header += this->_contentType + N_LINE;
 	this->_header += N_LINE;
-}
-
-void			ResponseHeader::clearHeader() {
-	this->_header.clear();
-	this->initHeader();
-}
-
-void			ResponseHeader::initHeader() {
-	this->_status = "HTTP/1.1 ";
-	this->_date = "Date: ";
-	this->_serverName = "Server: ";
-	this->_lastModified = "Last-Modified: ";
-	this->_contentLength = "Content-Length: ";
-	this->_contentType = "Content-Type: ";
 }

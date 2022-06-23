@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 03:14:46 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 05:04:52 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 04:09:19 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,28 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-Socket::Socket()
-{
+Socket::Socket() {
 	this->_error = 0;
-	fill_sockaddr(8080);
+	fill_sockaddr(8080, "127.0.0.1");
 	this->_addr_len = sizeof(this->_addr);
 	this->setup(1000);
 }
 
-Socket::Socket(int port)
-{
+Socket::Socket(int port, std::string ip) {
 	this->_error = 0;
-	fill_sockaddr(port);
+	fill_sockaddr(port, ip);
 	this->_addr_len = sizeof(this->_addr);
 	this->setup(1000);
 
 }
 
-Socket::Socket(Socket const & src)
-{
+Socket::Socket(Socket const & src) {
 	*this = src;
 }
 
 Socket::~Socket() {}
 
-Socket& Socket::operator=(Socket const & other) 
-{
+Socket& Socket::operator=(Socket const & other) {
 	this->_addr = other._addr;
 	this->_addr_len = other._addr_len;
 	this->_error = other._error;
@@ -57,16 +53,14 @@ Socket& Socket::operator=(Socket const & other)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-void	Socket::fill_sockaddr(int port) 
-{
+void	Socket::fill_sockaddr(int port, std::string ip) {
 	this->_addr.sin_family = AF_INET;
-	this->_addr.sin_addr.s_addr = INADDR_ANY;
+	this->_addr.sin_addr.s_addr = inet_addr(ip.c_str());
 	this->_addr.sin_port = htons(port);
 	std::memset(this->_addr.sin_zero, '\0', sizeof(this->_addr.sin_zero));
 }
 
-void		Socket::create_socket() 
-{
+void		Socket::create_socket() {
 		this->_server_fd = socket(this->_addr.sin_family, SOCK_STREAM, 0);
 		if (this->_server_fd <= 0)
 		{
@@ -85,8 +79,7 @@ void	Socket::binding() {
 	}
 }
 
-void		Socket::listening(int backlog)
-{
+void		Socket::listening(int backlog) {
 	if (listen(this->_server_fd, backlog) < 0)
 	{
 		std::cout << _RED << "ERROR : " << _NOR << "LISTEN FAILED" << std::endl;
@@ -94,8 +87,7 @@ void		Socket::listening(int backlog)
 	}
 }
 
-int			Socket::setup(int backlog)
-{
+int			Socket::setup(int backlog) {
 	int		opt = 1;
 	this->create_socket();
 	if (this->getError() == SOCKET_ERROR)
@@ -125,27 +117,22 @@ int			Socket::setup(int backlog)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-sockaddr_in		Socket::getAddr() const 
-{
+sockaddr_in		Socket::getAddr() const {
 	return this->_addr;
 }
 
-socklen_t		*Socket::getAdLen() 
-{
+socklen_t		*Socket::getAdLen() {
 	return &this->_addr_len;
 }
 
-int				Socket::getSocket() const 
-{
+int				Socket::getSocket() const {
 	return this->_server_fd;
 }
 
-int				Socket::getError() const 
-{
+int				Socket::getError() const {
 	return this->_error;
 }
 
-sockaddr		*Socket::castAddr() const 
-{
+sockaddr		*Socket::castAddr() const {
 	return (struct sockaddr *)&this->_addr;
 }

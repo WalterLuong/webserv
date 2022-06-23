@@ -9,24 +9,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 	init_instruction();
 
 
-	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
-	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
 
-
-	int res;
-	if ((res = pars_request(test_request2)) != 0) {
-		std::cout << "bad request" << std::endl;
-		return;
-	}
-	else
-		std::cout << "first line good" << std::endl;
-	print_instruction();
-	print_var();
-	
-	if (res == 0)	
-		std::cout << "good request" << std::endl;
-	else
-		std::cout << "bad request" << std::endl;
 
 }
 

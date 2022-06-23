@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 03:23:00 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 04:46:52 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ void	Service::run_service() {
 			exit(EXIT_FAILURE);
 		if (!this->accepting_connections())
 			exit(EXIT_FAILURE);
-		for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
-		{
-			this->receive();
-		}
+		// for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
+		// {
+		this->receive();
+		// }
 	}
 }
 
@@ -149,8 +149,10 @@ void	Service::receive() {
 			}
 			_buffer[len_recv] = 0;
 			std::cout << _buffer << std::endl;
-			// request req(_buffer);
-			sending(i);
+			request req(_buffer);
+			Response	resp(req);
+			std::cout << resp.getResponse() << std::endl;
+			sending(i, resp);
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
@@ -165,38 +167,38 @@ void	Service::receive() {
 	}
 }
 
-void	Service::sending(int i) {
-	std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n\n";
+void	Service::sending(int i, Response resp) {
+	// std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n\n";
 
-	header += "<!DOCTYPE html>\n";
-	header += "<html>\n";
-	header += "<style>\n";
-	header += "body {\n";
-	header += "background-image: url('https://4.bp.blogspot.com/-W0_HZx9NWfI/XD45qcBbaII/AAAAAAAAAn4/paWYCWR06l092c0vcBV2G9HAChXB3nhRwCKgBGAs/w919/astronaut-space-13-4k.jpg');\n";
-	header += "background-size: cover; \n";
-	header += "background-attachment: fixed;\n";
-	header += "background-position: center;\n";
-	header += "}\n";
-	header += "div {\n";
-	header += "margin-top: 60%;\n";
-	header += "text-align: center;\n";
-	header += "position: center;\n";
-	header += "}\n";
-	header += "img {\n";
-	header += "width:  25%;\n";
-	header += "height: 25%;\n";
-	header += "}\n";
-	header += "</style>\n";
-	header += "<body>\n";
-	header += "<div>\n";
-	header += "<img ";
-	header += "src=\"https://toppng.com/uploads/preview/erreur-404-11550708744oo95egrxlp.png\" ";
-	header += "alt=\"error message 404\">\n";
-	header += "</div>\n";
-	header += "</body>\n";
-	header += "</html>\n";
+	// header += "<!DOCTYPE html>\n";
+	// header += "<html>\n";
+	// header += "<style>\n";
+	// header += "body {\n";
+	// header += "background-image: url('https://4.bp.blogspot.com/-W0_HZx9NWfI/XD45qcBbaII/AAAAAAAAAn4/paWYCWR06l092c0vcBV2G9HAChXB3nhRwCKgBGAs/w919/astronaut-space-13-4k.jpg');\n";
+	// header += "background-size: cover; \n";
+	// header += "background-attachment: fixed;\n";
+	// header += "background-position: center;\n";
+	// header += "}\n";
+	// header += "div {\n";
+	// header += "margin-top: 60%;\n";
+	// header += "text-align: center;\n";
+	// header += "position: center;\n";
+	// header += "}\n";
+	// header += "img {\n";
+	// header += "width:  25%;\n";
+	// header += "height: 25%;\n";
+	// header += "}\n";
+	// header += "</style>\n";
+	// header += "<body>\n";
+	// header += "<div>\n";
+	// header += "<img ";
+	// header += "src=\"https://toppng.com/uploads/preview/erreur-404-11550708744oo95egrxlp.png\" ";
+	// header += "alt=\"error message 404\">\n";
+	// header += "</div>\n";
+	// header += "</body>\n";
+	// header += "</html>\n";
 
-	send(_clients_sd[i], header.c_str(), header.length(), 0);
+	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
 	close(_clients_sd[i]);
 	_clients_sd[i] = 0;
 }

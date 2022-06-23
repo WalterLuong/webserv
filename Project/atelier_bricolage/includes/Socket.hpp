@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 05:23:33 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 04:40:32 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 04:05:59 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SOCKET_HPP
 
 # include "define.hpp"
+# include <arpa/inet.h>
 
 class Server;
 
@@ -29,7 +30,7 @@ class Socket
 	public:
 
 		Socket();
-		Socket(int port);
+		Socket(int port, std::string ip);
 		Socket(Socket const & src);
 		~Socket();
 
@@ -37,7 +38,7 @@ class Socket
 
 		int					setup(int backlog);
 		void				create_socket();
-		void				fill_sockaddr(int port);
+		void				fill_sockaddr(int port, std::string ip);
 		void				binding();
 		void				listening(int backlog);
 

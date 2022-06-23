@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/09 05:05:03 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 03:59:11 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ int		main(int ac, char **av) {
 		std::cout << serv_conf.server.at(i).server_name << std::endl;
 		std::cout << serv_conf.server.at(i).port_ip.at(0).first << std::endl;
 		std::cout << serv_conf.server.at(i).port_ip.at(0).second << std::endl;
-		webserv._servers.push_back(Server(serv_conf.server.at(i).port_ip.at(0).first, serv_conf.server.at(i)));
+		webserv._servers.push_back(Server(serv_conf.server.at(i).port_ip.at(0).first, serv_conf.server.at(i).port_ip.at(0).second,serv_conf.server.at(i)));
 	}
 
 	std::cout << webserv._servers.size() << std::endl;
 	for (unsigned long i(0); i < webserv._servers.size(); i++)
 	{
 		std::cout << "PORT OF SOCKET " << i + 1 << " = " << ntohs(webserv._servers.at(i)._serv_sock.getAddr().sin_port) << std::endl;
+		std::cout << "IP OF SOCKET " << i + 1 << " = " << serv_conf.server.at(i).port_ip.at(0).second << std::endl;
 	}
 	std::cout << "WAITING FOR CONNECTION" << std::endl;
 	webserv.run_service();

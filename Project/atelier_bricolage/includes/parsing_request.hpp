@@ -40,6 +40,7 @@ class request {
 		std::string	get_connection_status();
 
 		void	print_instruction();
+		char * itoa(int num, char *str, int base);
 
 	private :
 
@@ -67,7 +68,6 @@ class request {
 		int	check_method_post();
 
 		void	print_var();
-		char * itoa(int num, char *str, int base);
 		void	reverse(char str[], int length);
 };
 

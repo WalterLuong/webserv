@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 03:19:41 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 03:33:43 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ class Response
 		request			_request;
 		std::string		_resp;
 
+		Response();
+
 	public:
 	
-		Response();
+		Response(request req);
 		~Response();
 
 		std::string		getHeader();
