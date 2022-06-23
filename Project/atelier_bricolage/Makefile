@@ -6,7 +6,7 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/09 04:55:18 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/23 02:16:29 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC			= 	main.cpp \
 				srcs/Service.cpp \
 				srcs/parsing_conffile.cpp \
 				srcs/parsing_server.cpp \
+				srcs/parsing_request.cpp \
 				srcs/utils_parsing.cpp \
 				srcs/parsing.cpp
 

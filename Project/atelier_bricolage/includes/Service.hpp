@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:11:24 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/09 04:44:33 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/23 02:03:27 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "Server.hpp"
 # include "define.hpp"
+# include "parsing_request.hpp"
 
 class Server;
 

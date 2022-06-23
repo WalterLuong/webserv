@@ -63,6 +63,7 @@ int	read_conffile_fill_stc(server_conf *stc,const  char *file_name){
 			stc->server.push_back(serv_to_fill);
 		}
 	}
+
 	return (0);
 }
 
