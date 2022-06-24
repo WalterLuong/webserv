@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 04:43:01 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/24 16:18:27 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ std::string		Response::getResponse() {
 	return _resp;
 }
 
+bool			Response::AllowedMethod() {
+	if (this->_request.getMethod() == "GET")
+		return true;
+}
+
 void			Response::responseGet() {
 	/* NECESSITE LE PQRSING DE VICTOR
 	du coup en attendant */
@@ -108,11 +113,16 @@ void			Response::responseGet() {
 }
 
 void			Response::responsePost() {
-
+	
 }
 
 void			Response::responseDelete() {
-
+	
+	//is method allowed
+	
+	if (std::remove(this->_request.get_path().c_str()))
+		this->_header.setStatus("403 ", "Forbidden");
+	//creer un body pour dire que c delete ?
 }
 
 void			Response::responseCGI() {
