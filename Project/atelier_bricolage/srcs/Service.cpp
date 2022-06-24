@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 04:46:52 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/24 16:02:31 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,7 @@ void	Service::run_service() {
 			exit(EXIT_FAILURE);
 		if (!this->accepting_connections())
 			exit(EXIT_FAILURE);
-		// for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
-		// {
 		this->receive();
-		// }
 	}
 }
 
@@ -149,10 +146,23 @@ void	Service::receive() {
 			}
 			_buffer[len_recv] = 0;
 			std::cout << _buffer << std::endl;
+			
+			//do while
+
 			request req(_buffer);
+			// _buffer[0] = 0;
+//			if (req)
+			// {
 			Response	resp(req);
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
+			// }
+
+			/* IF BAD REQUEST
+			create a bad request response .html
+			sending this html
+			close client_sd[i]
+			client_sd[i] = 0 */
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
@@ -161,9 +171,6 @@ void	Service::receive() {
 		// GET : CGI ? -> Create CGI 
 		// check ressource at / 
 		// 
-
-
-		// if (_buffer[0])
 	}
 }
 
@@ -199,8 +206,8 @@ void	Service::sending(int i, Response resp) {
 	// header += "</html>\n";
 
 	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
-	close(_clients_sd[i]);
-	_clients_sd[i] = 0;
+	// close(_clients_sd[i]);
+	// _clients_sd[i] = 0;
 }
 
 // std::vector<Socket>		&Service::getServers() const {
