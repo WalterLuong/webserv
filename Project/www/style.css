@@ -1,0 +1,99 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-height: 100vh;
+	font-family: 'Noto Sans JP', sans-serif;
+	background-color: #8BC6EC;
+	background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+	background-repeat: no-repeat;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+main {
+	max-width: 100%;
+}
+
+.container {
+	width: 1024px;
+	margin: 0 auto;
+	max-width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+article {
+	width: 284px;
+	background: white;
+	margin:24px;
+	border-radius: 16px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
+	overflow: hidden;
+	transition:transform .4s;
+}
+
+article .article-image {
+	height: 220px;
+	background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2587&q=80');
+	background-size:cover;
+	background-position:center center;
+}
+
+article .article-content {
+	padding:16px;
+}
+
+article .article-date {
+	color: #673AB7;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+article .article-description {
+	color: #666;
+}
+
+article .article-bottom {
+	display: flex;
+	align-items: center;
+	background-color: #673AB7;
+	color: white;
+}
+
+article .article-bottom-item {
+	flex:1;
+	text-align: center;
+	padding:6px 0px;
+	border-right:solid 1px rgba(0, 0, 0, 0.16);
+}
+
+article .article-bottom-item:last-of-type {
+	border-right: none;
+}
+
+article .article-bottom-item i {
+	font-size:12px;
+	color:rgba(255, 255, 255, 0.6);
+}
+
+article .article-bottom-item-value {
+	font-weight:bold;
+	font-size:24px;
+}
+
+article .article-bottom-item-label {
+	text-transform: uppercase;
+	font-size: 10px;
+}
+
+article:hover {
+	cursor:pointer;
+	transform:scale(1.08);
+}
