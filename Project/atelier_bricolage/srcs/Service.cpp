@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/24 16:02:31 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:09:05 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void	Service::receive() {
 //			if (req)
 			// {
 			Response	resp(req);
+			resp.responseGet();
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
 			// }
@@ -206,8 +207,8 @@ void	Service::sending(int i, Response resp) {
 	// header += "</html>\n";
 
 	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
-	// close(_clients_sd[i]);
-	// _clients_sd[i] = 0;
+	close(_clients_sd[i]);
+	_clients_sd[i] = 0;
 }
 
 // std::vector<Socket>		&Service::getServers() const {

@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 04:59:38 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:14:40 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,25 +85,33 @@ std::string		Response::getResponse() {
 // }
 
 void			Response::responseGet() {
+	request test;
+	char bite[500];
 	/* NECESSITE LE PQRSING DE VICTOR
 	du coup en attendant */
 	// bool location = 1;
 	// bool autoindex = 1;
 
-	if (this->_request.get_path() == "/")
-	{
+	// if (this->_request.get_path() == "/")
+	// {
 		// if (autoindex)
 			// responseAutoIndex();
 		//check if error page exists
 		// this->_body = setErrorPage();
 		//else
 		//generate error page
-	}
+	// }
 	this->_header.setStatus("200 ", "OK");
 	//fill the header
-	this->_body = readFromFile("../../www/index.html");
-	this->_header.setContentLength(int_to_str(_body.size()));
-	this->_header.setServerName("webserv");
+	if (access("../www/index.html", F_OK) == 0)
+	{
+		this->_body = readFromFile("../www/error_page/custom/error_page_404.html");
+		test.itoa(_body.length(), bite, 10);
+
+		std::string to_fil(bite);
+		this->_header.setContentLength(to_fil);
+		// this->_header.setServerName("webserv");
+	}
 
 }
 
@@ -121,11 +129,11 @@ void			Response::responseDelete() {
 }
 
 void			Response::responseCGI() {
-
+	//jsp quoi faire ici
 }
 
 void			Response::responseAutoIndex() {
-
+	// j'attends victor
 }
 
 std::string		Response::readFromFile(std::string path) {

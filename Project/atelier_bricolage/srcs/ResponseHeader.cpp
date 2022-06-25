@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 04:45:19 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:10:28 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void			ResponseHeader::setContentType( std::string const & str ) {
 
 void			ResponseHeader::generateHeader() {
 	this->_header = this->_status + N_LINE;
-	this->_header += this->_date + N_LINE;
-	this->_header += this->_serverName + N_LINE;
-	this->_header += this->_lastModified + N_LINE;
+	// this->_header += this->_date + N_LINE;
+	// this->_header += this->_serverName + N_LINE;
+	// this->_header += this->_lastModified + N_LINE;
 	this->_header += this->_contentLength + N_LINE;
-	this->_header += this->_contentType + N_LINE;
+	// this->_header += this->_contentType + N_LINE;
 	this->_header += N_LINE;
 }
