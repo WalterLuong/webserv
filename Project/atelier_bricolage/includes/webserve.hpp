@@ -19,5 +19,8 @@ int	check_declaration_server_line(std::string line);
 int	fill_serv(server_block *stc, std::ifstream *file, std::string line);
 
 
+/* Fonction for Header */
+std::string get_date();
+std::string generator_error_file(std::string error_status);
 
 #endif
