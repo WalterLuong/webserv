@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/24 16:18:27 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 04:59:38 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char *itoa(int num, char* buffer, int base) {
 	int curr = 0;
 
 	if (num == 0) {
-		// Base case
 		buffer[curr++] = '0';
 		buffer[curr] = '\0';
 		return buffer;
@@ -30,23 +29,17 @@ char *itoa(int num, char* buffer, int base) {
 			num_digits ++;
 			buffer[curr] = '-';
 			curr ++;
-			// Make it positive and finally add the minus sign
 			num *= -1;
 		}
 		else
-			// Unsupported base. Return NULL
 			return NULL;
 	}
 
 	num_digits += (int)floor(log(num) / log(base)) + 1;
  
-	// Go through the digits one by one
-	// from left to right
 	while (curr < num_digits) {
-		// Get the base value. For example, 10^2 = 1000, for the third digit
 		int base_val = (int) pow(base, num_digits-1-curr);
 
-		// Get the numerical value
 		int num_val = num / base_val;
  
 		char value = num_val + '0';
@@ -86,10 +79,10 @@ std::string		Response::getResponse() {
 	return _resp;
 }
 
-bool			Response::AllowedMethod() {
-	if (this->_request.getMethod() == "GET")
-		return true;
-}
+// bool			Response::AllowedMethod() {
+// 	// if (this->_request.getMethod() == "GET")
+// 	// 	return true;
+// }
 
 void			Response::responseGet() {
 	/* NECESSITE LE PQRSING DE VICTOR
@@ -97,13 +90,15 @@ void			Response::responseGet() {
 	// bool location = 1;
 	// bool autoindex = 1;
 
-	// this->_request.get_path();
-	// if (!location)
-	// {
-	// 	if (autoindex)
-	// 		responseAutoIndex();
-	// 	this->_body = setErrorPage();
-	// }
+	if (this->_request.get_path() == "/")
+	{
+		// if (autoindex)
+			// responseAutoIndex();
+		//check if error page exists
+		// this->_body = setErrorPage();
+		//else
+		//generate error page
+	}
 	this->_header.setStatus("200 ", "OK");
 	//fill the header
 	this->_body = readFromFile("../../www/index.html");
