@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 07:39:38 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 23:23:33 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	Service::receive() {
 			
 			//do while
 
-			request req(_buffer);
+			request req(_buffer, _servers);
 			// _buffer[0] = 0;
 //			if (req)
 			// {
