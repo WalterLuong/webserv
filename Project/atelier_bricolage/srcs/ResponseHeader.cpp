@@ -6,13 +6,14 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 07:10:28 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 10:03:18 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ResponseHeader.hpp"
+#include "../includes/utils.hpp"
 
-ResponseHeader::ResponseHeader() : _status(), _date(), _serverName(), _lastModified(), _contentLength(), _contentType(), _header() {
+ResponseHeader::ResponseHeader() : _status(), _date(), _serverName(), _contentLength(), _contentType(), _header(), _statuscode(200), _bodyLength(0) {
 }
 
 ResponseHeader::ResponseHeader( ResponseHeader const & src ) {
@@ -38,10 +39,6 @@ std::string		ResponseHeader::getServerName() const {
 	return this->_serverName;
 }
 
-std::string		ResponseHeader::getLastModified() const {
-	return this->_lastModified;
-}
-
 std::string		ResponseHeader::getContentLength() const {
 	return this->_contentLength;
 }
@@ -54,24 +51,20 @@ std::string		ResponseHeader::getHeader() const {
 	return this->_header;
 }
 
-void			ResponseHeader::setStatus( std::string const & statuscode, std::string const & status ) {
-	this->_status = "HTTP/1.1 " + statuscode + status;
+void			ResponseHeader::setStatus( std::string const & protocol, std::string const & status ) {
+	this->_status = protocol + " " + int_to_str(this->_statuscode) + " " + status;
 }
 
-void			ResponseHeader::setDate( std::string const & str ) {
-	this->_date = "Date: " + str;
+void			ResponseHeader::setDate() {
+	this->_date = "Date: " + get_date();
 }
 
 void			ResponseHeader::setServerName( std::string const & str ) {
 	this->_serverName = "Server: " + str;
 }
 
-void			ResponseHeader::setLastModified( std::string const & str ) {
-	this->_lastModified = "Last-Modified: " + str;
-}
-
-void			ResponseHeader::setContentLength( std::string const & str ) {
-	this->_contentLength = "Content-Length: " + str;
+void			ResponseHeader::setContentLength() {
+	this->_contentLength = "Content-Length: " + int_to_str(this->_bodyLength);
 }
 
 void			ResponseHeader::setContentType( std::string const & str ) {
@@ -80,10 +73,17 @@ void			ResponseHeader::setContentType( std::string const & str ) {
 
 void			ResponseHeader::generateHeader() {
 	this->_header = this->_status + N_LINE;
-	// this->_header += this->_date + N_LINE;
-	// this->_header += this->_serverName + N_LINE;
-	// this->_header += this->_lastModified + N_LINE;
+	this->_header += this->_date + N_LINE;
+	this->_header += this->_serverName + N_LINE;
 	this->_header += this->_contentLength + N_LINE;
-	// this->_header += this->_contentType + N_LINE;
+	this->_header += this->_contentType + N_LINE;
 	this->_header += N_LINE;
+}
+
+void			ResponseHeader::setStatusCode( int code ) {
+	this->_statuscode = code;
+}
+
+void			ResponseHeader::setBodyLength( int length ) {
+	this->_bodyLength = length;
 }

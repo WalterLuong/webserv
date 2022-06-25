@@ -6,7 +6,7 @@
 #    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/25 04:58:40 by wluong           ###   ########.fr        #
+#    Updated: 2022/06/25 09:46:32 by wluong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS			= 	main.cpp \
 				srcs/utils_parsing.cpp \
 				srcs/parsing.cpp \
 				srcs/Response.cpp \
-				srcs/ResponseHeader.cpp 
+				srcs/ResponseHeader.cpp \
+				srcs/utils.cpp
 
 INCLUDE		=	-I./includes/
 

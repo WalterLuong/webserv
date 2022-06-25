@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 07:09:05 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 07:39:38 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	Service::receive() {
 	int		len_recv;
 
 	for (int i(0); i < MAX_CLIENTS; i++)
-	{
+	{	
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
@@ -164,6 +164,8 @@ void	Service::receive() {
 			sending this html
 			close client_sd[i]
 			client_sd[i] = 0 */
+			close(_clients_sd[i]);
+			_clients_sd[i] = 0;
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
@@ -207,8 +209,6 @@ void	Service::sending(int i, Response resp) {
 	// header += "</html>\n";
 
 	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
-	close(_clients_sd[i]);
-	_clients_sd[i] = 0;
 }
 
 // std::vector<Socket>		&Service::getServers() const {
