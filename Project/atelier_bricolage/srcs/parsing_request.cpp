@@ -1,4 +1,5 @@
 #include "../includes/parsing_request.hpp"
+#include "../includes/utils.hpp"
 
 // check request a finir
 // check host a fair
@@ -329,15 +330,13 @@ int	request::pars_body(std::string line) {
 }
 
 
-/**/
+/* check Host */
+/* Changer le localHost par server_name */
 
 int		request::check_host(std::string server_name, std::vector<std::pair<int, std::string> > port) {
-	request test;
 
-	char bite[300];
-	test.itoa(port[0].first, bite, 10);
 	
-	std::string rd(bite);
+	std::string rd(int_to_str(port[0].first));
 	std::string localhost("localhost");
 	
 	std::string line(instruction["Host"]);
@@ -355,61 +354,15 @@ int		request::check_host(std::string server_name, std::vector<std::pair<int, std
 }
 
 /*-------ret for responce------*/
-char* request::itoa(int num, char* buffer, int base) {
-    int curr = 0;
- 
-    if (num == 0) {
-        // Base case
-        buffer[curr++] = '0';
-        buffer[curr] = '\0';
-        return buffer;
-    }
- 
-    int num_digits = 0;
- 
-    if (num < 0) {
-        if (base == 10) {
-            num_digits ++;
-            buffer[curr] = '-';
-            curr ++;
-            // Make it positive and finally add the minus sign
-            num *= -1;
-        }
-        else
-            // Unsupported base. Return NULL
-            return NULL;
-    }
- 
-    num_digits += (int)floor(log(num) / log(base)) + 1;
- 
-    // Go through the digits one by one
-    // from left to right
-    while (curr < num_digits) {
-        // Get the base value. For example, 10^2 = 1000, for the third digit
-        int base_val = (int) pow(base, num_digits-1-curr);
- 
-        // Get the numerical value
-        int num_val = num / base_val;
- 
-        char value = num_val + '0';
-        buffer[curr] = value;
- 
-        curr ++;
-        num -= base_val * num_val;
-    }
-    buffer[curr] = '\0';
-    return buffer;
-}
 
 
 std::string request::responce(){
 	std::string ret;
-	char validity_c[256];
-//	std::cout << "test" << std::endl;
-	itoa(validity, validity_c, 10);
-//	std::cout << "test" << std::endl;
-	std::string	validity_s = std::string(validity_c);
+	std::string validity_s;
+
+	validity_s = int_to_str(validity);
 	std::string validity_ret(map_error[validity_s]);
+
 
 	ret = http_version + " " + validity_s + " " + validity_ret + "\r\n";
 	for (std::map<std::string, std::string>::iterator ite = instruction.begin(); ite != instruction.end(); ite++) {

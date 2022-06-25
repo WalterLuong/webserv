@@ -48,7 +48,6 @@ class request {
 		int	set_current_server(std::vector<Server> sct);
 		int check_host(std::string line, std::vector<std::pair<int, std::string> > lst_server);
 		void	print_instruction();
-		char * itoa(int num, char *str, int base);
 
 	private :
 
