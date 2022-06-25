@@ -13,7 +13,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 
 }
 
-request::request(std::string line) : methods(), path(), http_version(), body(), chunked(-1), validity(200), _end(0) {
+request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200),  _end(0){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -37,6 +37,19 @@ request::request(std::string line) : methods(), path(), http_version(), body(), 
 //		std::cout << "good request" << std::endl;
 	if (res != 0)
 		std::cout << "bad request" << std::endl;
+	
+	if (lst_inf.size() != 0) {
+		std::cout << "ok" << std::endl;
+	}
+
+
+	if (set_current_server(lst_inf) != 0) {
+		std::cout << "bad host header" << std::endl;
+		return ;
+	}
+
+
+
 
 }
 
@@ -248,6 +261,26 @@ int	request::check_method_post() {
 	return 0;
 }
 
+
+int	request::set_current_server(std::vector<Server> lst_server){
+
+	int i;
+	int j = 0;
+	std::vector<Server>::iterator ite = lst_server.begin();
+	while (ite != lst_server.end())
+	{
+		i = check_host(ite->infos.server_name, ite->infos.port_ip);
+		if (i == 1)
+			break; 
+		j++;
+	}
+	if (ite == lst_server.end())
+		return 1;
+	cur_serv_index = j;
+	return 0;
+
+}
+
 int	request::check_request() {
 	if (http_version == "HTTP/1.1") {
 
@@ -264,15 +297,17 @@ int	request::check_request() {
 	else if (methods == "GET" || methods == "DELETE") {
 		return 0;
 	}
-
-
-
-
-
 	if (_end == 0 && methods == "POST") {
 		std::string str(instruction["Content-Type"]);
 
 	}
+
+
+
+
+
+
+
 	return 0;
 
 
@@ -291,6 +326,32 @@ int	request::pars_body(std::string line) {
 	}
 	return 0;
 
+}
+
+
+/**/
+
+int		request::check_host(std::string server_name, std::vector<std::pair<int, std::string> > port) {
+	request test;
+
+	char bite[300];
+	test.itoa(port[0].first, bite, 10);
+	
+	std::string rd(bite);
+	std::string localhost("localhost");
+	
+	std::string line(instruction["Host"]);
+	if (line == localhost + ":" + rd) {
+		std::cout << "Host fund in server config file" << std::endl;
+		return 1;
+
+	}
+	else if (line == port[0].second + ":" + rd || line == server_name) {
+
+		std::cout << "Host fund in server config file" << std::endl;
+		return 1;
+	}
+	return 0;
 }
 
 /*-------ret for responce------*/

@@ -19,8 +19,13 @@ class request {
 		int		chunked;
 		int		validity; //code status pour la map error;
 
+		int cur_serv_index;
+		/* need serve concerner par instruction"HOSt"*/
+		/* body pour les chunked */
+
 		request();
 		request(std::string line);
+		request(std::string line, std::vector<Server> lst_inf);
 		request(request const & cpy); 
 		request &operator=(request const & cpy);
 		~request();
@@ -39,6 +44,8 @@ class request {
 		std::string	get_body_size();
 		std::string	get_connection_status();
 
+		int	set_current_server(std::vector<Server> sct);
+		int check_host(std::string line, std::vector<std::pair<int, std::string> > lst_server);
 		void	print_instruction();
 		char * itoa(int num, char *str, int base);
 
