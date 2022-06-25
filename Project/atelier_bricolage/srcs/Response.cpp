@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 10:13:31 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/25 18:50:31 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,14 @@ std::string		Response::getResponse() {
 // bool			Response::AllowedMethod() {
 // 	// if (this->_request.getMethod() == "GET")
 // 	// 	return true;
+//	chercher dans le path si la methode est allowed sinon
+//	si oui, return true
+//	si non error 405 et return false
 // }
 
 void			Response::responseGet() {
+//getter a coder	if (this->_header.getStatusCode() != 200)
+//		return ;
 	/* NECESSITE LE PQRSING DE VICTOR
 	du coup en attendant */
 	// bool location = 1;
