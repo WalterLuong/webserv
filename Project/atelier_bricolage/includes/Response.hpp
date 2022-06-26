@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 03:33:43 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/26 02:39:07 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ class Response
 		void			responseAutoIndex();
 		std::string		setErrorPage();
 		std::string		readFromFile(std::string path);
+
+		void			setBody( std::string body );
 
 };
 

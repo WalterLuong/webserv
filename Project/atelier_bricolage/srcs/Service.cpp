@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 23:23:33 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/26 02:40:49 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
+			std::cout << "bite" <<std::endl;
 			// _buffer[0] = 0;
 //			if (req)
 			// {
@@ -157,6 +158,13 @@ void	Service::receive() {
 			resp.responseGet();
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
+			std::string img;
+			img = "Content-Type: image/jpeg\r\n";
+			img += "Last-Modified: Wed, 22 Jun 2022 00:32:45 GMT \r\n";
+			Response rsp2(req);
+			rsp2.setBody(img);
+			std::cout << rsp2.getResponse() << std::endl;
+			sending(i, rsp2);
 			// }
 
 			/* IF BAD REQUEST

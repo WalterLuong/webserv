@@ -274,6 +274,8 @@ int	request::set_current_server(std::vector<Server> lst_server){
 		if (i == 1)
 			break; 
 		j++;
+		std::cout << "tst" << std::endl;
+		ite++;
 	}
 	if (ite == lst_server.end())
 		return 1;

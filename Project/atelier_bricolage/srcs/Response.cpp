@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 18:50:31 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/26 02:39:38 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ void			Response::responseGet() {
 		//generate error page
 	// }
 	//fill the header
-	if (access("../www/index.html", F_OK) == 0)
+	if (access("../www/error_page/custom/error_page_404.html", F_OK) == 0)
 	{
+		std::cout << "HERE" << std::endl;
 		this->_header.setStatusCode(200);
 		this->_header.setStatus(this->_request.get_http_version(), "OK");
 		this->_body += readFromFile("../www/error_page/custom/error_page_404.html");
@@ -111,4 +112,8 @@ std::string		Response::readFromFile(std::string path) {
 	}
 	ifs.close();
 	return ret_buffer;
+}
+
+void			Response::setBody( std::string body ) {
+	this->_body = body;
 }

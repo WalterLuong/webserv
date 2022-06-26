@@ -3,7 +3,7 @@
 
 
 server {               			
-	listen	8080   
+	listen	1234   
 
 	server_name	jean	           					   	 	 	 
 	
