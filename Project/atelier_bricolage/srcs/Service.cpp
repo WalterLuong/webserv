@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 02:40:49 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/26 03:12:16 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,8 @@ void	Service::receive() {
 			img += "Last-Modified: Wed, 22 Jun 2022 00:32:45 GMT \r\n";
 			Response rsp2(req);
 			rsp2.setBody(img);
-			std::cout << rsp2.getResponse() << std::endl;
-			sending(i, rsp2);
+		//	std::cout << rsp2.getResponse() << std::endl;
+		//	sending(i, rsp2);
 			// }
 
 			/* IF BAD REQUEST

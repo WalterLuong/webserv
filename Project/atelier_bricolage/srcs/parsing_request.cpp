@@ -1,5 +1,6 @@
 #include "../includes/parsing_request.hpp"
 #include "../includes/utils.hpp"
+#include "../includes/webserve.hpp"
 
 // check request a finir
 // check host a fair
@@ -14,7 +15,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 
 }
 
-request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200),  _end(0){
+request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), location_path(), _end(0){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -262,6 +263,82 @@ int	request::check_method_post() {
 	return 0;
 }
 
+// case one path = /cat 
+//		go found /cat location in lst location
+//
+// case two path = /cat/bite
+//		go found /cat/bite location in lst location
+//			else
+//				go found /cat lcation
+//					go found /bite location in /cat location
+
+int	request::deep_location(std::string path, location_block stc) {
+	if (stc.location.size() == 0)
+		return 1;
+	std::vector<location_block>::iterator ite = stc.location.begin();
+
+	while (ite != stc.location.end()) {
+		if (ite->uri == path) {
+			location_path = *ite;
+			return 0;
+		}
+		ite++;
+	}
+
+	size_t end;
+	if ((end = path.find("/")) != std::string::npos) {
+		std::string new_str(path.substr(0, end));
+		ite = stc.location.begin();
+		while (ite != stc.location.end()) {
+			if (ite->uri == new_str) {
+				std::string second_str(path, end+ 1);
+				return (deep_location(second_str, *ite));			
+			}
+			ite++;
+		}
+	}
+	return 1;
+}
+
+
+
+int	request::check_path_for_location(Server cur, std::string path) {
+	std::string sub(path, 1);
+	size_t end;
+	std::vector<location_block>::iterator ite = cur.infos.location.begin();
+
+	if (cur.infos.location.size() == 0)
+		return 1;
+	std::cout << "first step in check path" << std::endl;
+	while (ite != cur.infos.location.end()) {
+		if (ite->uri == path) {
+			location_path = *ite;
+			return 0;
+		}
+		ite++;
+	}	
+	if ((end = sub.find("/")) != std::string::npos) {
+		std::string first_loc(sub.substr(0, end));
+
+		std::cout << "check for a multi locatioh path: " << first_loc << std::endl;
+		ite = cur.infos.location.begin();
+		while (ite != cur.infos.location.end()) {
+			std::cout << "test:" << ite->uri << std::endl;
+			if (ite->uri == first_loc) {
+				std::string second_loc(path, end + 2);
+				std::cout << "test2 second loc:" << second_loc << std::endl;
+				if (deep_location(second_loc, *ite) == 0)
+					return 0;
+				return 1;
+			}
+			ite++;
+		}
+		return 1;
+	}
+	return 1;
+
+
+}
 
 int	request::set_current_server(std::vector<Server> lst_server){
 
@@ -279,7 +356,13 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	}
 	if (ite == lst_server.end())
 		return 1;
+
 	cur_serv_index = j;
+
+	std::cout << "viporte1" << std::endl;
+	if (check_path_for_location(lst_server[j], path) != 0)
+		return 1;
+	std::cout << "location block trouve" << std::endl;
 	return 0;
 
 }

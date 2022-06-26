@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Server.hpp"
+#include "parsing_conffile.hpp"
 
 class request {
 
@@ -21,6 +22,8 @@ class request {
 		int		validity; //code status pour la map error;
 
 		int cur_serv_index;
+		int in_location;
+		location_block	location_path;
 		/* need serve concerner par instruction"HOSt"*/
 		/* body pour les chunked */
 
@@ -76,6 +79,9 @@ class request {
 
 		void	print_var();
 		void	reverse(char str[], int length);
+
+		int check_path_for_location(Server cur, std::string path);
+		int deep_location(std::string path, location_block stc);
 };
 
 
