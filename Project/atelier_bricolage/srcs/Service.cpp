@@ -6,7 +6,11 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/06/26 18:57:17 by wluong           ###   ########.fr       */
+=======
+/*   Updated: 2022/06/26 18:54:37 by viporten         ###   ########.fr       */
+>>>>>>> 243d94e82fb77c51a8753c9a9a2c739290cbc89d
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +145,7 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
-			std::cout << "bite" <<std::endl;
+			std::cout << "request traiter" <<std::endl;
 			// _buffer[0] = 0;
 //			if (req)
 			// {

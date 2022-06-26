@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 10:04:45 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/26 18:53:05 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ std::string get_date() {
   timeinfo = localtime (&rawtime);
 
   strftime (buffer,80,"%a, %d %b %G %T GMT",timeinfo);
-  std::cout << (buffer) << std::endl;
+ // std::cout << (buffer) << std::endl;
 
 	std::string ret(buffer);
-  std::cout << ret << std::endl;
+//  std::cout << ret << std::endl;
   return ret;
  }
 

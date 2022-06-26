@@ -26,6 +26,7 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 
 	int res;
+
 	if ((res = pars_request(line)) != 0) {
 		std::cout << "bad request" << std::endl;
 		validity = 400;
@@ -38,16 +39,15 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 	
 //	if (res == 0)	
 //		std::cout << "good request" << std::endl;
-	if (res != 0)
-		std::cout << "bad request" << std::endl;
-	
-	if (lst_inf.size() != 0) {
-		std::cout << "ok" << std::endl;
+	if (lst_inf.size() == 0) {
+		std::cout << "no server set" << std::endl;
+		validity = 400;
+		return ;
 	}
 
 
 	if (set_current_server(lst_inf) != 0) {
-		std::cout << "bad host header" << std::endl;
+		std::cout << "bad path request" << std::endl;
 		validity = 400;
 		return ;
 	}
@@ -91,6 +91,7 @@ request::~request() {}
 /*-------------printer-------------------*/
 void	request::print_instruction() {
 	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
+	
 		std::cout << "instruction: " << ite->first << " , " ;
 		if (ite->second  != "")
 			std::cout << ite->second;
@@ -366,15 +367,17 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	}
 	if (ite == lst_server.end()) {
 		cur_serv_index = -1;
-
+		std::cout << "Host header invalide" << std::endl;
 		return 1;
 	}
 
 	cur_serv_index = j;
 
 	if (path != "/") {
-	if ((in_location = check_path_for_location(lst_server[j], path)) != 0)
+	if ((in_location = check_path_for_location(lst_server[j], path)) != 0) {
+		std::cout << "no location found for this path" << std::endl;
 		return 1;
+	}
 	}
 	return 0;
 
@@ -523,7 +526,7 @@ int	request::fill_string(std::string str) {
 		
 	}
 //	std::cout << "go to responce" << std::endl;
-	std::cout << responce() << std::endl;
+//	std::cout << responce() << std::endl;
 	return 0;
 }
 
@@ -532,7 +535,7 @@ int	request::pars_request(std::string str) {
 
 	if ((ret = fill_string(str)) != 0)
 		return ret;
-//	std::cout << "toute les lignes sont lues" << std::endl;
+	std::cout << "toute les lignes sont lues" << std::endl;
 
 	int res;
 	if ((res = check_request()) != 0)
