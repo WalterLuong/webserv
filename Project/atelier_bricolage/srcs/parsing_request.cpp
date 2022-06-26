@@ -272,6 +272,15 @@ int	request::check_method_post() {
 //				go found /cat lcation
 //					go found /bite location in /cat location
 
+
+
+/*	How to use */
+/*	if cur_serv_index == -1, pas de server trouver donc 404default */
+/*	sinon cur_serv_index est la pos dans le vector de server */
+/*	*/
+/*	if in_location != 0, pas de location trouver pour le path donc404 du server trouve */
+/*	in_location == 0, location_path == le location block en question	*/
+
 int	request::deep_location(std::string path, location_block stc) {
 	if (stc.location.size() == 0)
 		return 1;
@@ -309,7 +318,7 @@ int	request::check_path_for_location(Server cur, std::string path) {
 
 	if (cur.infos.location.size() == 0)
 		return 1;
-	std::cout << "first step in check path" << std::endl;
+//	std::cout << "first step in check path" << std::endl;
 	while (ite != cur.infos.location.end()) {
 		if (ite->uri == path) {
 			location_path = *ite;
@@ -320,13 +329,13 @@ int	request::check_path_for_location(Server cur, std::string path) {
 	if ((end = sub.find("/")) != std::string::npos) {
 		std::string first_loc(sub.substr(0, end));
 
-		std::cout << "check for a multi locatioh path: " << first_loc << std::endl;
+//		std::cout << "check for a multi locatioh path: " << first_loc << std::endl;
 		ite = cur.infos.location.begin();
 		while (ite != cur.infos.location.end()) {
-			std::cout << "test:" << ite->uri << std::endl;
+//			std::cout << "test:" << ite->uri << std::endl;
 			if (ite->uri == first_loc) {
 				std::string second_loc(path, end + 2);
-				std::cout << "test2 second loc:" << second_loc << std::endl;
+//				std::cout << "test2 second loc:" << second_loc << std::endl;
 				if (deep_location(second_loc, *ite) == 0)
 					return 0;
 				return 1;
@@ -351,18 +360,18 @@ int	request::set_current_server(std::vector<Server> lst_server){
 		if (i == 1)
 			break; 
 		j++;
-		std::cout << "tst" << std::endl;
 		ite++;
 	}
-	if (ite == lst_server.end())
+	if (ite == lst_server.end()) {
+		cur_serv_index = -1;
+
 		return 1;
+	}
 
 	cur_serv_index = j;
 
-	std::cout << "viporte1" << std::endl;
-	if (check_path_for_location(lst_server[j], path) != 0)
+	if ((in_location = check_path_for_location(lst_server[j], path)) != 0)
 		return 1;
-	std::cout << "location block trouve" << std::endl;
 	return 0;
 
 }
