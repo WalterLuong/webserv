@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 03:12:16 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/26 05:00:04 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,11 @@ void	Service::receive() {
 			resp.responseGet();
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
-			std::string img;
-			img = "Content-Type: image/jpeg\r\n";
-			img += "Last-Modified: Wed, 22 Jun 2022 00:32:45 GMT \r\n";
-			Response rsp2(req);
-			rsp2.setBody(img);
+		//	std::string img;
+		//	img = "Content-Type: image/jpeg\r\n";
+		//	img += "Last-Modified: Wed, 22 Jun 2022 00:32:45 GMT \r\n";
+		//	Response rsp2(req);
+		//	rsp2.setBody(img);
 		//	std::cout << rsp2.getResponse() << std::endl;
 		//	sending(i, rsp2);
 			// }

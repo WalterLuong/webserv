@@ -28,6 +28,7 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 	int res;
 	if ((res = pars_request(line)) != 0) {
 		std::cout << "bad request" << std::endl;
+		validity = 400;
 		return;
 	}
 //	else
@@ -47,6 +48,7 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 	if (set_current_server(lst_inf) != 0) {
 		std::cout << "bad host header" << std::endl;
+		validity = 400;
 		return ;
 	}
 
@@ -370,8 +372,10 @@ int	request::set_current_server(std::vector<Server> lst_server){
 
 	cur_serv_index = j;
 
+	if (path != "/") {
 	if ((in_location = check_path_for_location(lst_server[j], path)) != 0)
 		return 1;
+	}
 	return 0;
 
 }
@@ -396,12 +400,6 @@ int	request::check_request() {
 		std::string str(instruction["Content-Type"]);
 
 	}
-
-
-
-
-
-
 
 	return 0;
 
