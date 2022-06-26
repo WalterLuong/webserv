@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 05:00:04 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:54:37 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
-			std::cout << "bite" <<std::endl;
+			std::cout << "request traiter" <<std::endl;
 			// _buffer[0] = 0;
 //			if (req)
 			// {
