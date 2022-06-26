@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Service.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:27:48 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 05:00:04 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/26 18:57:17 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Service.hpp"
-
-/*
-*	TO DO LIST :
-*		Remplacer 512 par un define (nombre de clients max, soit 512 soit 1024)
-*		Corriger le parsing de Victor pour pouvoir l'implémenter dansmes classes Server
-*		Essayer des send et receive avec des un parsing existant
-*		Clarifier le code au maximum (normalement deja bien calir)
-*
-*/
 
 Service::Service() : _max_sd(0), _servers() {
 	_timeout.tv_sec = 5;
@@ -158,13 +149,6 @@ void	Service::receive() {
 			resp.responseGet();
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
-		//	std::string img;
-		//	img = "Content-Type: image/jpeg\r\n";
-		//	img += "Last-Modified: Wed, 22 Jun 2022 00:32:45 GMT \r\n";
-		//	Response rsp2(req);
-		//	rsp2.setBody(img);
-		//	std::cout << rsp2.getResponse() << std::endl;
-		//	sending(i, rsp2);
 			// }
 
 			/* IF BAD REQUEST
@@ -186,36 +170,6 @@ void	Service::receive() {
 }
 
 void	Service::sending(int i, Response resp) {
-	// std::string header = "HTTP/1.1 200 OK\r\nContent-Type: text/html\n\n";
-
-	// header += "<!DOCTYPE html>\n";
-	// header += "<html>\n";
-	// header += "<style>\n";
-	// header += "body {\n";
-	// header += "background-image: url('https://4.bp.blogspot.com/-W0_HZx9NWfI/XD45qcBbaII/AAAAAAAAAn4/paWYCWR06l092c0vcBV2G9HAChXB3nhRwCKgBGAs/w919/astronaut-space-13-4k.jpg');\n";
-	// header += "background-size: cover; \n";
-	// header += "background-attachment: fixed;\n";
-	// header += "background-position: center;\n";
-	// header += "}\n";
-	// header += "div {\n";
-	// header += "margin-top: 60%;\n";
-	// header += "text-align: center;\n";
-	// header += "position: center;\n";
-	// header += "}\n";
-	// header += "img {\n";
-	// header += "width:  25%;\n";
-	// header += "height: 25%;\n";
-	// header += "}\n";
-	// header += "</style>\n";
-	// header += "<body>\n";
-	// header += "<div>\n";
-	// header += "<img ";
-	// header += "src=\"https://toppng.com/uploads/preview/erreur-404-11550708744oo95egrxlp.png\" ";
-	// header += "alt=\"error message 404\">\n";
-	// header += "</div>\n";
-	// header += "</body>\n";
-	// header += "</html>\n";
-
 	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
 }
 
