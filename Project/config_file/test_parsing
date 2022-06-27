@@ -28,6 +28,10 @@ server {
 
 		location /bob_le_bricoleur {
 			index bob.jpeg
+
+			location /bite {
+				index j.jpef
+			}
 		}
 	}
 

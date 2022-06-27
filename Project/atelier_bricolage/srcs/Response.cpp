@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 18:45:45 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/27 23:33:30 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void			Response::responseGet() {
 		this->_header.setStatusCode(200);
 		this->_header.setStatus(this->_request.get_http_version(), "OK");
 		this->_body += readFromFile("../www/error_page/custom/error_page_404.html");
-		this->_body += readFromFile("../www/error_page/custom/todd.jpeg");
+//		this->_body += readFromFile("../www/error_page/custom/todd1.jpeg");
 		this->_header.setDate();
 		this->_header.setBodyLength(this->_body.length());
 		this->_header.setContentLength();
