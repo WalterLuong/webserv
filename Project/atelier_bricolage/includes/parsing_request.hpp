@@ -55,6 +55,7 @@ class request {
 	private :
 
 		int	_end;
+		std::vector<location_block> dependance;
 
 		void	init_default_error();
 		void	init_file_type();
@@ -82,6 +83,7 @@ class request {
 
 		int check_path_for_location(Server cur, std::string path);
 		int deep_location(std::string path, location_block stc);
+		void	complete_location_path();
 };
 
 

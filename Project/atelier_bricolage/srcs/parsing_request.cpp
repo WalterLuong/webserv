@@ -48,10 +48,54 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 	if (set_current_server(lst_inf) != 0) {
 		std::cout << "bad path request" << std::endl;
+		complete_location_path();
+		std::cout << "location path :" << std::endl;
+		std::cout << "uri :"  << location_path.uri<< std::endl;
+		std::cout << "root :"  << location_path.root<< std::endl;
+		std::cout << "index:"  << location_path.index<< std::endl;
+		std::cout << "max_client :"  << location_path.max_client<< std::endl;
+		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
+		while (ite != location_path.allow_methods.end()) {
+		std::cout << "allow:"  << *ite<< std::endl;
+		ite++;
+		}
+
+		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
+		while (ite1 != location_path.error_page.end()) {
+			std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
+			ite1++;
+		}
+		std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
+		while (ite2 != location_path.redirection.end()) {
+			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
+			ite1++;
+		}
+
 		validity = 400;
 		return ;
 	}
+	complete_location_path();
+		std::cout << "location path :" << std::endl;
+		std::cout << "uri :"  << location_path.uri<< std::endl;
+		std::cout << "root :"  << location_path.root<< std::endl;
+		std::cout << "index:"  << location_path.index<< std::endl;
+		std::cout << "max_client :"  << location_path.max_client<< std::endl;
+		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
+		while (ite != location_path.allow_methods.end()) {
+		std::cout << "allow:"  << *ite<< std::endl;
+		ite++;
+		}
 
+		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
+		while (ite1 != location_path.error_page.end()) {
+			std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
+			ite1++;
+		}
+		std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
+		while (ite2 != location_path.redirection.end()) {
+			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
+			ite1++;
+		}
 
 
 
@@ -277,6 +321,35 @@ int	request::check_method_post() {
 
 
 
+void	request::complete_location_path() {
+	location_block ret;
+
+	std::vector<location_block>::iterator ite = dependance.begin();
+	while (ite != dependance.end()) {
+		if (ite->uri.size() != 0)
+			ret.uri = ite->uri;
+		if (ite->root.size() != 0)
+			ret.root= ite->root;
+		if (ite->index.size() != 0)
+			ret.index= ite->index;
+		if (ite->autoindex.size() != 0)
+			ret.autoindex= ite->autoindex;
+		if (ite->max_client != 0)
+			ret.max_client = ite->max_client;
+		if (ite->allow_methods.size() != 0)
+			ret.allow_methods = ite->allow_methods;
+		if (ite->error_page.size() != 0)
+			ret.error_page = ite->error_page;
+		if (ite->redirection.size() != 0)
+			ret.redirection= ite->redirection;
+		if (ite->redirection.size() != 0)
+			ret.redirection= ite->redirection;
+		ite++;
+	}
+	location_path = ret;
+
+}
+
 /*	How to use */
 /*	if cur_serv_index == -1, pas de server trouver donc 404default */
 /*	sinon cur_serv_index est la pos dans le vector de server */
@@ -291,6 +364,7 @@ int	request::deep_location(std::string path, location_block stc) {
 
 	while (ite != stc.location.end()) {
 		if (ite->uri == path) {
+			dependance.push_back(*ite);
 			location_path = *ite;
 			return 0;
 		}
@@ -304,6 +378,7 @@ int	request::deep_location(std::string path, location_block stc) {
 		while (ite != stc.location.end()) {
 			if (ite->uri == new_str) {
 				std::string second_str(path, end+ 1);
+			dependance.push_back(*ite);
 				return (deep_location(second_str, *ite));			
 			}
 			ite++;
@@ -324,6 +399,7 @@ int	request::check_path_for_location(Server cur, std::string path) {
 //	std::cout << "first step in check path" << std::endl;
 	while (ite != cur.infos.location.end()) {
 		if (ite->uri == path) {
+			dependance.push_back(*ite);
 			location_path = *ite;
 			return 0;
 		}
@@ -338,6 +414,7 @@ int	request::check_path_for_location(Server cur, std::string path) {
 //			std::cout << "test:" << ite->uri << std::endl;
 			if (ite->uri == first_loc) {
 				std::string second_loc(path, end + 2);
+			dependance.push_back(*ite);
 //				std::cout << "test2 second loc:" << second_loc << std::endl;
 				if (deep_location(second_loc, *ite) == 0)
 					return 0;
