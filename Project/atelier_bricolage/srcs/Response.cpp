@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 01:44:58 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/28 05:27:45 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,48 @@ std::string		Response::getResponse() {
 //	si non error 405 et return false
 // }
 
-void			Response::responseGet() {
+void			Response::responseGet(std::vector<Server> lst_server) {
+	// _request.methods == "GET";
+	std::string path_for_access;
+	std::string	extension;
+
+	
+
+	if (_request.cur_serv_index == 1) {
+		std::cout << "bite" << std::endl;
+		// Host header no valide
+		// make a error page
+	//	return ;
+	}
+	if (_request.path == "/") {
+	//	std::cout << "bite" << std::endl;
+		if (_request.filename == "")
+			path_for_access = lst_server[_request.cur_serv_index].infos.root + lst_server[_request.cur_serv_index].infos.index;
+		else
+			path_for_access = lst_server[_request.cur_serv_index].infos.root + _request.filename;
+		size_t pos = path_for_access.find_last_of(".");
+		extension = path_for_access.substr(pos);
+	
+
+		std::cout << "extension" << extension << std::endl;
+		std::cout << "acces::" <<  lst_server[_request.cur_serv_index].infos.root << lst_server[_request.cur_serv_index].infos.index << std::endl; 
+		
+		if (access(path_for_access.c_str(), F_OK) == 0) {
+
+			this->_header.setStatusCode(404);
+			this->_header.setStatus(this->_request.get_http_version(), "OK");
+			this->_body += readFromFile(path_for_access);
+		this->_header.setDate();
+		this->_header.setBodyLength(this->_body.length());
+		this->_header.setContentLength();
+		this->_header.setContentType(_request.map_file_type[extension]);
+		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
+		}
+		
+		
+	//	_header.setStatusCode(atoi(_request.validity));
+
+	}
 //getter a coder	if (this->_header.getStatusCode() != 200)
 //		return ;
 	/* NECESSITE LE PQRSING DE VICTOR
@@ -58,13 +99,13 @@ void			Response::responseGet() {
 		//generate error page
 	// }
 	//fill the header
-	if (access("../www/error_page/custom/error_page_404.html", F_OK) == 0)
+	else if (access("../www/error_page/custom/error_page_404.html", F_OK) == 0)
 	{
 		std::cout << "HERE" << std::endl;
 		this->_header.setStatusCode(404);
 		this->_header.setStatus(this->_request.get_http_version(), "OK");
 		this->_body += readFromFile("../www/error_page/custom/error_page_404.html");
-		this->_body += readFromFile("../www/error_page/custom/todd1.jpeg");
+	//	this->_body += readFromFile("../www/error_page/custom/todd1.jpeg", 1);
 		this->_header.setDate();
 		this->_header.setBodyLength(this->_body.length());
 		this->_header.setContentLength();
@@ -93,6 +134,30 @@ void			Response::responseCGI() {
 
 void			Response::responseAutoIndex() {
 	// j'attends victor
+	// 
+}
+
+std::string		Response::readFromFile(std::string path, int i) {
+	std::ifstream		ifs(path.c_str(), std::ifstream::binary);
+	std::string			ret_buffer;
+	std::string			tmp;
+
+	if (i != 1) {
+		return tmp;
+	}
+	if (!ifs)
+	{
+		std::cout << "This file doesn't exist." << std::endl;
+		return ("");
+	}
+	while (!ifs.eof())
+	{
+		std::getline(ifs, tmp);
+		ret_buffer += tmp;
+		ret_buffer += "\n";
+	}
+	ifs.close();
+	return ret_buffer;
 }
 
 std::string		Response::readFromFile(std::string path) {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 02:39:07 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/28 03:28:12 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ class Response
 		std::string		getBody();
 		std::string		getResponse();
 
-		void			responseGet();
+		void			responseGet(std::vector<Server> lst_server);
 		void			responsePost();
 		void			responseDelete();
 		void			responseCGI();
 		void			responseAutoIndex();
 		std::string		setErrorPage();
 		std::string		readFromFile(std::string path);
+		std::string		readFromFile(std::string path, int i);
 
 		void			setBody( std::string body );
 

@@ -55,9 +55,9 @@ server {
 	
 	listen 8001
 
-	index	other_server.html
+	index	error_page_403.html
 
-
+	root ../www/error_page/custom/
 
 
 	max_body_client	1500

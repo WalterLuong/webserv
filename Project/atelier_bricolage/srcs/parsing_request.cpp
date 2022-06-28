@@ -5,7 +5,7 @@
 // check request a finir
 // check host a fair
 
-request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), _end(0) {
+request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), filename(), _end(0) , dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -15,7 +15,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 
 }
 
-request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), location_path(), _end(0){
+request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), filename(),_end(0), dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -111,6 +111,11 @@ request::request(request const & cpy) {
 	map_error = cpy.map_error;
 	map_file_type= cpy.map_file_type;
 	instruction = cpy.instruction;
+	cur_serv_index = cpy.cur_serv_index;
+	in_location = cpy.in_location;
+	location_path = cpy.location_path;
+	dependance = cpy.dependance;
+	filename = cpy.filename;
 	_end = cpy._end;
 }
 
@@ -124,6 +129,12 @@ request &request::operator=(request const & cpy) {
 	map_error = cpy.map_error;
 	map_file_type= cpy.map_file_type;
 	instruction = cpy.instruction;
+	cur_serv_index = cpy.cur_serv_index;
+	in_location = cpy.in_location;
+	location_path = cpy.location_path;
+	dependance = cpy.dependance;
+	filename = cpy.filename;
+	
 	_end = cpy._end;
 	return (*this);
 }
@@ -394,6 +405,20 @@ int	request::check_path_for_location(Server cur, std::string path) {
 	size_t end;
 	std::vector<location_block>::iterator ite = cur.infos.location.begin();
 
+	// check if path == /filename
+	// 
+	if (path.find_last_of("/") == 0){
+		size_t pos;
+		std::cout << "BITE" << std::endl;
+		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
+		{
+			std::cout << "BJR LES AMICHE" << std::endl;
+			this->filename = path.substr(1);
+			this->path = "/";
+			return 0;
+		}
+	}
+
 	if (cur.infos.location.size() == 0)
 		return 1;
 //	std::cout << "first step in check path" << std::endl;
@@ -449,6 +474,7 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	}
 
 	cur_serv_index = j;
+	std::cout << "cur server index:" << j << std::endl;
 
 	if (path != "/") {
 	if ((in_location = check_path_for_location(lst_server[j], path)) != 0) {

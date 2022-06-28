@@ -144,7 +144,7 @@ void	Service::receive() {
 //			if (req)
 			// {
 			Response	resp(req);
-			resp.responseGet();
+			resp.responseGet(_servers);
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
 			// }
