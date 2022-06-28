@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/26 18:53:05 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/28 20:45:49 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ std::string generator_error_file(std::string error_status) {
 	ret += "</title>\n</head>\n<body>\n<h1>Error ";
 	ret += error_status;
 	ret += "</h1>\n<p>Noppppppppppppppppp</p>\n<p>Cherche encore et peut etre tu trouveras l'amour</p>\n<p><strong>coeur</strong></p>\n</body>\n</html>";
+	ret += "\r\n";
 
 	return ret;
 }

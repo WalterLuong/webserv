@@ -57,8 +57,8 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 		std::cout << "max_client :"  << location_path.max_client<< std::endl;
 		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
 		while (ite != location_path.allow_methods.end()) {
-		std::cout << "allow:"  << *ite<< std::endl;
-		ite++;
+			std::cout << "allow:"  << *ite<< std::endl;
+			ite++;
 		}
 
 		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
@@ -75,7 +75,7 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 		validity = 400;
 		return ;
 	}
-	complete_location_path(lst_inf);
+		complete_location_path(lst_inf);
 		std::cout << "location path :" << std::endl;
 		std::cout << "uri :"  << location_path.uri<< std::endl;
 		std::cout << "root :"  << location_path.root<< std::endl;
@@ -83,8 +83,8 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 		std::cout << "max_client :"  << location_path.max_client<< std::endl;
 		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
 		while (ite != location_path.allow_methods.end()) {
-		std::cout << "allow:"  << *ite<< std::endl;
-		ite++;
+			std::cout << "allow:"  << *ite<< std::endl;
+			ite++;
 		}
 
 		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
@@ -298,7 +298,8 @@ int	request::check_connection() {
 	}
 	else {
 		if (instruction["Connection"] != "keep-alive" && instruction["Connection"] != "close") {
-			return 1;
+			std::cout << "Header Connection doesn't support other string than keep-alive or close" << std::endl;
+			return 400;
 		}
 	}
 	return 0;
@@ -521,11 +522,12 @@ int	request::check_request() {
 	if (http_version == "HTTP/1.1") {
 
 		if (instruction["Host"] == "") {
+			std::cout << "HTTP/1.1 request need Host Header" << std::endl;
 			return 400;
 		}
 	}
 	if (check_connection() != 0) {
-		return 1;
+		return 400;
 	}
 	if (methods == "POST") {
 		return check_method_post();
@@ -551,8 +553,8 @@ int	request::fill_body(std::string line) {
 int	request::pars_body(std::string line) {
 	fill_body(line);
 	if (line.length() != static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
-		std::cout << "ca depasse" << std::endl;
-		return 1;
+		std::cout << "Header Content-Length support only number" << std::endl;
+		return 400;
 	}
 	return 0;
 
@@ -655,7 +657,7 @@ int	request::fill_string(std::string str) {
 	//	std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
 		if (pars_body(str.substr(2)) != 0) {
 			std::cout << "pars_body invalide" << std::endl;
-			return 1;
+			return 400;
 		}
 		
 	}

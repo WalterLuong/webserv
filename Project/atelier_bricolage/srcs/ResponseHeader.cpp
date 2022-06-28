@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseHeader.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/25 10:03:18 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/28 20:20:34 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,15 @@ void			ResponseHeader::setContentType( std::string const & str ) {
 }
 
 void			ResponseHeader::generateHeader() {
-	this->_header = this->_status + N_LINE;
+	if (_status != "")
+		this->_header = this->_status + N_LINE;
+	if (_date != "")
 	this->_header += this->_date + N_LINE;
+	if (_serverName != "")
 	this->_header += this->_serverName + N_LINE;
+	if (_contentLength != "")
 	this->_header += this->_contentLength + N_LINE;
+	if (_contentType != "")
 	this->_header += this->_contentType + N_LINE;
 	this->_header += N_LINE;
 }

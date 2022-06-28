@@ -67,7 +67,7 @@ server {
 
 	return   	301	  	 fkjlsljfk
 
-	error_page 403	../www/error_page/custom/error_page_403.html
+	error_page 400	../www/error_page/custom/error_page_403.html
 
 	location /cat {
 		root ../www/image/

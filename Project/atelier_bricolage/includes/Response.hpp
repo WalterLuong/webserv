@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 03:28:12 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/28 21:46:01 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Response
 		std::string		setErrorPage();
 		std::string		readFromFile(std::string path);
 		std::string		readFromFile(std::string path, int i);
+		void	auto_response();
 
 		void			setBody( std::string body );
 

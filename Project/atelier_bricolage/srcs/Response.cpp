@@ -6,7 +6,7 @@
 /*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 19:02:44 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/06/28 21:13:18by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,47 @@ std::string		Response::getResponse() {
 //	si non error 405 et return false
 // }
 
+void		Response::auto_response() {
+		char buff[250];
+
+		itoa(_request.validity, buff, 10);
+		std::string validity_c(buff);
+	
+		if (_request.cur_serv_index == -1) {
+			_header.setStatusCode(_request.validity);	
+			_body += generator_error_file(validity_c);
+			_header.setBodyLength(_body.length());
+			_header.setContentType("text/html");
+			this->_header.setStatus("HTTP/1.1", "OK");
+		}
+		
+		else {
+			std::vector<std::pair<std::string, std::string> >::iterator ite = _request.location_path.error_page.begin();
+			while (ite != _request.location_path.error_page.end()) {
+				if (validity_c == ite->first) {
+					size_t pos;
+					if ((pos = ite->second.find_last_of(".")) == std::string::npos) {
+						_request.cur_serv_index = -1;
+						auto_response();
+					}
+					std::string extension(ite->second.substr(pos));
+
+					_header.setStatusCode(_request.validity);	
+					_body += readFromFile(ite->second);
+					_header.setBodyLength(_body.length());
+					_header.setContentType(_request.map_file_type[extension]);
+					this->_header.setStatus("HTTP/1.1", "OK");
+	
+					return ;
+				}
+				// je recup ite->first (string), je compare ca a _request.validity et si == _body =RFF(ite->second) 
+				
+				ite++;
+			}
+		}
+
+}
+
 void			Response::responseGet(std::vector<Server> lst_server) {
 	// _request.methods == "GET";
 	std::string path_for_access;
@@ -57,6 +98,9 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		// make a error page
 	//	return ;
 	}
+	if (_request.validity != 200) {
+		return auto_response();
+	}
 	if (_request.path == "/") {
 		std::cout << "ROOT " << std::endl;
 	//	std::cout << "bite" << std::endl;
@@ -72,8 +116,10 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		std::cout << "acces::" <<  lst_server[_request.cur_serv_index].infos.root << lst_server[_request.cur_serv_index].infos.index << std::endl; 
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
-
-			this->_header.setStatusCode(200);
+			char buff[25];
+			itoa(_request.validity, buff, 10);
+			std::string validity_c(buff);
+			this->_header.setStatusCode(_request.validity);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body += readFromFile(path_for_access);
 		this->_header.setDate();
@@ -109,7 +155,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
 
-			this->_header.setStatusCode(200);
+			this->_header.setStatusCode(_request.validity);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body += readFromFile(path_for_access);
 		this->_header.setDate();
