@@ -85,7 +85,7 @@ class request {
 
 		int check_path_for_location(Server cur, std::string path);
 		int deep_location(std::string path, location_block stc);
-		void	complete_location_path();
+		void	complete_location_path(std::vector<Server> lst_inf);
 };
 
 

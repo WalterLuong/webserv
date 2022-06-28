@@ -48,7 +48,8 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 	if (set_current_server(lst_inf) != 0) {
 		std::cout << "bad path request" << std::endl;
-		complete_location_path();
+		if (cur_serv_index != -1)
+			complete_location_path(lst_inf);
 		std::cout << "location path :" << std::endl;
 		std::cout << "uri :"  << location_path.uri<< std::endl;
 		std::cout << "root :"  << location_path.root<< std::endl;
@@ -68,13 +69,13 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 		std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
 		while (ite2 != location_path.redirection.end()) {
 			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
-			ite1++;
+			ite2++;
 		}
 
 		validity = 400;
 		return ;
 	}
-	complete_location_path();
+	complete_location_path(lst_inf);
 		std::cout << "location path :" << std::endl;
 		std::cout << "uri :"  << location_path.uri<< std::endl;
 		std::cout << "root :"  << location_path.root<< std::endl;
@@ -91,11 +92,13 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 			std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
 			ite1++;
 		}
-		std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
-		while (ite2 != location_path.redirection.end()) {
+		//boucle inf ????
+	//	std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
+	/*	while (ite2 != location_path.redirection.end()) {
 			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
 			ite1++;
 		}
+		*/
 
 
 
@@ -332,10 +335,26 @@ int	request::check_method_post() {
 
 
 
-void	request::complete_location_path() {
+void	request::complete_location_path(std::vector<Server> lst_inf) {
 	location_block ret;
 
 	std::vector<location_block>::iterator ite = dependance.begin();
+
+	if (lst_inf[cur_serv_index].infos.root.size() != 0)
+		ret.root = lst_inf[cur_serv_index].infos.root;
+	if (lst_inf[cur_serv_index].infos.index.size())
+		ret.index= lst_inf[cur_serv_index].infos.index;
+	if (lst_inf[cur_serv_index].infos.autoindex.size())
+		ret.autoindex = lst_inf[cur_serv_index].infos.autoindex;
+	if (lst_inf[cur_serv_index].infos.max_client != 0)
+		ret.max_client= lst_inf[cur_serv_index].infos.max_client;
+	if (lst_inf[cur_serv_index].infos.allow_methods.size()!= 0)
+		ret.allow_methods = lst_inf[cur_serv_index].infos.allow_methods;
+	if (lst_inf[cur_serv_index].infos.error_page.size()!= 0)
+		ret.error_page= lst_inf[cur_serv_index].infos.error_page;
+	if (lst_inf[cur_serv_index].infos.redirection.size()!= 0)
+		ret.redirection = lst_inf[cur_serv_index].infos.redirection;
+	
 	while (ite != dependance.end()) {
 		if (ite->uri.size() != 0)
 			ret.uri = ite->uri;
@@ -353,8 +372,6 @@ void	request::complete_location_path() {
 			ret.error_page = ite->error_page;
 		if (ite->redirection.size() != 0)
 			ret.redirection= ite->redirection;
-		if (ite->redirection.size() != 0)
-			ret.redirection= ite->redirection;
 		ite++;
 	}
 	location_path = ret;
@@ -369,10 +386,23 @@ void	request::complete_location_path() {
 /*	in_location == 0, location_path == le location block en question	*/
 
 int	request::deep_location(std::string path, location_block stc) {
+	//check for filename
+	//
+	if (path.find_last_of("/") == 0){
+		size_t pos;
+		std::cout << "In location BITE" << std::endl;
+		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
+		{
+			std::cout << "BJR LES AMICHE in location" << std::endl;
+			this->filename = path.substr(1);
+			return 0;
+		}
+	}
 	if (stc.location.size() == 0)
 		return 1;
 	std::vector<location_block>::iterator ite = stc.location.begin();
 
+	std::cout << "new path uri:" << path << std::endl;
 	while (ite != stc.location.end()) {
 		if (ite->uri == path) {
 			dependance.push_back(*ite);
@@ -421,9 +451,10 @@ int	request::check_path_for_location(Server cur, std::string path) {
 
 	if (cur.infos.location.size() == 0)
 		return 1;
+	std::cout << "new path uri: " << path << std::endl;
 //	std::cout << "first step in check path" << std::endl;
 	while (ite != cur.infos.location.end()) {
-		if (ite->uri == path) {
+		if (ite->uri == path.substr(1)) {
 			dependance.push_back(*ite);
 			location_path = *ite;
 			return 0;

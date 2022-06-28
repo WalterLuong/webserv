@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 05:27:45 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/28 06:44:05 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	std::string	extension;
 
 	
+	if (_body.size() != 0) {
+		std::cout << "WTF here are my pb let's look inside" << std::endl;
+		std::cout << _body << std::endl;
+	}
 
 	if (_request.cur_serv_index == 1) {
 		std::cout << "bite" << std::endl;
@@ -54,6 +58,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	//	return ;
 	}
 	if (_request.path == "/") {
+		std::cout << "ROOT " << std::endl;
 	//	std::cout << "bite" << std::endl;
 		if (_request.filename == "")
 			path_for_access = lst_server[_request.cur_serv_index].infos.root + lst_server[_request.cur_serv_index].infos.index;
@@ -77,6 +82,40 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		this->_header.setContentType(_request.map_file_type[extension]);
 		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
 		}
+	}
+	else {
+		std::cout << "/location/" << std::endl;
+		if (_request.filename == "") {
+			std::cout << "no filename" << std::endl;
+			path_for_access = _request.location_path.root + _request.location_path.index;
+		}
+		else {
+			std::cout << "ya un filename" << std::endl;
+			path_for_access = _request.location_path.root + _request.filename;
+		}
+		size_t pos = path_for_access.find_last_of(".");
+		extension = path_for_access.substr(pos);
+	
+
+		std::cout << "extension" << extension << std::endl;
+		std::cout << "acces::" <<  _request.location_path.root << _request.location_path.index << std::endl; 
+		std::cout << "reel access:" << path_for_access << std::endl;
+		std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
+		
+		if (access(path_for_access.c_str(), F_OK) == 0) {
+
+			this->_header.setStatusCode(404);
+			this->_header.setStatus(this->_request.get_http_version(), "OK");
+			this->_body += readFromFile(path_for_access);
+		this->_header.setDate();
+		this->_header.setBodyLength(this->_body.length());
+		this->_header.setContentLength();
+		this->_header.setContentType(_request.map_file_type[extension]);
+		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
+
+
+
+		}
 		
 		
 	//	_header.setStatusCode(atoi(_request.validity));
@@ -99,6 +138,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		//generate error page
 	// }
 	//fill the header
+	/*
 	else if (access("../www/error_page/custom/error_page_404.html", F_OK) == 0)
 	{
 		std::cout << "HERE" << std::endl;
@@ -112,6 +152,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		this->_header.setContentType("text/html");
 		this->_header.setServerName("jean");
 	}
+	*/
 
 }
 

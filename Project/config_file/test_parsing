@@ -67,10 +67,10 @@ server {
 
 	return   	301	  	 fkjlsljfk
 
-	error_page 403	www/error_page/custom/error_page_403.html
+	error_page 403	../www/error_page/custom/error_page_403.html
 
 	location /cat {
-		root /www/image
+		root ../www/image/
 		methods	GET POST
 
 		index	cat.jpeg
@@ -78,7 +78,7 @@ server {
 		autoindex off
 
 		location /bob_le_bricoleur {
-			index bob.jpeg
+			index todd/todd1.jpeg
 
 			location /bite {
 				index j.jpef
@@ -87,7 +87,8 @@ server {
 	}
 
 	location /tod {
-		root /www/image/todd
+		root ../www/image/todd
+		index todd3.jpeg
 		
 		autoindex on
 
