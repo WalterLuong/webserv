@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:56:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 06:44:05 by viporten         ###   ########.fr       */
+/*   Updated: 2022/06/28 19:02:44 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
 
-			this->_header.setStatusCode(404);
+			this->_header.setStatusCode(200);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body += readFromFile(path_for_access);
 		this->_header.setDate();
@@ -94,6 +94,11 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			path_for_access = _request.location_path.root + _request.filename;
 		}
 		size_t pos = path_for_access.find_last_of(".");
+		if (pos == std::string::npos) {
+			this->_header.setStatusCode(404);
+			return ;
+
+		}
 		extension = path_for_access.substr(pos);
 	
 
@@ -104,7 +109,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
 
-			this->_header.setStatusCode(404);
+			this->_header.setStatusCode(200);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body += readFromFile(path_for_access);
 		this->_header.setDate();

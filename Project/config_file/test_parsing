@@ -55,9 +55,9 @@ server {
 	
 	listen 8001
 
-	index	error_page_403.html
+	index	index.html
 
-	root ../www/error_page/custom/
+	root ../www/
 
 
 	max_body_client	1500
@@ -87,7 +87,7 @@ server {
 	}
 
 	location /tod {
-		root ../www/image/todd
+		root ../www/image/todd/
 		index todd3.jpeg
 		
 		autoindex on
