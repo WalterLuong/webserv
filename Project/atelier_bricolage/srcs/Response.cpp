@@ -139,11 +139,11 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body = AutoIndexGenerator(_request.location_path.root);
 			// this->_body += readFromFile(path_for_access);
-		this->_header.setDate();
-		this->_header.setBodyLength(this->_body.length());
-		this->_header.setContentLength();
-		this->_header.setContentType(_request.map_file_type[extension]);
-		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
+			this->_header.setDate();
+			this->_header.setBodyLength(this->_body.length());
+			this->_header.setContentLength();
+			this->_header.setContentType(_request.map_file_type[extension]);
+			this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
 		}
 	}
 	else {
