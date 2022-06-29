@@ -17,6 +17,12 @@ Response::Response(request req) : _header(), _body(), _request(req), _resp() {}
 
 Response::~Response() {}
 
+
+void	Response::set_validity(int value) {
+	_request.validity = value;
+}
+
+
 std::string		Response::getHeader() {
 	return _header.getHeader();
 }
@@ -61,7 +67,7 @@ void		Response::auto_response() {
 					size_t pos;
 					if ((pos = ite->second.find_last_of(".")) == std::string::npos) {
 						_request.cur_serv_index = -1;
-						auto_response();
+						return auto_response();
 					}
 					std::string extension(ite->second.substr(pos));
 
@@ -77,6 +83,9 @@ void		Response::auto_response() {
 				
 				ite++;
 			}
+			_request.cur_serv_index = -1;
+			return auto_response();
+
 		}
 
 }
@@ -192,41 +201,9 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		}
 		
 		
-	//	_header.setStatusCode(atoi(_request.validity));
 
 	}
-//getter a coder	if (this->_header.getStatusCode() != 200)
-//		return ;
-	/* NECESSITE LE PQRSING DE VICTOR
-	du coup en attendant */
-	// bool location = 1;
-	// bool autoindex = 1;
 
-	// if (this->_request.get_path() == "/")
-	// {
-		// if (autoindex)
-			// responseAutoIndex();
-		//check if error page exists
-		// this->_body = setErrorPage();
-		//else
-		//generate error page
-	// }
-	//fill the header
-	/*
-	else if (access("../www/error_page/custom/error_page_404.html", F_OK) == 0)
-	{
-		std::cout << "HERE" << std::endl;
-		this->_header.setStatusCode(404);
-		this->_header.setStatus(this->_request.get_http_version(), "OK");
-		this->_body += readFromFile("../www/error_page/custom/error_page_404.html");
-	//	this->_body += readFromFile("../www/error_page/custom/todd1.jpeg", 1);
-		this->_header.setDate();
-		this->_header.setBodyLength(this->_body.length());
-		this->_header.setContentLength();
-		this->_header.setContentType("text/html");
-		this->_header.setServerName("jean");
-	}
-	*/
 
 }
 

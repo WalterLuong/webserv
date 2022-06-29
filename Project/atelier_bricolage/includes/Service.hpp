@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Service.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 06:11:24 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/29 05:05:13 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/29 15:38:18 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Service
 
 		// Service & operator=( Service const& other );
 
+		int		check_methods(request req);
 		void	setup_cluster();
 		void	check_opened_sd();
 		void	run_service();

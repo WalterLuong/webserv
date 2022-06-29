@@ -114,6 +114,28 @@ bool	Service::accepting_connections() {
 	return true;
 }
 
+int	Service::check_methods(request req) {
+	std::vector<std::string>::iterator ite = req.location_path.allow_methods.begin();
+	int yes = 0;
+	if (ite == req.location_path.allow_methods.end()) {
+		if (req.methods != "GET") {
+			yes = 0;
+		}
+		else 
+			yes = 1;
+	}
+	else {
+		while (ite != req.location_path.allow_methods.end()) {
+			if (req.methods == *ite) {
+				yes = 1;
+					break;
+			}
+		ite++;
+		}
+	}
+	return yes;
+}
+
 void	Service::receive() {
 
 	int		len_recv;
@@ -144,7 +166,20 @@ void	Service::receive() {
 //			if (req)
 			// {
 			Response	resp(req);
-			resp.responseGet(_servers);
+
+
+			int is_valid_method = check_methods(req);
+
+			if (is_valid_method == 0) {
+				std::cout << "Mehtod not allowed" << std::endl;
+				resp.set_validity( 405);
+				resp.responseGet(_servers);
+
+			}
+			else if (req.methods == "GET") {
+				resp.responseGet(_servers);
+			}
+		//	resp.responseGet(_servers);
 			std::cout << resp.getResponse() << std::endl;
 			sending(i, resp);
 			// }

@@ -20,7 +20,7 @@ server {
 
 	location /cat {
 		root /www/image
-		methods	GET POST
+		methods GET	POST
 
 		index	cat.jpeg
 
@@ -62,7 +62,7 @@ server {
 
 	max_body_client	1500
 
-	methods GET          POST    DELETE
+	methods GET POST    DELETE
 	autoindex 		 off  
 
 	return   	301	  	 fkjlsljfk
@@ -71,7 +71,7 @@ server {
 
 	location /cat {
 		root ../www/image/
-		methods	GET POST
+		methods	POST GET
 
 	error_page 400	../www/error_page/custom/error_page_404.html
 		index	cat.jpeg
