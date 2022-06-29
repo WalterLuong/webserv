@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/29 05:02:04 by wluong           ###   ########.fr       */
+/*   Updated: 2022/06/29 05:34:24 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,14 @@ std::string		AutoIndexGenerator( std::string path ) {
 	dirent	*files;
 	std::string		list;
 
-	list = "<html>\n<head><title>Index of ";
+	list = "<!DOCTYPE html>\n";
+	list += "<html>\n<head><title>Index of ";
 	list += path;
 	list += "</title></head>\n";
-	list += "<body bgcolor=\"blue\"><hr>\n";
-	list +=	"<a href=\"../\">../</a>";
+	list += "<body bgcolor=\"white\"><hr>\n";
+	list += "<h1>Index of ";
+	list += path;
+	list += " </h1>\n";
 	directory = opendir(path.c_str());
 	if (directory)
 	{
@@ -117,7 +120,7 @@ std::string		AutoIndexGenerator( std::string path ) {
 		{
 			list += "<a href=\"";
 			list += files->d_name;
-			list += "\">";
+			list += "/\">";
 			list += files->d_name;
 			list += "</a><hr>";
 			list += "\n";
@@ -129,5 +132,6 @@ std::string		AutoIndexGenerator( std::string path ) {
 		return "";
 	}
 	list += "</body>\n</html>";
+	list += "\r\n";
 	return list;
 }

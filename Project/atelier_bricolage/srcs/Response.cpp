@@ -129,7 +129,8 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			std::string validity_c(buff);
 			this->_header.setStatusCode(_request.validity);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
-			this->_body += readFromFile(path_for_access);
+			this->_body = AutoIndexGenerator(_request.location_path.root);
+			// this->_body += readFromFile(path_for_access);
 		this->_header.setDate();
 		this->_header.setBodyLength(this->_body.length());
 		this->_header.setContentLength();
@@ -161,7 +162,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
-
+			std::cout << _YEL << path_for_access << _NOR << std::endl;
 			this->_header.setStatusCode(_request.validity);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
 			this->_body += readFromFile(path_for_access);
