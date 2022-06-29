@@ -24,6 +24,7 @@ class request {
 		int cur_serv_index;
 		int in_location;
 		location_block	location_path;
+		int autoindex_on;
 
 		std::string filename;
 		/* need serve concerner par instruction"HOSt"*/

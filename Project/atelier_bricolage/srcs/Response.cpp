@@ -99,6 +99,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	//	return ;
 	}
 	if (_request.validity != 200) {
+		std::cout << "request non valide" << std::endl;
 		return auto_response();
 	}
 	if (_request.path == "/") {
@@ -109,11 +110,18 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		else
 			path_for_access = lst_server[_request.cur_serv_index].infos.root + _request.filename;
 		size_t pos = path_for_access.find_last_of(".");
+		if (pos == std::string::npos) {
+			std::cout << "Extension not found in path" << std::endl;
+			this->_header.setStatusCode(404);
+			return ;
+
+		}
+
 		extension = path_for_access.substr(pos);
 	
 
 		std::cout << "extension" << extension << std::endl;
-		std::cout << "acces::" <<  lst_server[_request.cur_serv_index].infos.root << lst_server[_request.cur_serv_index].infos.index << std::endl; 
+		std::cout << "acces::" <<  path_for_access << std::endl; 
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {
 			char buff[25];
@@ -141,6 +149,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		}
 		size_t pos = path_for_access.find_last_of(".");
 		if (pos == std::string::npos) {
+			std::cout << "Extension not found in path" << std::endl;
 			this->_header.setStatusCode(404);
 			return ;
 
@@ -149,8 +158,6 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	
 
 		std::cout << "extension" << extension << std::endl;
-		std::cout << "acces::" <<  _request.location_path.root << _request.location_path.index << std::endl; 
-		std::cout << "reel access:" << path_for_access << std::endl;
 		std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
 		
 		if (access(path_for_access.c_str(), F_OK) == 0) {

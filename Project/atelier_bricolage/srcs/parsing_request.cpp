@@ -5,7 +5,7 @@
 // check request a finir
 // check host a fair
 
-request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), filename(), _end(0) , dependance(){
+request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(), _end(0) , dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -15,7 +15,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 
 }
 
-request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), filename(),_end(0), dependance(){
+request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(),_end(0), dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -119,6 +119,7 @@ request::request(request const & cpy) {
 	location_path = cpy.location_path;
 	dependance = cpy.dependance;
 	filename = cpy.filename;
+	autoindex_on = cpy.autoindex_on;
 	_end = cpy._end;
 }
 
@@ -137,6 +138,7 @@ request &request::operator=(request const & cpy) {
 	location_path = cpy.location_path;
 	dependance = cpy.dependance;
 	filename = cpy.filename;
+	autoindex_on = cpy.autoindex_on;
 	
 	_end = cpy._end;
 	return (*this);
@@ -389,13 +391,20 @@ void	request::complete_location_path(std::vector<Server> lst_inf) {
 int	request::deep_location(std::string path, location_block stc) {
 	//check for filename
 	//
-	if (path.find_last_of("/") == 0){
+	std::cout << "deep location neew path :" << path << std::endl;
+	if (path.find("/") == std::string::npos){
 		size_t pos;
 		std::cout << "In location BITE" << std::endl;
+		if (path == "") {
+			std::cout << "Check pour le autoindex on " << std::endl;
+			autoindex_on = 1;
+			return 0;
+		}
+		// if path == "" && autoindex on alors go lst les dir 
 		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
 		{
 			std::cout << "BJR LES AMICHE in location" << std::endl;
-			this->filename = path.substr(1);
+			this->filename = path;
 			return 0;
 		}
 	}

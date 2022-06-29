@@ -7,7 +7,7 @@ server {
 
 	server_name	jean	           					   	 	 	 
 	
-	index	www/html_file/index.html
+	index	../www/html_file/index.html
 
 	max_body_client	1500
 
@@ -73,15 +73,16 @@ server {
 		root ../www/image/
 		methods	GET POST
 
+	error_page 400	../www/error_page/custom/error_page_404.html
 		index	cat.jpeg
 
-		autoindex off
+		autoindex off 
 
 		location /bob_le_bricoleur {
 			index todd/todd1.jpeg
 
 			location /bite {
-				index j.jpef
+				index j.jpeg
 			}
 		}
 	}
