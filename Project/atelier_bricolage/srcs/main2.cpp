@@ -3,52 +3,42 @@
 #include <stdio.h>
 #include <string>
 #include "../includes/ResponseHeader.hpp"
+#include <dirent.h>
+	
+std::string		AutoIndexGenerator( std::string path ) {
+	
+	DIR		*directory;
+	dirent	*files;
+	std::string		list;
 
-// int		main() {
-// 	ResponseHeader	yo;
-// 	yo.setContentLength("254");
-// 	yo.setContentType("text/html");
-// 	yo.setDate("Wed, 16 Jun 2022");
-// 	yo.setServerName("test");
-// 	yo.setStatus("200 OK");
-// 	yo.setLastModified("Wed, 16 Jun 2022");
-// 	yo.generateHeader();
-// 	std::cout << yo.getHeader() << std::endl;
-// 	yo.clearHeader();
-// 	yo.generateHeader();
-// 	std::cout << yo.getHeader() << std::endl;
-
-// }
-
-std::string		readFromFile(std::string path) {
-	std::ifstream		ifs(path);
-	std::string			ret_buffer;
-	std::string			tmp;
-
-	if (!ifs)
+	list = "<html>\n<head><title>Index of ";
+	list += path;
+	list += "</title></head>\n";
+	list += "<body bgcolor=\"blue\"><hr>\n";
+	list +=	"<a href=\"../\">../</a>";
+	directory = opendir(path.c_str());
+	if (directory)
 	{
-		std::cout << "This file doesn't exist." << std::endl;
-		return ("");
+		while ((files = readdir(directory)) != NULL)
+		{
+			list += "<a href=\"";
+			list += files->d_name;
+			list += "\">";
+			list += files->d_name;
+			list += "</a><hr>";
+			list += "\n";
+		}
 	}
-	while (!ifs.eof())
+	else
 	{
-		std::getline(ifs, tmp);
-		ret_buffer += tmp;
-		if (!ifs.eof())
-			ret_buffer += "\n";
+		std::cout << "Can't open directory" << std::endl;
+		return "";
 	}
-	ifs.close();
-	return ret_buffer;
+	list += "</body>\n</html>";
+	return list;
 }
 
 int		main(int ac, char **av)
 {
-	std::string		ret;
-	if (ac != 2)
-	{
-		std::cout << "Wrong number of arguments" << std::endl;
-		return 1;
-	}
-	ret = readFromFile(av[1]);
-	std::cout << ret << std::endl;
+	std::cout << AutoIndexGenerator("../../www/") << std::endl;
 }
