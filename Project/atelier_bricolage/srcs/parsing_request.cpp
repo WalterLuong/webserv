@@ -357,6 +357,8 @@ void	request::complete_location_path(std::vector<Server> lst_inf) {
 		ret.error_page= lst_inf[cur_serv_index].infos.error_page;
 	if (lst_inf[cur_serv_index].infos.redirection.size()!= 0)
 		ret.redirection = lst_inf[cur_serv_index].infos.redirection;
+	ret.autoindex = lst_inf[cur_serv_index].infos.autoindex;
+	ret.cgi_path = lst_inf[cur_serv_index].infos.cgi_path;
 	
 	while (ite != dependance.end()) {
 		if (ite->uri.size() != 0)
@@ -375,6 +377,8 @@ void	request::complete_location_path(std::vector<Server> lst_inf) {
 			ret.error_page = ite->error_page;
 		if (ite->redirection.size() != 0)
 			ret.redirection= ite->redirection;
+		ret.autoindex =  ite->autoindex;
+		ret.cgi_path =  ite->cgi_path;
 		ite++;
 	}
 	location_path = ret;

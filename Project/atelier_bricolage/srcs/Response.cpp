@@ -118,7 +118,15 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		}
 
 		extension = path_for_access.substr(pos);
-	
+		/*
+			go pour les cgi 
+		*/
+		if (_request.location_path.cgi_path.size() != 0) {
+			if (extension == _request.location_path.cgi_path[0].first) {
+				std::cout <<  "RAYYYYYYAN" << std::endl;
+			}
+		}	
+
 
 		std::cout << "extension" << extension << std::endl;
 		std::cout << "acces::" <<  path_for_access << std::endl; 
@@ -156,7 +164,14 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 
 		}
 		extension = path_for_access.substr(pos);
-	
+		/*
+			go pour les cgi 
+		*/
+		if (_request.location_path.cgi_path.size() != 0) {
+			if (extension == _request.location_path.cgi_path[0].first) {
+				std::cout <<  "RAYYYYYYAN" << std::endl;
+			}
+		}	
 
 		std::cout << "extension" << extension << std::endl;
 		std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;

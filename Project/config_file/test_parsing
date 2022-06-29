@@ -97,6 +97,8 @@ server {
 
 	location /snake { 
 		cgi_path	.py	/bin/py_cgi
+
+		index bite.py
 	}
 	
 	location /other_cgi { 
