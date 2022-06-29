@@ -51,7 +51,16 @@ void		Response::auto_response() {
 
 		itoa(_request.validity, buff, 10);
 		std::string validity_c(buff);
-	
+		
+		/*		test cgi == json
+			_header.setStatusCode(_request.validity);	
+			_body += "{\"response\":\"success\", \"body\":{ \"status\": \"right\"}}\n\r\n";
+			_header.setBodyLength(_body.length());
+			_header.setContentType("application/json");
+			this->_header.setStatus("HTTP/1.1", "OK");
+return ;	
+*/
+
 		if (_request.cur_serv_index == -1) {
 			_header.setStatusCode(_request.validity);	
 			_body += generator_error_file(validity_c);
