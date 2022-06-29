@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 20:45:49 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/06/29 05:02:04 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,37 @@ std::string		int_to_str(size_t size) {
 	itoa(size, intStr, 10);
 	std::string	ret(intStr);
 	return ret;
+}
+
+std::string		AutoIndexGenerator( std::string path ) {
+	
+	DIR		*directory;
+	dirent	*files;
+	std::string		list;
+
+	list = "<html>\n<head><title>Index of ";
+	list += path;
+	list += "</title></head>\n";
+	list += "<body bgcolor=\"blue\"><hr>\n";
+	list +=	"<a href=\"../\">../</a>";
+	directory = opendir(path.c_str());
+	if (directory)
+	{
+		while ((files = readdir(directory)) != NULL)
+		{
+			list += "<a href=\"";
+			list += files->d_name;
+			list += "\">";
+			list += files->d_name;
+			list += "</a><hr>";
+			list += "\n";
+		}
+	}
+	else
+	{
+		std::cout << "Can't open directory" << std::endl;
+		return "";
+	}
+	list += "</body>\n</html>";
+	return list;
 }
