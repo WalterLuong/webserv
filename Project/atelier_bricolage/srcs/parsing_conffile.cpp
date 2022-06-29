@@ -3,7 +3,7 @@
 
 /*---location block class---*/
 
-location_block::location_block() :  uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), location() {
+location_block::location_block() :  uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), cgi_path(), location() {
 	init_lst_location_option();
 }
 
@@ -16,6 +16,7 @@ location_block::location_block(location_block const &cpy) {
 		allow_methods= cpy.allow_methods;
 		error_page= cpy.error_page;
 		redirection= cpy.redirection;
+		cgi_path = cpy.cgi_path;
 		location= cpy.location;
 		lst_location_option = cpy.lst_location_option;
 }
@@ -31,6 +32,7 @@ location_block	&location_block::operator=(location_block const &cpy) {
 		allow_methods= cpy.allow_methods;
 		error_page= cpy.error_page;
 		redirection= cpy.redirection;
+		cgi_path = cpy.cgi_path;
 		location= cpy.location;
 		lst_location_option = cpy.lst_location_option;
 		return *this;
@@ -82,7 +84,7 @@ int location_block::pos_uri(std::string uri_to_find) {
 
 /*---server_block class---*/
 
-server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), allow_methods(), location() {
+server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), cgi_path(), allow_methods(), location() {
 	init_lst_server_option();
 	init_lst_location_option();
 }
@@ -98,6 +100,7 @@ server_block::server_block(server_block const &cpy) {
 		max_client = cpy.max_client;
 		error_page = cpy.error_page;
 		redirection = cpy.redirection;
+		cgi_path = cpy.cgi_path;
 		allow_methods = cpy.allow_methods;
 		location = cpy.location;
 		lst_server_option = cpy.lst_server_option;
@@ -115,6 +118,7 @@ server_block &server_block::operator=(server_block const &cpy) {
 		max_client = cpy.max_client;
 		error_page = cpy.error_page;
 		redirection = cpy.redirection;
+		cgi_path = cpy.cgi_path;
 		allow_methods = cpy.allow_methods;
 		location = cpy.location;
 		lst_server_option = cpy.lst_server_option;

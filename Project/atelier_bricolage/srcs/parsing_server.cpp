@@ -192,6 +192,55 @@ int	check_server_name(std::string line, std::string *ret) {
 	return (0);
 }
 
+int	check_cgi(std::string line, std::pair<std::string, std::string> *to_fill) {
+
+	int nbr_w;
+	if ((nbr_w = count_word(line)) != 3)
+		return 1;
+
+	int i = 0;
+	while (line[i])	{
+		if (line[i] == ' ' || line[i] == '\f'|| line[i] == '\t'|| line[i] == '\n'|| line[i] == '\r'|| line[i] == '\v')
+			break ;
+		i++;
+	}
+	line = line.substr(i);
+	i = 0;
+	while (line[i]){
+		if (line[i] != ' ' && line[i] != '\f'&& line[i] != '\t'&& line[i] != '\n'&& line[i] != '\r'&& line[i] != '\v')
+			break ;
+		i++;
+	}
+	line = line.substr(i);
+	i = 0;
+	while (line[i]) {
+		if (line[i] == ' ' || line[i] == '\f'|| line[i] == '\t'|| line[i] == '\n'|| line[i] == '\r'|| line[i] == '\v')
+			break ;
+		i++;
+	}
+	to_fill->first = line.substr(0, i);
+	line = line.substr(i);
+	i = 0;
+	while (line[i]){
+		if (line[i] != ' ' && line[i] != '\f'&& line[i] != '\t'&& line[i] != '\n'&& line[i] != '\r'&& line[i] != '\v')
+			break ;
+		i++;
+	}
+	line = line.substr(i); 
+	size_t end;
+	end = line.find_first_of(" \f\t\n\r\v");
+	if (end != std::string::npos) {
+		line = line.substr(0, end);
+	}
+	to_fill->second = line;
+	if (to_fill->first.find(".") != 0) {
+		std::cout << "first arg of cgi path is not an extension" << std::endl;
+		return 1;
+	}
+	return 0;
+
+}
+
 int	check_listen(std::string line, std::pair<int, std::string> *to_fill) {
 	int	nbr;	
 
@@ -354,6 +403,14 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, location_block *stc) 
 		stc->error_page.push_back(error);
 	}
 
+	if (cmd == "cgi_path") {
+		std::pair<std::string, std::string> cgi;
+		if (check_cgi(line, &cgi) != 0) {
+				std::cout << "bad cgi path declaration" << std::endl;
+				return 1;
+		}	
+		stc->cgi_path.push_back(cgi);
+	}
 	return (0);
 
 } 
@@ -481,7 +538,14 @@ int	go_to_indicated_cmd(std::string cmd, std::string line, server_block *stc) {
 		}
 		stc->error_page.push_back(error);
 	}
-
+	if (cmd == "cgi_path") {
+		std::pair<std::string, std::string> cgi;
+		if (check_cgi(line, &cgi) != 0) {
+				std::cout << "bad cgi path declaration" << std::endl;
+				return 1;
+		}	
+		stc->cgi_path.push_back(cgi);
+	}
 	return (0);
 
 } 

@@ -20,6 +20,7 @@ class location_block {
     std::vector<std::string>             allow_methods; //(6.1)
     std::vector<std::pair<std::string, std::string> >  error_page;
     std::vector<std::pair<std::string, std::string> >  redirection;
+	std::vector<std::pair<std::string, std::string> >	cgi_path;
 	std::vector<std::string> lst_location_option;
 
 	std::vector<location_block>	location;
@@ -49,6 +50,7 @@ class   server_block {
 	/*pair link code error and root error_page, there can be multiple error_page define (vector)*/
 		std::vector<std::pair<std::string, std::string> >  error_page; //(6.2) (4)  
 		std::vector<std::pair<std::string, std::string> >  redirection; // (6.2)
+		std::vector<std::pair<std::string, std::string> >	cgi_path;
 		std::vector<std::string>    allow_methods; //(6.5)
 		std::vector<location_block> location; //(6.3)
 		std::vector<std::string> lst_server_option;
