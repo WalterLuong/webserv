@@ -39,7 +39,7 @@ void	Service::setup_cluster() {
 
 void	Service::check_opened_sd() {
 
-	int		socket_d;
+	// int		socket_d;
 
 	_max_sd = 0;
 	FD_ZERO(&_fdset);
@@ -51,11 +51,16 @@ void	Service::check_opened_sd() {
 	}
 	for (int i(0); i < MAX_CLIENTS; i++)
 	{
-		socket_d = _clients_sd[i];
-		if (socket_d > 0)
-			FD_SET(socket_d, &_fdset);
-		if (socket_d > _max_sd)
-			_max_sd = socket_d;
+		// socket_d = _clients_sd[i];
+		// std::cout << _GRE << socket_d << _NOR << std::endl;
+		// if (socket_d > 0)
+		if (_clients_sd[i] > 0)
+			FD_SET(_clients_sd[i], &_fdset);
+			// FD_SET(socket_d, &_fdset);
+		// if (socket_d > _max_sd)
+		if (_clients_sd[i] > _max_sd)
+			_max_sd = _clients_sd[i];
+			// _max_sd = socket_d;
 	}
 }
 
@@ -75,7 +80,8 @@ bool	Service::selecting() {
 	
 	int		activity = 0;
 
-	activity = select( _max_sd + 1, &_fdset, NULL, NULL, &_timeout);
+	activity = select( _max_sd + 1, &_fdset, NULL, NULL, NULL);
+	std::cout << _RED << activity << std::endl;
 	if (activity < 0)
 	{
 		std::cout << _BL_RED << "ERROR : " << _NOR << "SELECT ERROR" << std::endl;
@@ -87,7 +93,7 @@ bool	Service::selecting() {
 
 bool	Service::accepting_connections() {
 
-	int		new_connection;
+	int		new_connection = 0;
 
 	for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
 	{
@@ -102,15 +108,20 @@ bool	Service::accepting_connections() {
 			fcntl(new_connection, F_SETFL, O_NONBLOCK);
 			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->_serv_sock.getAddr().sin_port) << std::endl;
 		}
-		for (int i(0); i < MAX_CLIENTS; i++)
+	}
+	for (int i(0); i < MAX_CLIENTS; i++)
+	{
+		if (_clients_sd[i] == 0 && new_connection != 1)
 		{
-			if (_clients_sd[i]== 0)
-			{
-				_clients_sd[i] = new_connection;
-				break ;
-			}
+			_clients_sd[i] = new_connection;
+			break ;
 		}
 	}
+	for (int j(0); j < 200; j++)
+	{
+		std::cout << _GRE << _clients_sd[j] << " " << _NOR;
+	}
+	std::cout << std::endl;
 	return true;
 }
 
@@ -154,7 +165,7 @@ void	Service::receive() {
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
 				break;
 			}
-			if (len_recv == 0 || (len_recv == 1 && _buffer[0] == 4))
+			if (len_recv == 0)
 			{
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
@@ -193,9 +204,11 @@ void	Service::receive() {
 			sending this html
 			close client_sd[i]
 			client_sd[i] = 0 */
-			// close(_clients_sd[i]);
-			// _clients_sd[i] = 0;
+			FD_CLR(_clients_sd[i], &_fdset);
+			close(_clients_sd[i]);
+			_clients_sd[i] = 0;
 		}
+		// this->check_opened_sd();
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
 
@@ -207,7 +220,14 @@ void	Service::receive() {
 }
 
 void	Service::sending(int i, Response resp) {
-	send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
+	if (resp.getResponse().size() != 0) {
+		send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
+		return ;
+	}
+	std::string new_rep("HTTP/1.1 200 Ok\r\nContent-Length: 0\r\n\r\n");
+	send(_clients_sd[i], new_rep.c_str(), new_rep.length(), 0);
+
+
 }
 
 // std::vector<Socket>		&Service::getServers() const {

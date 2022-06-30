@@ -155,8 +155,8 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			std::string validity_c(buff);
 			this->_header.setStatusCode(_request.validity);
 			this->_header.setStatus(this->_request.get_http_version(), "OK");
-			this->_body = AutoIndexGenerator(_request.location_path.root);
-			// this->_body += readFromFile(path_for_access);
+			// this->_body = AutoIndexGenerator(_request.location_path.root);
+			this->_body += readFromFile(path_for_access);
 			this->_header.setDate();
 			this->_header.setBodyLength(this->_body.length());
 			this->_header.setContentLength();
