@@ -145,6 +145,10 @@ void	Service::receive() {
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
+			std::cout << _YEL << "BUFFER = " << _buffer << std::endl;
+			std::cout << "MAX SD = " << _max_sd << std::endl;
+			std::cout << "CLIENTS SD = " << i << _NOR << std::endl;
+
 			if (len_recv < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
@@ -189,8 +193,8 @@ void	Service::receive() {
 			sending this html
 			close client_sd[i]
 			client_sd[i] = 0 */
-			close(_clients_sd[i]);
-			_clients_sd[i] = 0;
+			// close(_clients_sd[i]);
+			// _clients_sd[i] = 0;
 		}
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request

@@ -104,5 +104,4 @@ server {
 	location /other_cgi { 
 		cgi_path	.php /bin/php_cgi
 	}
-
 }

@@ -1,0 +1,163 @@
+server {
+	
+	listen 4343
+
+	index	index.html
+
+	root ../www/
+
+
+	max_body_client	1500
+
+	methods GET POST    DELETE
+	autoindex 		 off  
+
+	return   	301	  	 fkjlsljfk
+
+	error_page 400	../www/error_page/custom/error_page_403.html
+
+	location /cat {
+		root ../www/image/
+		methods	POST GET
+
+	error_page 400	../www/error_page/custom/error_page_404.html
+		index	cat.jpeg
+
+		autoindex off 
+
+		location /bob_le_bricoleur {
+			index todd/todd1.jpeg
+
+			location /bite {
+				index j.jpeg
+			}
+		}
+	}
+
+	location /tod {
+		root ../www/image/todd/
+		index todd3.jpeg
+		
+		autoindex on
+
+	}
+
+	location /snake { 
+		cgi_path	.py	/bin/py_cgi
+
+		index bite.py
+	}
+	
+	location /other_cgi { 
+		cgi_path	.php /bin/php_cgi
+	}
+}
+
+server {
+	
+	listen 8001
+
+	index	index.html
+
+	root ../www/
+
+
+	max_body_client	1500
+
+	methods GET POST    DELETE
+	autoindex 		 off  
+
+	return   	301	  	 fkjlsljfk
+
+	error_page 400	../www/error_page/custom/error_page_403.html
+
+	location /cat {
+		root ../www/image/
+		methods	POST GET
+
+	error_page 400	../www/error_page/custom/error_page_404.html
+		index	cat.jpeg
+
+		autoindex off 
+
+		location /bob_le_bricoleur {
+			index todd/todd1.jpeg
+
+			location /bite {
+				index j.jpeg
+			}
+		}
+	}
+
+	location /tod {
+		root ../www/image/todd/
+		index todd3.jpeg
+		
+		autoindex on
+
+	}
+
+	location /snake { 
+		cgi_path	.py	/bin/py_cgi
+
+		index bite.py
+	}
+	
+	location /other_cgi { 
+		cgi_path	.php /bin/php_cgi
+	}
+}
+
+server {
+	
+	listen 3737
+	index	index.html
+
+	root ../www/
+
+
+	max_body_client	1500
+
+	methods GET POST    DELETE
+	autoindex 		 off  
+
+	return   	301	  	 fkjlsljfk
+
+	error_page 400	../www/error_page/custom/error_page_403.html
+
+	location /cat {
+		root ../www/image/
+		methods	POST GET
+
+	error_page 400	../www/error_page/custom/error_page_404.html
+		index	cat.jpeg
+
+		autoindex off 
+
+		location /bob_le_bricoleur {
+			index todd/todd1.jpeg
+
+			location /bite {
+				index j.jpeg
+			}
+		}
+	}
+
+	location /tod {
+		root ../www/image/todd/
+		index todd3.jpeg
+		
+		autoindex on
+
+	}
+
+	location /snake { 
+		cgi_path	.py	/bin/py_cgi
+
+		index bite.py
+	}
+	
+	location /other_cgi { 
+		cgi_path	.php /bin/php_cgi
+	}
+}
