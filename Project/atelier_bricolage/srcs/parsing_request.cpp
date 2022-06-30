@@ -47,28 +47,30 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 
 	if (set_current_server(lst_inf) != 0) {
-		std::cout << "bad path request" << std::endl;
+	//	std::cout << "bad path request" << std::endl;
 		if (cur_serv_index != -1)
 			complete_location_path(lst_inf);
+			/*
 		std::cout << "location path :" << std::endl;
 		std::cout << "uri :"  << location_path.uri<< std::endl;
 		std::cout << "root :"  << location_path.root<< std::endl;
 		std::cout << "index:"  << location_path.index<< std::endl;
 		std::cout << "max_client :"  << location_path.max_client<< std::endl;
+		*/
 		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
 		while (ite != location_path.allow_methods.end()) {
-			std::cout << "allow:"  << *ite<< std::endl;
+		//	std::cout << "allow:"  << *ite<< std::endl;
 			ite++;
 		}
 
 		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
 		while (ite1 != location_path.error_page.end()) {
-			std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
+			//std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
 			ite1++;
 		}
 		std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
 		while (ite2 != location_path.redirection.end()) {
-			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
+//			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
 			ite2++;
 		}
 
@@ -76,27 +78,30 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 		return ;
 	}
 		complete_location_path(lst_inf);
+	/*
 		std::cout << "location path :" << std::endl;
 		std::cout << "uri :"  << location_path.uri<< std::endl;
 		std::cout << "root :"  << location_path.root<< std::endl;
 		std::cout << "index:"  << location_path.index<< std::endl;
 		std::cout << "max_client :"  << location_path.max_client<< std::endl;
+	*/
+
 		std::vector<std::string>::iterator ite = location_path.allow_methods.begin();
 		while (ite != location_path.allow_methods.end()) {
-			std::cout << "allow:"  << *ite<< std::endl;
+	//		std::cout << "allow:"  << *ite<< std::endl;
 			ite++;
 		}
 
 		std::vector<std::pair<std::string,std::string> >::iterator ite1 = location_path.error_page.begin();
 		while (ite1 != location_path.error_page.end()) {
-			std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
+	//		std::cout << "error :" << ite1->first << "|" << ite1->second << std::endl;
 			ite1++;
 		}
 		//boucle inf ????
 	//	std::vector<std::pair<std::string,std::string> >::iterator ite2 = location_path.redirection.begin();
 	/*	while (ite2 != location_path.redirection.end()) {
 			std::cout << "redirection :" << ite2->first << "|" << ite2->second << std::endl;
-			ite1++;
+			ite2++;
 		}
 		*/
 
@@ -395,10 +400,10 @@ void	request::complete_location_path(std::vector<Server> lst_inf) {
 int	request::deep_location(std::string path, location_block stc) {
 	//check for filename
 	//
-	std::cout << "deep location neew path :" << path << std::endl;
+//	std::cout << "deep location neew path :" << path << std::endl;
 	if (path.find("/") == std::string::npos){
 		size_t pos;
-		std::cout << "In location BITE" << std::endl;
+//		std::cout << "In location BITE" << std::endl;
 		if (path == "") {
 			std::cout << "Check pour le autoindex on " << std::endl;
 			autoindex_on = 1;
@@ -407,7 +412,7 @@ int	request::deep_location(std::string path, location_block stc) {
 		// if path == "" && autoindex on alors go lst les dir 
 		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
 		{
-			std::cout << "BJR LES AMICHE in location" << std::endl;
+//			std::cout << "BJR LES AMICHE in location" << std::endl;
 			this->filename = path;
 			return 0;
 		}
@@ -416,7 +421,7 @@ int	request::deep_location(std::string path, location_block stc) {
 		return 1;
 	std::vector<location_block>::iterator ite = stc.location.begin();
 
-	std::cout << "new path uri:" << path << std::endl;
+//	std::cout << "new path uri:" << path << std::endl;
 	while (ite != stc.location.end()) {
 		if (ite->uri == path) {
 			dependance.push_back(*ite);
@@ -453,10 +458,10 @@ int	request::check_path_for_location(Server cur, std::string path) {
 	// 
 	if (path.find_last_of("/") == 0){
 		size_t pos;
-		std::cout << "BITE" << std::endl;
+//		std::cout << "BITE" << std::endl;
 		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
 		{
-			std::cout << "BJR LES AMICHE" << std::endl;
+//			std::cout << "BJR LES AMICHE" << std::endl;
 			this->filename = path.substr(1);
 			this->path = "/";
 			return 0;
@@ -465,7 +470,7 @@ int	request::check_path_for_location(Server cur, std::string path) {
 
 	if (cur.infos.location.size() == 0)
 		return 1;
-	std::cout << "new path uri: " << path << std::endl;
+//	std::cout << "new path uri: " << path << std::endl;
 //	std::cout << "first step in check path" << std::endl;
 	while (ite != cur.infos.location.end()) {
 		if (ite->uri == path.substr(1)) {
@@ -514,16 +519,16 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	}
 	if (ite == lst_server.end()) {
 		cur_serv_index = -1;
-		std::cout << "Host header invalide" << std::endl;
+//		std::cout << "Host header invalide" << std::endl;
 		return 1;
 	}
 
 	cur_serv_index = j;
-	std::cout << "cur server index:" << j << std::endl;
+//	std::cout << "cur server index:" << j << std::endl;
 
 	if (path != "/") {
 	if ((in_location = check_path_for_location(lst_server[j], path)) != 0) {
-		std::cout << "no location found for this path" << std::endl;
+//		std::cout << "no location found for this path" << std::endl;
 		return 1;
 	}
 	}
@@ -585,13 +590,13 @@ int		request::check_host(std::string server_name, std::vector<std::pair<int, std
 	
 	std::string line(instruction["Host"]);
 	if (line == localhost + ":" + rd) {
-		std::cout << "Host fund in server config file" << std::endl;
+//		std::cout << "Host fund in server config file" << std::endl;
 		return 1;
 
 	}
 	else if (line == port[0].second + ":" + rd || line == server_name) {
 
-		std::cout << "Host fund in server config file" << std::endl;
+//		std::cout << "Host fund in server config file" << std::endl;
 		return 1;
 	}
 	return 0;
@@ -684,7 +689,7 @@ int	request::pars_request(std::string str) {
 
 	if ((ret = fill_string(str)) != 0)
 		return ret;
-	std::cout << "toute les lignes sont lues" << std::endl;
+//	std::cout << "toute les lignes sont lues" << std::endl;
 
 	int res;
 	if ((res = check_request()) != 0)
