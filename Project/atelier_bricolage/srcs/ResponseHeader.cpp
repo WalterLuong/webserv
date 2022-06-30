@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseHeader.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/30 06:02:16 by wluong           ###   ########.fr       */
-=======
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/30 06:15:21 by viporten         ###   ########.fr       */
->>>>>>> 3ea47a27c3c8e212ac6d7e685cf79fe0dea2ad84
+/*   Updated: 2022/06/30 06:26:53 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +83,7 @@ void			ResponseHeader::generateHeader() {
 	if (_contentType != "")
 	this->_header += this->_contentType + N_LINE;
 	if (_header != "")
-<<<<<<< HEAD
-		this->_header += N_LINE;
-=======
 	this->_header += N_LINE;
->>>>>>> 3ea47a27c3c8e212ac6d7e685cf79fe0dea2ad84
 }
 
 void			ResponseHeader::setStatusCode( int code ) {
