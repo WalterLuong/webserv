@@ -167,6 +167,7 @@ void	Service::receive() {
 			}
 			if (len_recv == 0)
 			{
+				FD_CLR(_clients_sd[i], &_fdset);
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
@@ -204,10 +205,9 @@ void	Service::receive() {
 			sending this html
 			close client_sd[i]
 			client_sd[i] = 0 */
-			FD_CLR(_clients_sd[i], &_fdset);
-			close(_clients_sd[i]);
-			_clients_sd[i] = 0;
-		}
+			// close(_clients_sd[i]);
+			// _clients_sd[i] = 0;
+		}	
 		// this->check_opened_sd();
 		// parsing request sur _buffer 
 		// sending doit recevoir la stc du parsing request
@@ -221,9 +221,11 @@ void	Service::receive() {
 
 void	Service::sending(int i, Response resp) {
 	if (resp.getResponse().size() != 0) {
+		std::cout << "size response:" << resp.getResponse().size() << std::endl;
 		send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
 		return ;
 	}
+	std::cout << "HELP" << std::endl;
 	std::string new_rep("HTTP/1.1 200 Ok\r\nContent-Length: 0\r\n\r\n");
 	send(_clients_sd[i], new_rep.c_str(), new_rep.length(), 0);
 
