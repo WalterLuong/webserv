@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseHeader.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/28 20:20:34 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/06/30 06:15:21 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void			ResponseHeader::generateHeader() {
 	this->_header += this->_contentLength + N_LINE;
 	if (_contentType != "")
 	this->_header += this->_contentType + N_LINE;
+	if (_header != "")
 	this->_header += N_LINE;
 }
 

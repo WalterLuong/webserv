@@ -92,6 +92,28 @@ return ;
 				
 				ite++;
 			}
+
+			ite = _request.location_path.redirection.begin();
+			while (ite != _request.location_path.redirection.end()) {
+				if (validity_c == ite->first) {
+					size_t pos;
+					if ((pos = ite->second.find_last_of(".")) == std::string::npos) {
+						_request.cur_serv_index = -1;
+						return auto_response();
+					}
+					std::string extension(ite->second.substr(pos));
+
+					_header.setStatusCode(_request.validity);	
+					_body += readFromFile(ite->second);
+					_header.setBodyLength(_body.length());
+					_header.setContentType(_request.map_file_type[extension]);
+					this->_header.setStatus("HTTP/1.1", "OK");
+	
+					return ;
+
+				}
+				ite++;
+			}
 			_request.cur_serv_index = -1;
 			return auto_response();
 
