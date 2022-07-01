@@ -122,7 +122,7 @@ return ;
 }
 
 void			Response::responseGet(std::vector<Server> lst_server) {
-	// _request.methods == "GET";
+	
 	std::string path_for_access;
 	std::string	extension;
 
@@ -143,19 +143,6 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		return auto_response();
 	}
 	if (_request.path == "/") {
-		if (!_request.autoindex_on) {
-			this->_header.setStatusCode(200);
-			this->_header.setStatus(this->_request.get_http_version(), "OK");
-			this->_body = AutoIndexGenerator(_request.location_path.root);
-			// this->_body += readFromFile(path_for_access);
-			this->_header.setDate();
-			this->_header.setBodyLength(this->_body.length());
-			this->_header.setContentLength();
-			this->_header.setContentType(_request.map_file_type[extension]);
-			this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
-		}
-		else
-		{
 //			std::cout << "ROOT " << std::endl;
 		//	std::cout << "bite" << std::endl;
 			if (_request.filename == "")
@@ -183,38 +170,12 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				char buff[25];
 				itoa(_request.validity, buff, 10);
 				std::string validity_c(buff);
-				this->_header.setStatusCode(_request.validity);
-				this->_header.setStatus(this->_request.get_http_version(), "OK");
-				// this->_body = AutoIndexGenerator(_request.location_path.root);
 				this->_body += readFromFile(path_for_access);
-				this->_header.setDate();
-				this->_header.setBodyLength(this->_body.length());
-				this->_header.setContentLength();
-				this->_header.setContentType(_request.map_file_type[extension]);
-				this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
+				createHeader();
 			}
-		}
+		
 	}
 	else {
-			if (_request.autoindex_on)
-			{
-				std::string autoindex_path = _request.location_path.root;
-				autoindex_path += _request.path;
-				std::cout << _BL_RED << _request.path << _NOR << std::endl;
-				std::cout << _RED << autoindex_path << _NOR << std::endl;
-				this->_header.setStatusCode(200);
-				this->_header.setStatus(this->_request.get_http_version(), "OK");
-				this->_body = AutoIndexGenerator(autoindex_path);
-				this->_body += readFromFile(path_for_access);
-				this->_header.setDate();
-				this->_header.setBodyLength(this->_body.length());
-				this->_header.setContentLength();
-				this->_header.setContentType(_request.map_file_type[extension]);
-				this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
-			}
-		else
-		{
-
 //			std::cout << "/location/" << std::endl;
 			if (_request.filename == "") {
 //				std::cout << "no filename" << std::endl;
@@ -246,19 +207,21 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 
 			if (access(path_for_access.c_str(), F_OK) == 0) {
 				std::cout << _YEL << path_for_access << _NOR << std::endl;
+				this->_body += readFromFile(path_for_access);
+				createHeader();
+			}
+	}
+}
+
+void			Response::createHeader() {
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
-				this->_body += readFromFile(path_for_access);
 				this->_header.setDate();
 				this->_header.setBodyLength(this->_body.length());
 				this->_header.setContentLength();
 				this->_header.setContentType(_request.map_file_type[extension]);
 				this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
-			}
-		}
-	}
 }
-
 
 void			Response::responsePost() {
 	

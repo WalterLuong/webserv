@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/01 05:19:15 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/01 05:34:20 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Response
 		void			auto_response();
 		void			set_validity(int value);
 
+		void			createHeader();
 		void			setBody( std::string body );
 
 };
