@@ -195,8 +195,11 @@ void	Service::receive() {
 			else if (req.methods == "GET") {
 				resp.responseGet(_servers);
 			}
+//			else if (req.methods == "POST") {
+//				resp.responsePost(_servers);
+//			}
 		//	resp.responseGet(_servers);
-			std::cout << resp.getResponse() << std::endl;
+			std::cout << "ret getResponse:" << resp.getResponse() << "|" << std::endl;
 			sending(i, resp);
 			// }
 

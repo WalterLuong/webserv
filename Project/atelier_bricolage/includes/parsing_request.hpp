@@ -17,7 +17,9 @@ class request {
 		std::string	methods;
 		std::string path;
 		std::string	http_version;
+		std::string request_body;
 		std::string	body;
+
 		int		chunked;
 		int		validity; //code status pour la map error;
 

@@ -5,7 +5,7 @@
 // check request a finir
 // check host a fair
 
-request::request() : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(), _end(0) , dependance(){
+request::request() : methods(), path(), http_version(), request_body(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(), _end(0) , dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -15,7 +15,7 @@ request::request() : methods(), path(), http_version(), body(), chunked(-1), val
 
 }
 
-request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(),_end(0), dependance(){
+request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), request_body(),body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(),_end(0), dependance(){
 	init_default_error();
 	init_file_type();
 	init_instruction();
@@ -564,7 +564,7 @@ int	request::check_request() {
 }
 
 int	request::fill_body(std::string line) {
-	body += line;
+	request_body += line;
 	return 1;
 }
 
@@ -641,6 +641,7 @@ int	request::fill_string(std::string str) {
 	size_t		line_len;
 	if (str.find("\r\n\r\n") == std::string::npos) {
 		std::cout << "request have not end" << std::endl;
+		std::cout << "at start fill_string" << std::endl;
 		return 400;
 	}
 	while (str.find("\r\n\r\n") != 0) {
@@ -672,14 +673,18 @@ int	request::fill_string(std::string str) {
 
 	//std::cout << "heh:" << str << "|" << std::endl;
 	if (str != "\r\n") {
+		std::cout << "request pas fini, il y a un body:" << std::endl;
+		std::cout << str<< std::endl;
 	//	std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
 		if (pars_body(str.substr(2)) != 0) {
 			std::cout << "pars_body invalide" << std::endl;
 			return 400;
 		}
+		std::cout << std::endl;
+		std::cout << "body request pars" << std::endl;
 		
 	}
-//	std::cout << "go to responce" << std::endl;
+	std::cout << "go to responce" << std::endl;
 //	std::cout << responce() << std::endl;
 	return 0;
 }
@@ -689,7 +694,7 @@ int	request::pars_request(std::string str) {
 
 	if ((ret = fill_string(str)) != 0)
 		return ret;
-//	std::cout << "toute les lignes sont lues" << std::endl;
+	std::cout << "toute les lignes sont lues" << std::endl;
 
 	int res;
 	if ((res = check_request()) != 0)
