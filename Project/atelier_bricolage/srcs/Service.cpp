@@ -186,6 +186,7 @@ void	Service::receive() {
 
 			int is_valid_method = check_methods(req);
 
+
 			if (is_valid_method == 0) {
 				std::cout << "Mehtod not allowed" << std::endl;
 				resp.set_validity( 405);
@@ -198,7 +199,13 @@ void	Service::receive() {
 		//	resp.responseGet(_servers);
 			std::cout << resp.getResponse() << std::endl;
 			std::cout << _YEL << req.path << _NOR << std::endl;
+
 			sending(i, resp);
+			if (resp.is_request_valid() != 200) {
+				close(_clients_sd[i]);
+				_clients_sd[i] = 0;
+
+			}
 			// }
 
 			/* IF BAD REQUEST
@@ -206,8 +213,6 @@ void	Service::receive() {
 			sending this html
 			close client_sd[i]
 			client_sd[i] = 0 */
-			// close(_clients_sd[i]);
-			// _clients_sd[i] = 0;
 		}	
 		// this->check_opened_sd();
 		// parsing request sur _buffer 
