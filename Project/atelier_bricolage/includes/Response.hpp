@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/01 05:19:15 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/01 05:37:49 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class Response
 		std::string		readFromFile(std::string path, int i);
 		void			auto_response();
 		void			set_validity(int value);
+		int				is_request_valid();
 
 		void			setBody( std::string body );
 

@@ -18,6 +18,11 @@ Response::Response(request req) : _header(), _body(), _request(req), _resp() {}
 Response::~Response() {}
 
 
+int		Response::is_request_valid() {
+
+	return _request.validity;
+}
+
 void	Response::set_validity(int value) {
 	_request.validity = value;
 }
