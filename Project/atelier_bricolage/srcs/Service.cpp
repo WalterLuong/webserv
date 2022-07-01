@@ -111,7 +111,7 @@ bool	Service::accepting_connections() {
 	}
 	for (int i(0); i < MAX_CLIENTS; i++)
 	{
-		if (_clients_sd[i] == 0 && new_connection != 1)
+		if (_clients_sd[i] == 0)
 		{
 			_clients_sd[i] = new_connection;
 			break ;
@@ -195,11 +195,9 @@ void	Service::receive() {
 			else if (req.methods == "GET") {
 				resp.responseGet(_servers);
 			}
-//			else if (req.methods == "POST") {
-//				resp.responsePost(_servers);
-//			}
 		//	resp.responseGet(_servers);
-			std::cout << "ret getResponse:" << resp.getResponse() << "|" << std::endl;
+			std::cout << resp.getResponse() << std::endl;
+			std::cout << _YEL << req.path << _NOR << std::endl;
 			sending(i, resp);
 			// }
 

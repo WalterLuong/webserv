@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/06/30 06:43:26 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/01 02:20:08 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 
 void	sig_handler(int signum) {
 	signum = 1;
-	std::cout << _BL_GRE << "Webserv is correctly closed bg !" << _NOR << std::endl;
+	std::cout << _BL_GRE << "\b\b  \nWebserv is correctly closed bg !\n\n" << _NOR << std::endl;
+	
 	exit(EXIT_SUCCESS);
 }
 

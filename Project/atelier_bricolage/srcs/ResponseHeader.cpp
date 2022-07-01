@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/30 06:26:53 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/01 02:27:03 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void			ResponseHeader::generateHeader() {
 	this->_header += this->_contentLength + N_LINE;
 	if (_contentType != "")
 	this->_header += this->_contentType + N_LINE;
-	if (_header != "")
+	//if (_header != "")
 	this->_header += N_LINE;
 }
 

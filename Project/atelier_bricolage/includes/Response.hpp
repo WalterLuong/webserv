@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/29 15:16:12 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/07/01 05:19:15 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ class Response
 		void			responseDelete();
 		void			responseCGI();
 		void			responseAutoIndex();
+
 		std::string		setErrorPage();
 		std::string		readFromFile(std::string path);
 		std::string		readFromFile(std::string path, int i);
-		void	auto_response();
+		void			auto_response();
 		void			set_validity(int value);
 
 		void			setBody( std::string body );
