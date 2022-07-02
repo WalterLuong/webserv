@@ -173,7 +173,7 @@ void	Service::receive() {
 				int is_valid_method = check_methods(req);
 				if (is_valid_method == 0) {
 					std::cout << "Mehtod not allowed" << std::endl;
-					resp.set_validity( 405);
+					resp.set_validity(405);
 					resp.responseGet(_servers);
 				}
 				else if (req.methods == "GET") {
