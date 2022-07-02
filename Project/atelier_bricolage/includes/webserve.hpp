@@ -1,5 +1,5 @@
 #ifndef WEBSERVE_HPP
-# define WEBSERVE_HPP 
+# define WEBSERVE_HPP
 
 # include "parsing_conffile.hpp"
 # include "parsing_request.hpp"
@@ -7,6 +7,13 @@
 # include <fstream>
 # include <string>
 # include <cstdlib>
+# include <cstdio>
+# include <sstream>
+# include <sys/types.h>
+# include <unistd.h>
+# include <algorithm>
+# include <vector>
+
 
 
 int parsing(server_conf *stc, int ac, char **av);

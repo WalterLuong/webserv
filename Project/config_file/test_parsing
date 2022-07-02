@@ -47,6 +47,7 @@ server {
 	}
 	
 	location /other_cgi { 
+		methods GET          POST    DELETE
 		cgi_path	.php /bin/php_cgi
 	}
 }
@@ -102,6 +103,8 @@ server {
 	}
 	
 	location /other_cgi { 
-		cgi_path	.php /bin/php_cgi
+		root ../www/php/
+		methods GET          POST    DELETE
+		cgi_path	.php php_cgi
 	}
 }
