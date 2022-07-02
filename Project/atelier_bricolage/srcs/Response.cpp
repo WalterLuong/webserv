@@ -81,6 +81,7 @@ int run_bin(std::string bin, std::string infilename, std::string outfilename)
 
 	std::string cmd = joinstr(payload, size);
 
+
 	return system(cmd.c_str());
 }
 
@@ -162,19 +163,20 @@ std::string get_sub_str(std::string str, size_t pos)
  * @param req The request object
  * @param absolutepath The absolute path of the cgi script.
  */
-void set_environement(request req, std::string absolutepath)
+void set_environement(request &req, std::string &absolutepath)
 {
 
-	putenv((char *)("CONTENT_TYPE=" + req.instruction["Content-Length"]).c_str());
+	putenv((char *)("CONTENT_LENGTH=" + req.instruction["Content-Length"]).c_str());
 	putenv((char *)("CONTENT_TYPE=" + req.instruction["Content-Type"]).c_str());
 
 	putenv((char *)("GATEWAY_INTERFACE=CGI/1.1"));
 
-	std::string pathinf = get_sub_str(req.path, req.path.find_last_of("/"));
-	putenv((char *)("PATH_INFO=" + pathinf).c_str());
-	putenv((char *)("PATH_TRANSLATED=" + pathinf).c_str());
+	// static std::string pathinf = get_sub_str(req.path, req.path.find_last_of("/"));
+	putenv((char *)("PATH_INFO=" + req.path).c_str());
+	putenv((char *)("PATH_TRANSLATED=" + req.path).c_str());
 
-	std::string query = (req.methods == "GET") ? req.body : "";
+	static std::string query ;
+	query = (req.methods == "GET") ? req.body : "";
 	putenv((char *)("QUERY_STRING=" + query).c_str());
 
 	putenv((char *)("REDIRECT_STATUS=200"));
@@ -182,12 +184,10 @@ void set_environement(request req, std::string absolutepath)
 	putenv((char *)("REQUEST_METHOD=" + req.methods).c_str());
 	putenv((char *)("REQUEST_URI=" + req.path).c_str());
 
-	putenv((char *)("SCRIPT_FILENAME=" + req.filename).c_str());
-	putenv((char *)("SCRIPT_NAME=" + absolutepath).c_str());
 
-	std::string host =
+	static std::string host =
 		req.instruction["Host"].substr(0, req.instruction["Host"].find_first_of(":"));
-	std::string port =
+	static std::string port =
 		get_sub_str(req.instruction["Host"], req.instruction["Host"].find_first_of(":") + 1);
 
 	putenv((char *)("SERVER_NAME=" + host).c_str());
@@ -200,7 +200,17 @@ void set_environement(request req, std::string absolutepath)
 	putenv((char *)("REMOTE_USER=" + req.instruction["Authorization"]).c_str());
 	putenv((char *)("REMOTEaddr=" + port).c_str());
 	if (req.instruction["Auth-Scheme"] != "")
-		putenv((char *)("AUTH_TYPE" + req.instruction["Authorization"]).c_str());
+		putenv((char *)("AUTH_TYPE=" + req.instruction["Authorization"]).c_str());
+
+
+	static std::string fname;
+	fname = "SCRIPT_FILENAME="+std::string(realpath(absolutepath.c_str(), NULL));
+	static std::string sname;
+	sname = "SCRIPT_NAME="+std::string(realpath(absolutepath.c_str(), NULL));
+	// static std::string fname = "SCRIPT_FILENAME="+ std::string(getenv("PWD")) + "/"+ absolutepath;
+	putenv((char *)fname.c_str());
+	putenv((char *)sname.c_str());
+
 };
 
 
@@ -263,12 +273,9 @@ std::string get_cgipath(std::vector<std::pair<std::string, std::string> > cgi_pa
  *
  * @return The output of the cgi script
  */
-std::string cgi_handler(request req, std::string absolutepath)
+std::string cgi_handler(request &req, std::string &absolutepath)
 {
-
-	g_extension = get_extension(req.filename);
 	std::string bin = get_cgipath(req.location_path.cgi_path);
-	;
 	if (bin != "")
 	{
 		set_environement(req, absolutepath);
@@ -399,7 +406,6 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 
 	std::string path_for_access;
 
-	std::cout << "gate GET " << std::endl;
 	if (_body.size() != 0) {
 //		std::cout << "WTF here are my pb let's look inside" << std::endl;
 //		std::cout << _body << std::endl;
@@ -411,13 +417,12 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		// make a error page
 	//	return ;
 	}
-	std::cout << "gate 01 " << std::endl;
 
 	if (_request.validity != 200) {
 		std::cout << "request non valide" << std::endl;
 		return auto_response();
 	}
-	std::cout << "gate 02 " << std::endl;
+
 	if (_request.path == "/") {
 //			std::cout << "ROOT " << std::endl;
 		//	std::cout << "bite" << std::endl;
@@ -435,18 +440,16 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			/*
 				go pour les cgi
 			*/
-			std::cout << "GEXTENSION = " << g_extension << std::endl;
 			if (_request.location_path.cgi_path.size() != 0) {
 				if (get_cgipath(_request.location_path.cgi_path) != "") {
-					std::cout << "gate 0" << std::endl;
-					// std::cout <<  "RAYYYYYYAN" << std::endl;
-					// _body = cgi_handler(_request, path_for_access);
-					std::cout <<  cgi_handler(_request, path_for_access) << std::endl;
+					createHeader(g_extension, lst_server);
+					_body = cgi_handler(_request, path_for_access);
+					std::cout << _body << std::endl;
 				}
 			}
 //			std::cout << "g_extension" << g_extension << std::endl;
 //			std::cout << "acces::" <<  path_for_access << std::endl;
-			if (access(path_for_access.c_str(), F_OK) == 0) {
+			else if (access(path_for_access.c_str(), F_OK) == 0) {
 				char buff[25];
 				itoa(_request.validity, buff, 10);
 				std::string validity_c(buff);
@@ -476,23 +479,15 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			/*
 				go pour les cgi
 			*/
-			std::cout << "GEXTENSION = " << g_extension << std::endl;
-
 			if (_request.location_path.cgi_path.size() != 0) {
-				std::cout << "gate 0" << std::endl;
 				if (get_cgipath(_request.location_path.cgi_path) != "") {
-					std::cout << "gate 0000" << std::endl;
-					// std::cout <<  "RAYYYYYYAN" << std::endl;
-					// _body = cgi_handler(_request, path_for_access);
-					std::cout <<  cgi_handler(_request, path_for_access) << std::endl;
-
+					createHeader(g_extension, lst_server);
+					_body = cgi_handler(_request, path_for_access);
+					std::cout << _body << std::endl;
+					return ;
 				}
 			}
-
-//			std::cout << "g_extension" << g_extension << std::endl;
-//			std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
-
-			if (access(path_for_access.c_str(), F_OK) == 0) {
+			else if (access(path_for_access.c_str(), F_OK) == 0) {
 				std::cout << _YEL << path_for_access << _NOR << std::endl;
 				this->_body += readFromFile(path_for_access);
 				createHeader(g_extension, lst_server);
