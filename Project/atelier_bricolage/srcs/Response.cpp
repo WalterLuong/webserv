@@ -176,7 +176,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				itoa(_request.validity, buff, 10);
 				std::string validity_c(buff);
 				this->_body += readFromFile(path_for_access);
-				createHeader();
+				createHeader(extension, lst_server);
 			}
 		
 	}
@@ -213,12 +213,12 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			if (access(path_for_access.c_str(), F_OK) == 0) {
 				std::cout << _YEL << path_for_access << _NOR << std::endl;
 				this->_body += readFromFile(path_for_access);
-				createHeader();
+				createHeader(extension, lst_server);
 			}
 	}
 }
 
-void			Response::createHeader() {
+void			Response::createHeader( std::string & extension, std::vector<Server> & lst_server ) {
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
 				this->_header.setDate();
