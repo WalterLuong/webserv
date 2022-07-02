@@ -32,15 +32,10 @@ Service::~Service() {}
 
 void	Service::setup_cluster() {
 	for (int i(0); i < MAX_CLIENTS; i++)
-	{
 		_clients_sd[i] = 0;
-	}
 }
 
 void	Service::check_opened_sd() {
-
-	// int		socket_d;
-
 	_max_sd = 0;
 	FD_ZERO(&_fdset);
 	for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); it++)
@@ -51,16 +46,10 @@ void	Service::check_opened_sd() {
 	}
 	for (int i(0); i < MAX_CLIENTS; i++)
 	{
-		// socket_d = _clients_sd[i];
-		// std::cout << _GRE << socket_d << _NOR << std::endl;
-		// if (socket_d > 0)
 		if (_clients_sd[i] > 0)
 			FD_SET(_clients_sd[i], &_fdset);
-			// FD_SET(socket_d, &_fdset);
-		// if (socket_d > _max_sd)
 		if (_clients_sd[i] > _max_sd)
 			_max_sd = _clients_sd[i];
-			// _max_sd = socket_d;
 	}
 }
 
@@ -156,9 +145,9 @@ void	Service::receive() {
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
-			std::cout << _YEL << "BUFFER = " << _buffer << std::endl;
-			std::cout << "MAX SD = " << _max_sd << std::endl;
-			std::cout << "CLIENTS SD = " << i << _NOR << std::endl;
+			// std::cout << _YEL << "BUFFER = " << _buffer << std::endl;
+			// std::cout << "MAX SD = " << _max_sd << std::endl;
+			// std::cout << "CLIENTS SD = " << i << _NOR << std::endl;
 
 			if (len_recv < 0)
 			{
@@ -177,51 +166,29 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
-			std::cout << "request traiter" <<std::endl;
-			// _buffer[0] = 0;
-//			if (req)
-			// {
+			// std::cout << "request traiter" <<std::endl;
 			Response	resp(req);
-
-
-			int is_valid_method = check_methods(req);
-
-
-			if (is_valid_method == 0) {
-				std::cout << "Mehtod not allowed" << std::endl;
-				resp.set_validity( 405);
-				resp.responseGet(_servers);
-
+			if (req.validity <= 400)
+			{
+				int is_valid_method = check_methods(req);
+				if (is_valid_method == 0) {
+					std::cout << "Mehtod not allowed" << std::endl;
+					resp.set_validity( 405);
+					resp.responseGet(_servers);
+				}
+				else if (req.methods == "GET") {
+					resp.responseGet(_servers);
+				}
+				std::cout << resp.getResponse() << std::endl;
+				sending(i, resp);
 			}
-			else if (req.methods == "GET") {
-				resp.responseGet(_servers);
-			}
-		//	resp.responseGet(_servers);
-			std::cout << resp.getResponse() << std::endl;
-			std::cout << _YEL << req.path << _NOR << std::endl;
-
-			sending(i, resp);
 			if (resp.is_request_valid() != 200) {
+				resp.auto_response();
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
-
 			}
 			// }
-
-			/* IF BAD REQUEST
-			create a bad request response .html
-			sending this html
-			close client_sd[i]
-			client_sd[i] = 0 */
 		}	
-		// this->check_opened_sd();
-		// parsing request sur _buffer 
-		// sending doit recevoir la stc du parsing request
-
-		// METHOD TREATMENT: after parsing
-		// GET : CGI ? -> Create CGI 
-		// check ressource at / 
-		// 
 	}
 }
 
@@ -237,7 +204,3 @@ void	Service::sending(int i, Response resp) {
 
 
 }
-
-// std::vector<Socket>		&Service::getServers() const {
-// 	return _servers;
-// }
