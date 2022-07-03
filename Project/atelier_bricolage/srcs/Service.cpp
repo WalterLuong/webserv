@@ -88,7 +88,7 @@ bool	Service::accepting_connections() {
 	{
 		if (FD_ISSET(it->_serv_sock.getSocket(), &_fdset))
 		{
-			std::cout << "INF" << std::endl;
+			std::cout << "INFINI ?" << std::endl;
 			new_connection = accept(it->_serv_sock.getSocket(), it->_serv_sock.castAddr(), it->_serv_sock.getAdLen());
 			if (new_connection < 0)
 			{
@@ -145,7 +145,7 @@ void	Service::receive() {
 	{	
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
-			std::cout << "INF" << std::endl;
+			std::cout << "INFINI ?" << std::endl;
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 			if (len_recv < 0)
 			{

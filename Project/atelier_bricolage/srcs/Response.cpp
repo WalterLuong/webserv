@@ -185,7 +185,8 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		if (_request.path[_request.path.length() - 1] == '/')
 		{
 			std::string	directory;
-			directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length());
+			if (_request.path.length() >= _request.location_path.uri.length() + 2)
+					directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length());
 			directory[directory.length() - 1] = 0;
 			std::cout << _RED << directory << " MOTHERFUCKER"<< _NOR << std::endl;
 			if (isDirectory(directory))
@@ -203,20 +204,44 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				return ;
 			}
 		}
-		if (_request.filename == "")
-			path_for_access += _request.location_path.index;
 		else
-			path_for_access += _request.filename;
-		size_t pos = path_for_access.find_last_of(".");
-		if (pos == std::string::npos) {
-			this->_header.setStatusCode(404);
-			return ;
-		}
-		extension = path_for_access.substr(pos);
-		if (access(path_for_access.c_str(), F_OK) == 0)
 		{
-			this->_body += readFromFile(path_for_access);
-			createHeader(extension, lst_server);
+			std::string		autoindexfile;
+			autoindexfile = path_for_access;
+			if (_request.path.length() >= _request.location_path.uri.length() + 2)
+			{
+					autoindexfile += _request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length());
+				if (access(autoindexfile.c_str(), F_OK) == 0)
+				{
+					size_t pos = path_for_access.find_last_of(".");
+					if (pos == std::string::npos) {
+						this->_header.setStatusCode(404);
+						return ;
+					}
+					extension = path_for_access.substr(pos);
+					this->_body += readFromFile(autoindexfile);
+					createHeader(extension, lst_server);
+				}
+			}
+			else
+			{
+				if (_request.filename == "")
+					path_for_access += _request.location_path.index;
+				else
+					path_for_access += _request.filename;
+				std::cout << _RED << path_for_access << _NOR << std::endl;
+				size_t pos = path_for_access.find_last_of(".");
+				if (pos == std::string::npos) {
+					this->_header.setStatusCode(404);
+					return ;
+				}
+				extension = path_for_access.substr(pos);
+				if (access(path_for_access.c_str(), F_OK) == 0)
+				{
+					this->_body += readFromFile(path_for_access);
+					createHeader(extension, lst_server);
+				}
+			}
 		}
 	}
 }
