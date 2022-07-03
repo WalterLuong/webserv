@@ -43,13 +43,13 @@ void	Service::check_opened_sd() {
 		if (it->_serv_sock.getSocket() > _max_sd)
 			_max_sd = it->_serv_sock.getSocket();
 		FD_SET(it->_serv_sock.getSocket(), &_fdset);
-	}
-	for (int i(0); i < MAX_CLIENTS; i++)
-	{
-		if (_clients_sd[i] > 0)
-			FD_SET(_clients_sd[i], &_fdset);
-		if (_clients_sd[i] > _max_sd)
-			_max_sd = _clients_sd[i];
+		for (int i(0); i < MAX_CLIENTS; i++)
+		{
+			if (_clients_sd[i] > 0)
+				FD_SET(_clients_sd[i], &_fdset);
+			if (_clients_sd[i] > _max_sd)
+				_max_sd = _clients_sd[i];
+		}
 	}
 }
 
@@ -88,6 +88,7 @@ bool	Service::accepting_connections() {
 	{
 		if (FD_ISSET(it->_serv_sock.getSocket(), &_fdset))
 		{
+			std::cout << "INF" << std::endl;
 			new_connection = accept(it->_serv_sock.getSocket(), it->_serv_sock.castAddr(), it->_serv_sock.getAdLen());
 			if (new_connection < 0)
 			{
@@ -144,11 +145,8 @@ void	Service::receive() {
 	{	
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
+			std::cout << "INF" << std::endl;
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
-			// std::cout << _YEL << "BUFFER = " << _buffer << std::endl;
-			// std::cout << "MAX SD = " << _max_sd << std::endl;
-			// std::cout << "CLIENTS SD = " << i << _NOR << std::endl;
-
 			if (len_recv < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
@@ -156,7 +154,7 @@ void	Service::receive() {
 			}
 			if (len_recv == 0)
 			{
-				FD_CLR(_clients_sd[i], &_fdset);
+				// FD_CLR(_clients_sd[i], &_fdset);
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
@@ -183,7 +181,9 @@ void	Service::receive() {
 				sending(i, resp);
 			}
 			if (resp.is_request_valid() != 200) {
+				std::cout << "here" << std::endl;
 				resp.auto_response();
+				std::cout << resp.getResponse() << std::endl;
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}

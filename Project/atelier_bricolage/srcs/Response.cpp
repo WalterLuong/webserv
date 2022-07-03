@@ -129,94 +129,189 @@ return ;
 void			Response::responseGet(std::vector<Server> lst_server) {
 	
 	std::string path_for_access;
-	std::string	extension;
+	std::string	extension = "html";
 
-	
-	if (_body.size() != 0) {
-//		std::cout << "WTF here are my pb let's look inside" << std::endl;
-//		std::cout << _body << std::endl;
-	}
+	// if (_request.validity != 200)
+	// {
+	// 	std::cout << "request non valide" << std::endl;
+	// 	return auto_response();
+	// }
 
-	if (_request.cur_serv_index == 1) {
-//		std::cout << "bite" << std::endl;
-		// Host header no valide
-		// make a error page
-	//	return ;
-	}
-	if (_request.validity != 200) {
-		std::cout << "request non valide" << std::endl;
-		return auto_response();
-	}
-	if (_request.path == "/") {
-//			std::cout << "ROOT " << std::endl;
-		//	std::cout << "bite" << std::endl;
+	if (_request.path == "/")
+		path_for_access = lst_server[_request.cur_serv_index].infos.root;
+	else
+		path_for_access = _request.location_path.root;
+
+	// std::cout << _RED << path_for_access << std::endl;
+	// std::cout << this->_request.location_path.uri << std::endl;
+	// std::cout << this->_request.path << std::endl;
+	// std::cout <<this->_request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length()) << _NOR << std::endl;
+
+	if (_request.path == "/")
+	{
+		if (this->_request.autoindex_on) 
+		{
+			this->_body = AutoIndexGenerator(lst_server[_request.cur_serv_index].infos.root);
+			this->_header.setContentType("text/html");
+			createHeader(extension , lst_server);
+			return ;
+		}
+		else
+		{
 			if (_request.filename == "")
-				path_for_access = lst_server[_request.cur_serv_index].infos.root + lst_server[_request.cur_serv_index].infos.index;
+				path_for_access += lst_server[_request.cur_serv_index].infos.index;
 			else
-				path_for_access = lst_server[_request.cur_serv_index].infos.root + _request.filename;
+				path_for_access += _request.filename;
 			size_t pos = path_for_access.find_last_of(".");
-			if (pos == std::string::npos) {
+			if (pos == std::string::npos)
+			{
 				std::cout << "Extension not found in path" << std::endl;
 				this->_header.setStatusCode(404);
 				return ;
 			}
 			extension = path_for_access.substr(pos);
-			/*
-				go pour les cgi 
-			*/
-			if (_request.location_path.cgi_path.size() != 0) {
-				if (extension == _request.location_path.cgi_path[0].first) {
-					std::cout <<  "RAYYYYYYAN" << std::endl;
-				}
-			}	
-//			std::cout << "extension" << extension << std::endl;
-//			std::cout << "acces::" <<  path_for_access << std::endl; 
-			if (access(path_for_access.c_str(), F_OK) == 0) {
+			if (access(path_for_access.c_str(), F_OK) == 0)
+			{
 				char buff[25];
 				itoa(_request.validity, buff, 10);
 				std::string validity_c(buff);
 				this->_body += readFromFile(path_for_access);
 				createHeader(extension, lst_server);
 			}
-		
+		}
 	}
-	else {
-//			std::cout << "/location/" << std::endl;
-			if (_request.filename == "") {
-//				std::cout << "no filename" << std::endl;
-				path_for_access = _request.location_path.root + _request.location_path.index;
-			}
-			else {
-//				std::cout << "ya un filename" << std::endl;
-				path_for_access = _request.location_path.root + _request.filename;
-			}
-			size_t pos = path_for_access.find_last_of(".");
-			if (pos == std::string::npos) {
-//				std::cout << "Extension not found in path" << std::endl;
-				this->_header.setStatusCode(404);
-				return ;
-
-			}
-			extension = path_for_access.substr(pos);
-			/*
-				go pour les cgi 
-			*/
-			if (_request.location_path.cgi_path.size() != 0) {
-				if (extension == _request.location_path.cgi_path[0].first) {
-					std::cout <<  "RAYYYYYYAN" << std::endl;
-				}
-			}	
-
-//			std::cout << "extension" << extension << std::endl;
-//			std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
-
-			if (access(path_for_access.c_str(), F_OK) == 0) {
-				std::cout << _YEL << path_for_access << _NOR << std::endl;
-				this->_body += readFromFile(path_for_access);
+	else
+	{
+		if (_request.path[_request.path.length() - 1] == '/')
+		{
+			std::string	directory;
+			directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length());
+			directory[directory.length() - 1] = 0;
+			std::cout << _RED << directory << " MOTHERFUCKER"<< _NOR << std::endl;
+			if (isDirectory(directory))
+			{
+				this->_body = AutoIndexGenerator(directory);
+				this->_header.setContentType("text/html");
 				createHeader(extension, lst_server);
+				return ;
 			}
+			else if (this->_request.autoindex_on)
+			{
+				this->_body = AutoIndexGenerator(path_for_access);
+				this->_header.setContentType("text/html");
+				createHeader(extension, lst_server);
+				return ;
+			}
+		}
+		if (_request.filename == "")
+			path_for_access += _request.location_path.index;
+		else
+			path_for_access += _request.filename;
+		size_t pos = path_for_access.find_last_of(".");
+		if (pos == std::string::npos) {
+			this->_header.setStatusCode(404);
+			return ;
+		}
+		extension = path_for_access.substr(pos);
+		if (access(path_for_access.c_str(), F_OK) == 0)
+		{
+			this->_body += readFromFile(path_for_access);
+			createHeader(extension, lst_server);
+		}
 	}
 }
+
+// void			Response::responseGet(std::vector<Server> lst_server) {
+	
+// 	std::string path_for_access;
+// 	std::string	extension;
+
+	
+// 	if (_body.size() != 0) {
+// //		std::cout << "WTF here are my pb let's look inside" << std::endl;
+// //		std::cout << _body << std::endl;
+// 	}
+
+// 	if (_request.cur_serv_index == 1) {
+// //		std::cout << "bite" << std::endl;
+// 		// Host header no valide
+// 		// make a error page
+// 	//	return ;
+// 	}
+// 	if (_request.validity != 200) {
+// 		std::cout << "request non valide" << std::endl;
+// 		return auto_response();
+// 	}
+// 	if (_request.path == "/") {
+// //			std::cout << "ROOT " << std::endl;
+// 		//	std::cout << "bite" << std::endl;
+// 			if (_request.filename == "")
+// 				path_for_access = lst_server[_request.cur_serv_index].infos.root + lst_server[_request.cur_serv_index].infos.index;
+// 			else
+// 				path_for_access = lst_server[_request.cur_serv_index].infos.root + _request.filename;
+// 			size_t pos = path_for_access.find_last_of(".");
+// 			if (pos == std::string::npos) {
+// 				std::cout << "Extension not found in path" << std::endl;
+// 				this->_header.setStatusCode(404);
+// 				return ;
+// 			}
+// 			extension = path_for_access.substr(pos);
+// 			/*
+// 				go pour les cgi 
+// 			*/
+// 			if (_request.location_path.cgi_path.size() != 0) {
+// 				if (extension == _request.location_path.cgi_path[0].first) {
+// 					std::cout <<  "RAYYYYYYAN" << std::endl;
+// 				}
+// 			}	
+// //			std::cout << "extension" << extension << std::endl;
+// //			std::cout << "acces::" <<  path_for_access << std::endl; 
+// 			if (access(path_for_access.c_str(), F_OK) == 0) {
+// 				char buff[25];
+// 				itoa(_request.validity, buff, 10);
+// 				std::string validity_c(buff);
+// 				this->_body += readFromFile(path_for_access);
+// 				createHeader(extension, lst_server);
+// 			}
+		
+// 	}
+// 	else {
+// //			std::cout << "/location/" << std::endl;
+// 			if (_request.filename == "") {
+// //				std::cout << "no filename" << std::endl;
+// 				path_for_access = _request.location_path.root + _request.location_path.index;
+// 			}
+// 			else {
+// //				std::cout << "ya un filename" << std::endl;
+// 				path_for_access = _request.location_path.root + _request.filename;
+// 			}
+// 			size_t pos = path_for_access.find_last_of(".");
+// 			if (pos == std::string::npos) {
+// //				std::cout << "Extension not found in path" << std::endl;
+// 				this->_header.setStatusCode(404);
+// 				return ;
+
+// 			}
+// 			extension = path_for_access.substr(pos);
+// 			/*
+// 				go pour les cgi 
+// 			*/
+// 			if (_request.location_path.cgi_path.size() != 0) {
+// 				if (extension == _request.location_path.cgi_path[0].first) {
+// 					std::cout <<  "RAYYYYYYAN" << std::endl;
+// 				}
+// 			}	
+
+// //			std::cout << "extension" << extension << std::endl;
+// //			std::cout << "reel 2  access:" << path_for_access.c_str() << std::endl;
+
+// 			if (access(path_for_access.c_str(), F_OK) == 0) {
+// 				std::cout << _YEL << path_for_access << _NOR << std::endl;
+// 				this->_body += readFromFile(path_for_access);
+// 				createHeader(extension, lst_server);
+// 			}
+// 	}
+// }
 
 void			Response::createHeader( std::string & extension, std::vector<Server> & lst_server ) {
 				this->_header.setStatusCode(_request.validity);

@@ -6,7 +6,7 @@
 /*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/29 06:16:09 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/03 06:07:52 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,4 +139,13 @@ std::string		AutoIndexGenerator( std::string path ) {
 	list += "\r\n";
 	closedir(directory);
 	return list;
+}
+
+bool	isDirectory( std::string path )
+{
+	DIR		*directory;
+	directory = opendir(path.c_str());
+	if (directory)
+		return true;
+	return false;
 }
