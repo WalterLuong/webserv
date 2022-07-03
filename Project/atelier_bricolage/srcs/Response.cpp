@@ -156,7 +156,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 
 	if (_request.path == "/")
 	{
-		if (this->_request.autoindex_on || in_autoindex) 
+		if (this->_request.location_path.autoindex == "on"  || in_autoindex) 
 		{
 			in_autoindex = 1;
 			this->_body = AutoIndexGenerator(lst_server[_request.cur_serv_index].infos.root);
@@ -190,7 +190,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	}
 	else
 	{
-		if (_request.path[_request.path.length() - 1] == '/' && (in_autoindex == 1 || _request.autoindex_on))
+		if (_request.path[_request.path.length() - 1] == '/' && (in_autoindex == 1 || _request.location_path.autoindex == "on"))
 		{
 			std::cout << "step one" << std::endl;
 			in_autoindex = 1;
