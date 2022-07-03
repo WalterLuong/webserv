@@ -13,6 +13,16 @@
 #include "../includes/Response.hpp"
 #include "../includes/utils.hpp"
 
+
+std::string randomdigits(int nb){
+
+	std::stringstream ss;
+	for(int i = 0; i < nb; i++){
+		ss << rand()%10;
+	}
+	return ss.str();
+}
+
 /**
  * It creates a temporary file, writes nothing to it, and returns the name of the file
  *
@@ -20,8 +30,12 @@
  */
 std::string create_tmpfile(void)
 {
-	char *tmpfname = std::tmpnam(NULL);
-	std::ofstream ftocreate(tmpfname);
+	std::string tmpfname;
+	do
+	{
+		tmpfname = "/tmp/webservtmp" + randomdigits(20);
+	} while (access(tmpfname.c_str(), F_OK) == 0);
+	std::ofstream ftocreate(tmpfname.c_str());
 	ftocreate.close();
 	return std::string(tmpfname);
 }
@@ -319,7 +333,7 @@ std::string		Response::getResponse() {
 	return _resp;
 }
 
-// bool			Response::AllowedMethod() {
+// bool			Response::AllowedMethod() {<
 // 	// if (this->_request.getMethod() == "GET")
 // 	// 	return true;
 //	chercher dans le path si la methode est allowed sinon
