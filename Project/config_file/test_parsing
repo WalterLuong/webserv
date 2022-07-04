@@ -55,9 +55,9 @@ server {
 	
 	listen 8001
 
-	index	index.html
+	index	todd1.jpeg	
 
-	root ../www/
+	root ../www/image/todd/
 
 
 	max_body_client	1500
@@ -76,7 +76,7 @@ server {
 	error_page 400	../www/error_page/custom/error_page_404.html
 		index	cat.jpeg
 
-		autoindex on 
+		autoindex off 
 
 		location /bob_le_bricoleur {
 			index todd/todd1.jpeg

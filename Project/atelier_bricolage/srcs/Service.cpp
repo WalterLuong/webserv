@@ -165,9 +165,12 @@ void	Service::receive() {
 
 			request req(_buffer, _servers);
 			// std::cout << "request traiter" <<std::endl;
+
 			Response	resp(req);
-			if (req.validity <= 400)
-			{
+			if (req.validity != 200) {
+				resp.auto_response();
+			}
+			else  {
 				int is_valid_method = check_methods(req);
 				if (is_valid_method == 0) {
 					std::cout << "Mehtod not allowed" << std::endl;
@@ -178,12 +181,9 @@ void	Service::receive() {
 					resp.responseGet(_servers);
 				}
 				std::cout << resp.getResponse() << std::endl;
-				sending(i, resp);
 			}
-			if (resp.is_request_valid() != 200) {
-				std::cout << "here" << std::endl;
-				resp.auto_response();
-				std::cout << resp.getResponse() << std::endl;
+				sending(i, resp);
+			if (req.validity != 0) {
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}

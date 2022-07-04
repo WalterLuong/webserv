@@ -196,7 +196,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			in_autoindex = 1;
 			std::string	directory;
 			if (_request.path.length() >= _request.location_path.uri.length() + 2)
-					directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 2, this->_request.path.length());
+					directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 1, this->_request.path.length());
 			directory[directory.length() - 1] = 0;
 			std::cout << _RED << directory << " MOTHERFUCKER"<< _NOR << std::endl;
 			if (isDirectory(directory))

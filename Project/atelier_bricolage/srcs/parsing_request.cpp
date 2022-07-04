@@ -466,20 +466,28 @@ int	request::check_path_for_location(Server cur, std::string path) {
 			this->path = "/";
 			return 0;
 		}
+		std::cout << "request check path for location :" << "path is not a file" << std::endl;
+	//	return 1;
 	}
 
 	if (cur.infos.location.size() == 0)
 		return 1;
 //	std::cout << "new path uri: " << path << std::endl;
 //	std::cout << "first step in check path" << std::endl;
+	std::cout << _RED << "test request check path for location"  << _NOR<< std::endl;
 	while (ite != cur.infos.location.end()) {
 		if (ite->uri == path.substr(1)) {
 			dependance.push_back(*ite);
 			location_path = *ite;
+			std::cout << _RED << "exit at bouble while" << _NOR << std::endl;
 			return 0;
 		}
 		ite++;
 	}	
+	if (path.find_last_of("/") == 0) {
+		std::cout << _RED << "path doesn't exist"  << _NOR<< std::endl;
+	}
+	std::cout << _RED << "test request check path for location" <<  _NOR<< std::endl;
 	if ((end = sub.find("/")) != std::string::npos) {
 		std::string first_loc(sub.substr(0, end));
 
@@ -526,7 +534,9 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	cur_serv_index = j;
 //	std::cout << "cur server index:" << j << std::endl;
 
+		std::cout << "path in set_cureent_server:" << path << "|" << std::endl;
 	if (path != "/") {
+		std::cout << "go to check location " << std::endl;
 	if ((in_location = check_path_for_location(lst_server[j], path)) != 0) {
 //		std::cout << "no location found for this path" << std::endl;
 		return 1;
@@ -640,7 +650,8 @@ int	request::fill_string(std::string str) {
 	size_t		end;
 	size_t		line_len;
 	if (str.find("\r\n\r\n") == std::string::npos) {
-		std::cout << "request have not end" << std::endl;
+		std::cout << "request have not end, requuest:" << std::endl;
+		std::cout << str << std::endl;
 		std::cout << "at start fill_string" << std::endl;
 		return 400;
 	}
