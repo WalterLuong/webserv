@@ -88,7 +88,6 @@ bool	Service::accepting_connections() {
 	{
 		if (FD_ISSET(it->_serv_sock.getSocket(), &_fdset))
 		{
-			std::cout << "INFINI ?" << std::endl;
 			new_connection = accept(it->_serv_sock.getSocket(), it->_serv_sock.castAddr(), it->_serv_sock.getAdLen());
 			if (new_connection < 0)
 			{
@@ -145,7 +144,6 @@ void	Service::receive() {
 	{	
 		if(FD_ISSET(_clients_sd[i], &_fdset))
 		{
-			std::cout << "INFINI ?" << std::endl;
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 			if (len_recv < 0)
 			{
@@ -154,7 +152,7 @@ void	Service::receive() {
 			}
 			if (len_recv == 0)
 			{
-				// FD_CLR(_clients_sd[i], &_fdset);
+				FD_CLR(_clients_sd[i], &_fdset);
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
@@ -164,26 +162,28 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
-			// std::cout << "request traiter" <<std::endl;
-
 			Response	resp(req);
-			if (req.validity != 200) {
-				resp.auto_response();
-			}
-			else  {
+			// if (req.validity != 200) {
+			// 	resp.auto_response();
+			// }
+			// else 
+			// {
 				int is_valid_method = check_methods(req);
-				if (is_valid_method == 0) {
+				if (is_valid_method == 0) 
+				{
 					std::cout << "Mehtod not allowed" << std::endl;
 					resp.set_validity(405);
 					resp.responseGet(_servers);
 				}
-				else if (req.methods == "GET") {
+				else if (req.methods == "GET")
+				{
 					resp.responseGet(_servers);
 				}
 				std::cout << resp.getResponse() << std::endl;
-			}
 				sending(i, resp);
-			if (req.validity != 0) {
+			// }
+			if (req.validity != 200)
+			{
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
@@ -198,7 +198,7 @@ void	Service::sending(int i, Response resp) {
 		send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
 		return ;
 	}
-	std::cout << "HELP" << std::endl;
+	// std::cout << "HELP" << std::endl;
 	std::string new_rep("HTTP/1.1 200 Ok\r\nContent-Length: 0\r\n\r\n");
 	send(_clients_sd[i], new_rep.c_str(), new_rep.length(), 0);
 
