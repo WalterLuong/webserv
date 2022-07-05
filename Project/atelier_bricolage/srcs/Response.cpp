@@ -14,31 +14,16 @@
 #include "../includes/utils.hpp"
 
 
-std::string randomdigits(int nb){
+std::string randomdigits(int nb);
 
-	std::stringstream ss;
-	for(int i = 0; i < nb; i++){
-		ss << rand()%10;
-	}
-	return ss.str();
-}
 
 /**
  * It creates a temporary file, writes nothing to it, and returns the name of the file
  *
  * @return A string containing the name of a temporary file.
  */
-std::string create_tmpfile(void)
-{
-	std::string tmpfname;
-	do
-	{
-		tmpfname = "/tmp/webservtmp" + randomdigits(20);
-	} while (access(tmpfname.c_str(), F_OK) == 0);
-	std::ofstream ftocreate(tmpfname.c_str());
-	ftocreate.close();
-	return std::string(tmpfname);
-}
+std::string create_tmpfile(void);
+
 
 /**
  * It reads the contents of a file into a string
@@ -47,16 +32,7 @@ std::string create_tmpfile(void)
  *
  * @return A string containing the contents of the file.
  */
-std::string get_file_content(std::string filename)
-{
-	std::ifstream ifs;
-	ifs.open(filename.c_str(), std::ifstream::in);
-
-	std::stringstream strStream;
-	strStream << ifs.rdbuf();
-
-	return strStream.str();
-};
+std::string get_file_content(std::string filename);
 
 /**
  * It takes an array of strings and the number of strings in the array, and returns a single string
@@ -67,38 +43,9 @@ std::string get_file_content(std::string filename)
  *
  * @return A string
  */
-std::string joinstr(std::string *strs, int n)
-{
+std::string joinstr(std::string *strs, int n);
 
-	std::string str;
-	for (int i = 0; i < n; i++)
-	{
-		str += strs[i];
-	}
-	return str;
-}
-
-/**
- * It takes a binary, an input file, and an output file, and runs the binary on the input file,
- * writing the output to the output file
- *
- * @param bin the binary to run
- * @param infilename The input file to be used by the binary
- * @param outfilename The name of the file that will be created.
- *
- * @return The return value of the system call.
- */
-int run_bin(std::string bin, std::string infilename, std::string outfilename)
-{
-	std::string payload[] = {"cat ", infilename, " | ", bin, " > ", outfilename};
-	int size = *(&payload + 1) - payload;
-
-	std::string cmd = joinstr(payload, size);
-
-
-	return system(cmd.c_str());
-}
-
+int run_bin(std::string bin, std::string infilename, std::string outfilename);
 /**
  * It writes a string to a file
  *
@@ -107,10 +54,7 @@ int run_bin(std::string bin, std::string infilename, std::string outfilename)
  *
  * @return The return value of the system call.
  */
-int write_infile(std::string infile, std::string body)
-{
-	return system(("echo " + body + " > " + infile).c_str());
-}
+int write_infile(std::string infile, std::string body);
 
 /**
  * It takes a binary and a string, writes the string to a temporary file, runs the binary with the
@@ -122,23 +66,7 @@ int write_infile(std::string infile, std::string body)
  * @return The output of the cgi script.
  */
 
-std::string cgi_execution(std::string bin, std::string body)
-{
-
-	std::string outfile = create_tmpfile();
-	std::string infile = create_tmpfile();
-
-	write_infile(infile, body);
-
-	run_bin(bin, infile, outfile);
-
-	std::string out = get_file_content(outfile);
-
-	remove(infile.c_str());
-	remove(outfile.c_str());
-
-	return out;
-}
+std::string cgi_execution(std::string bin, std::string body);
 
 /**
  * It converts an integer to a string
@@ -147,15 +75,7 @@ std::string cgi_execution(std::string bin, std::string body)
  *
  * @return A string
  */
-std::string tostr(int k)
-{
-	std::stringstream ss;
-	ss << k;
-	std::string s;
-	ss >> s;
-
-	return s;
-}
+std::string tostr(int k);
 
 /**
  * If the position is not equal to the npos constant, then return the substring starting at that
@@ -166,10 +86,7 @@ std::string tostr(int k)
  *
  * @return The substring of str starting at pos.
  */
-std::string get_sub_str(std::string str, size_t pos)
-{
-	return str.substr((pos != std::string::npos) ? pos : 0);
-}
+std::string get_sub_str(std::string str, size_t pos);
 
 /**
  * It sets the environment variables for the CGI script
@@ -177,55 +94,8 @@ std::string get_sub_str(std::string str, size_t pos)
  * @param req The request object
  * @param absolutepath The absolute path of the cgi script.
  */
-void set_environement(request &req, std::string &absolutepath)
-{
 
-	putenv((char *)("CONTENT_LENGTH=" + req.instruction["Content-Length"]).c_str());
-	putenv((char *)("CONTENT_TYPE=" + req.instruction["Content-Type"]).c_str());
-
-	putenv((char *)("GATEWAY_INTERFACE=CGI/1.1"));
-
-	// static std::string pathinf = get_sub_str(req.path, req.path.find_last_of("/"));
-	putenv((char *)("PATH_INFO=" + req.path).c_str());
-	putenv((char *)("PATH_TRANSLATED=" + req.path).c_str());
-
-	static std::string query ;
-	query = (req.methods == "GET") ? req.body : "";
-	putenv((char *)("QUERY_STRING=" + query).c_str());
-
-	putenv((char *)("REDIRECT_STATUS=200"));
-
-	putenv((char *)("REQUEST_METHOD=" + req.methods).c_str());
-	putenv((char *)("REQUEST_URI=" + req.path).c_str());
-
-
-	static std::string host =
-		req.instruction["Host"].substr(0, req.instruction["Host"].find_first_of(":"));
-	static std::string port =
-		get_sub_str(req.instruction["Host"], req.instruction["Host"].find_first_of(":") + 1);
-
-	putenv((char *)("SERVER_NAME=" + host).c_str());
-	putenv((char *)("SERVER_PORT=" + port).c_str());
-
-	putenv((char *)("SERVER_PROTOCOL=HTTP/1.1"));
-	putenv((char *)("SERVER_SOFTWARE=Weebserv/1.0"));
-
-	putenv((char *)("REMOTE_IDENT=" + req.instruction["Authorization"]).c_str());
-	putenv((char *)("REMOTE_USER=" + req.instruction["Authorization"]).c_str());
-	putenv((char *)("REMOTEaddr=" + port).c_str());
-	if (req.instruction["Auth-Scheme"] != "")
-		putenv((char *)("AUTH_TYPE=" + req.instruction["Authorization"]).c_str());
-
-
-	static std::string fname;
-	fname = "SCRIPT_FILENAME="+std::string(realpath(absolutepath.c_str(), NULL));
-	static std::string sname;
-	sname = "SCRIPT_NAME="+std::string(realpath(absolutepath.c_str(), NULL));
-	// static std::string fname = "SCRIPT_FILENAME="+ std::string(getenv("PWD")) + "/"+ absolutepath;
-	putenv((char *)fname.c_str());
-	putenv((char *)sname.c_str());
-
-};
+void set_environement(request &req, std::string &absolutepath);
 
 
 std::string g_extension = "";
@@ -268,16 +138,8 @@ std::string get_extension(std::string filename)
  *
  * @return The path to the cgi-bin directory.
  */
-std::string get_cgipath(std::vector<std::pair<std::string, std::string> > cgi_path)
-{
-	std::vector<std::pair<std::string, std::string> >::iterator res =
-		std::find_if(cgi_path.begin(), cgi_path.end(), is_equal_to_extension);
-	if (res != cgi_path.end())
-	{
-		return res->second;
-	}
-	return "";
-}
+std::string get_cgipath(std::vector<std::pair<std::string, std::string> > cgi_path);
+
 
 /**
  * It sets the environment variables, then executes the CGI script and returns the output
@@ -287,17 +149,8 @@ std::string get_cgipath(std::vector<std::pair<std::string, std::string> > cgi_pa
  *
  * @return The output of the cgi script
  */
-std::string cgi_handler(request &req, std::string &absolutepath)
-{
-	std::string bin = get_cgipath(req.location_path.cgi_path);
-	if (bin != "")
-	{
-		set_environement(req, absolutepath);
-		return cgi_execution(bin, req.body);
-	}
-	std::cerr << "CGI not found" << std::endl;
-	return "";
-}
+std::string cgi_handler(request &req, std::string &absolutepath);
+
 
 
 
@@ -416,9 +269,48 @@ return ;
 
 }
 
+void	Response::cgi_header(std::string body) {
+	std::string str;
+	size_t pos;
+
+	while (body != "") {
+		pos = body.find("\n");
+		if (body.find("\r\n") == 0) {
+			body = body.substr(2);
+			_body = body;
+			std::cout << "tientientein" << std::endl;
+			break ;
+		}
+		if (pos == std::string::npos || pos == 0) {
+			std::cout << "plus de newline found" << std::endl;
+			break;
+		}
+		str = body.substr(0, pos-1);
+		body = body.substr(pos + 1); 
+		size_t res;
+		if ((res = str.find("Content-type: ")) == 0) {
+			std::cout << "i got the content type" << std::endl;
+			res = str.find(":");
+			std::string bite = "text/html";
+		//	std::string bite = str.substr(res + 2);
+			std::cout << "ce que je met dans le header:" << str.substr(res+2) << std::endl;
+			_header.setContentType(bite);
+		}
+		std::cout << " str: " << str << "|" << std::endl;
+		std::cout << " body: " << body[0]<< "|" << std::endl;
+
+	}
+	_header.setBodyLength(_body.length());
+	_header.setContentLength();
+	std::cout << "PUTE WALTER PUTE:" << _header.getContentLength() << std::endl;
+	std::cout << "Str length :" << _body.length() << std::endl;
+//	_body = _body+"\r\n";
+}
+
 void			Response::responseGet(std::vector<Server> lst_server) {
 
 	std::string path_for_access;
+	std::string extension;
 
 	if (_body.size() != 0) {
 //		std::cout << "WTF here are my pb let's look inside" << std::endl;
@@ -450,15 +342,17 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				this->_header.setStatusCode(404);
 				return ;
 			}
-			g_extension = path_for_access.substr(pos);
+			extension = path_for_access.substr(pos);
 			/*
 				go pour les cgi
 			*/
 			if (_request.location_path.cgi_path.size() != 0) {
-				if (get_cgipath(_request.location_path.cgi_path) != "") {
-					createHeader(g_extension, lst_server);
-					_body = cgi_handler(_request, path_for_access);
+				int cgi_pos;
+				if ((cgi_pos = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
+					createHeader(extension, lst_server);
+					_body = cgi_handler(_request, path_for_access, cgi_pos);
 					std::cout << _body << std::endl;
+					return;
 				}
 			}
 //			std::cout << "g_extension" << g_extension << std::endl;
@@ -468,7 +362,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				itoa(_request.validity, buff, 10);
 				std::string validity_c(buff);
 				this->_body += readFromFile(path_for_access);
-				createHeader(g_extension, lst_server);
+				createHeader(extension, lst_server);
 			}
 
 	}
@@ -489,22 +383,25 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				return ;
 
 			}
-			g_extension = path_for_access.substr(pos);
+			extension = path_for_access.substr(pos);
 			/*
 				go pour les cgi
 			*/
 			if (_request.location_path.cgi_path.size() != 0) {
-				if (get_cgipath(_request.location_path.cgi_path) != "") {
-					createHeader(g_extension, lst_server);
-					_body = cgi_handler(_request, path_for_access);
-					std::cout << _body << std::endl;
+				int pos_cgi;
+				if ((pos_cgi = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
+					createHeader(extension, lst_server);
+					_body = cgi_handler(_request, path_for_access, pos_cgi);
+					std::cout << "ret of cgi hgandler:" << _body << "|" << std::endl;
+					std::cout << "go treat the body" << std::endl;
+					cgi_header(_body);
 					return ;
 				}
 			}
 			else if (access(path_for_access.c_str(), F_OK) == 0) {
 				std::cout << _YEL << path_for_access << _NOR << std::endl;
 				this->_body += readFromFile(path_for_access);
-				createHeader(g_extension, lst_server);
+				createHeader(extension, lst_server);
 			}
 	}
 }
