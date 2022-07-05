@@ -126,6 +126,45 @@ return ;
 
 }
 
+
+void	Response::cgi_header(std::string body) {
+	std::string str;
+	size_t pos;
+
+	while (body != "") {
+		pos = body.find("\n");
+		if (body.find("\r\n") == 0) {
+			body = body.substr(2);
+			_body = body;
+			std::cout << "tientientein body :" << body << std::endl;
+			break ;
+		}
+		if (pos == std::string::npos || pos == 0) {
+			std::cout << "plus de newline found" << std::endl;
+			break;
+		}
+		str = body.substr(0, pos-1);
+		body = body.substr(pos + 1); 
+		size_t res;
+		if ((res = str.find("Content-type: ")) == 0) {
+			std::cout << "i got the content type" << std::endl;
+			res = str.find(":");
+		//	std::string bite = "text/html";
+			std::string bite = str.substr(res + 2);
+			std::cout << "ce que je met dans le header:" << str.substr(res+2) << std::endl;
+			_header.setContentType(bite);
+		}
+		std::cout << " str: " << str << "|" << std::endl;
+		std::cout << " body: " << body[0]<< "|" << std::endl;
+
+	}
+	_header.setBodyLength(_body.length());
+	_header.setContentLength();
+	
+//	_body = _body+"\r\n";
+}
+
+
 void			Response::responseGet(std::vector<Server> lst_server) {
 	std::string path_for_access;
 	std::string	extension = "html";
@@ -188,6 +227,22 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		return ;
 	}
 	extension = path_for_access.substr(pos);
+	/*
+		cgi 
+
+	*/
+		if (_request.location_path.cgi_path.size() != 0) {
+				int pos_cgi;
+				if ((pos_cgi = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
+					createHeader(extension, lst_server);
+					std::cout << "go to exec cgi" << std::endl;
+					_body = cgi_handler(_request, path_for_access, pos_cgi);
+					std::cout << "ret of cgi hgandler:" << _body << "|" << std::endl;
+					std::cout << "go treat the body" << std::endl;
+					cgi_header(_body);
+					return ;
+				}
+			}
 	if (access(path_for_access.c_str(), F_OK) == 0)
 	{
 		this->_body += readFromFile(path_for_access);
