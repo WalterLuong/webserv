@@ -2,17 +2,17 @@
 
 
 
-server {               			
-	listen	1234   
+server {
+	listen	1234
 
-	server_name	jean	           					   	 	 	 
-	
+	server_name	jean
+
 	index	../www/html_file/index.html
 
 	max_body_client	1500
 
 	methods GET          POST    DELETE
-	autoindex 		 off  
+	autoindex 		 off
 
 	return   	301	  	 fkjlsljfk
 
@@ -37,23 +37,23 @@ server {
 
 	location /tod {
 		root /www/image/todd
-		
+
 		autoindex on
 
 	}
 
-	location /snake { 
+	location /snake {
 		cgi_path	.py	/bin/py_cgi
 	}
-	
-	location /other_cgi { 
+
+	location /other_cgi {
 		methods GET          POST    DELETE
 		cgi_path	.php /bin/php_cgi
 	}
 }
 
 server {
-	
+
 	listen 8001
 
 	index	index.html
@@ -64,7 +64,7 @@ server {
 	max_body_client	1500
 
 	methods GET POST    DELETE
-	autoindex 		 off  
+	autoindex 		 off
 
 	return   	301	  	 fkjlsljfk
 
@@ -77,7 +77,7 @@ server {
 	error_page 400	../www/error_page/custom/error_page_404.html
 		index	cat.jpeg
 
-		autoindex off 
+		autoindex off
 
 		location /bob_le_bricoleur {
 			index todd/todd1.jpeg
@@ -91,21 +91,27 @@ server {
 	location /tod {
 		root ../www/image/todd/
 		index todd3.jpeg
-		
+
 		autoindex on
 
 	}
 
-	location /snake { 
+	location /snake {
 		cgi_path	.py	/bin/py_cgi
 
 		index bite.py
 	}
-	
-	location /other_cgi { 
+
+	location /other_cgi {
 		root ../www/php/
 		index hello.php
-		methods GET          POST    DELETE
+		methods GET POST DELETE
 		cgi_path	.php php-cgi
+	}
+	location /python {
+		root ../www/pythoncgi/
+		index test.py
+		methods GET POST DELETE
+		cgi_path	.py python3
 	}
 }

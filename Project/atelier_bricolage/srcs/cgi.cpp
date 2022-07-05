@@ -39,14 +39,14 @@ std::string joinstr(std::string *strs, int n)
 	return str;
 }
 
-int run_bin(std::string bin, std::string infilename, std::string outfilename)
+int run_bin(std::string bin, std::string argfile, std::string infilename, std::string outfilename)
 {
-	std::string payload[] = {"cat ", infilename, " | ", bin, " > ", outfilename};
+	std::string payload[] = {"cat ", infilename, " | ", bin, " ", argfile, " > ", outfilename};
 	int size = *(&payload + 1) - payload;
 
 	std::string cmd = joinstr(payload, size);
 
-	std::cout << "go run cgiL :" << cmd.c_str() << std::endl;
+	std::cout << "go run cgi :" << cmd.c_str() << std::endl;
 	return system(cmd.c_str());
 }
 
@@ -66,7 +66,7 @@ std::string get_file_content(std::string filename)
 	return strStream.str();
 };
 
-std::string cgi_execution(std::string bin, std::string body)
+std::string cgi_execution(std::string bin, std::string arg, std::string body)
 {
 
 	std::string outfile = create_tmpfile();
@@ -74,7 +74,7 @@ std::string cgi_execution(std::string bin, std::string body)
 
 	write_infile(infile, body);
 
-	run_bin(bin, infile, outfile);
+	run_bin(bin, arg, infile, outfile);
 
 	std::string out = get_file_content(outfile);
 
@@ -110,10 +110,17 @@ std::vector<std::string> init_env(request &req, std::string &absolutepath)
 		get_sub_str(req.instruction["Host"], req.instruction["Host"].find_first_of(":") + 1);
 
 	char *realp = realpath(absolutepath.c_str(), NULL);
+	std::string realpath;
 	if (!realp)
 	{
 		std::cerr << "Realpath error" << std::endl;
-		realp = (char *)"";
+		realpath = "";
+	}
+	else
+	{
+		std::cerr << "Realpath : " << realp << std::endl;
+		realpath = std::string(realp);
+		free(realp);
 	}
 
 	std::string envs[] = {"CONTENT_LENGTH=" + req.instruction["Content-Length"],
@@ -132,9 +139,8 @@ std::vector<std::string> init_env(request &req, std::string &absolutepath)
 						  "REMOTE_IDENT=" + req.instruction["Authorization"],
 						  "REMOTE_USER=" + req.instruction["Authorization"],
 						  "REMOTEaddr=" + port,
-						  "SCRIPT_FILENAME=" + std::string(realp),
-						  "SCRIPT_NAME=" + std::string(realp)};
-	free(realp);
+						  "SCRIPT_FILENAME=" + realpath,
+						  "SCRIPT_NAME=" + realpath};
 
 	std::vector<std::string> ret;
 	int size = *(&envs + 1) - envs;
@@ -156,6 +162,14 @@ void set_env(std::vector<std::string> &envs)
 	}
 }
 
+std::string get_argfile(void)
+{
+	std::string ret;
+	char *sfilename = getenv("SCRIPT_FILENAME");
+	(sfilename != NULL) ? ret = std::string(sfilename) : ret = "";
+	return ret;
+}
+
 std::string cgi_handler(request &req, std::string path_for_access, int extension_pos)
 {
 	std::cerr << __FUNCTION__ << std::endl;
@@ -164,7 +178,7 @@ std::string cgi_handler(request &req, std::string path_for_access, int extension
 	{
 		std::vector<std::string> envs = init_env(req, path_for_access);
 		set_env(envs);
-		return cgi_execution(bin, req.body);
+		return cgi_execution(bin, get_argfile(), req.body);
 	}
 	std::cerr << "CGI not found" << std::endl;
 	return "";
@@ -172,7 +186,6 @@ std::string cgi_handler(request &req, std::string path_for_access, int extension
 
 int get_cgi_path_pos(std::string extension, env_t cgi_path)
 {
-
 	env_t::iterator res = cgi_path.begin();
 	int i = 0;
 	while (res != cgi_path.end())
