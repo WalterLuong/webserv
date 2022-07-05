@@ -136,26 +136,26 @@ void	Response::cgi_header(std::string body) {
 		if (body.find("\r\n") == 0) {
 			body = body.substr(2);
 			_body = body;
-			std::cout << "tientientein body :" << body << std::endl;
+//			std::cout << "tientientein body :" << body << std::endl;
 			break ;
 		}
 		if (pos == std::string::npos || pos == 0) {
-			std::cout << "plus de newline found" << std::endl;
+//			std::cout << "plus de newline found" << std::endl;
 			break;
 		}
 		str = body.substr(0, pos-1);
 		body = body.substr(pos + 1); 
 		size_t res;
 		if ((res = str.find("Content-type: ")) == 0) {
-			std::cout << "i got the content type" << std::endl;
+//			std::cout << "i got the content type" << std::endl;
 			res = str.find(":");
 		//	std::string bite = "text/html";
 			std::string bite = str.substr(res + 2);
-			std::cout << "ce que je met dans le header:" << str.substr(res+2) << std::endl;
+	//		std::cout << "ce que je met dans le header:" << str.substr(res+2) << std::endl;
 			_header.setContentType(bite);
 		}
-		std::cout << " str: " << str << "|" << std::endl;
-		std::cout << " body: " << body[0]<< "|" << std::endl;
+//		std::cout << " str: " << str << "|" << std::endl;
+	//	std::cout << " body: " << body[0]<< "|" << std::endl;
 
 	}
 	_header.setBodyLength(_body.length());
