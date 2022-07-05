@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/02 03:25:32 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/05 08:49:24 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,14 @@ class Response
 
 		void			createHeader(std::string & extension, std::vector<Server> & lst_server);
 		void			setBody( std::string body );
+		void			cgi_header(std::string body);
 
 };
+
+
+int			get_cgi_path_pos(std::string extension, std::vector<std::pair<std::string, std::string> > cgi_path);
+
+
+std::string		cgi_handler(request &req, std::string path_for_access, int extension_pos);
 
 #endif
