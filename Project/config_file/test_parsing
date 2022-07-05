@@ -103,6 +103,9 @@ server {
 	}
 	
 	location /other_cgi { 
-		cgi_path	.php /bin/php_cgi
+		root ../www/php/
+		index hello.php
+		methods GET          POST    DELETE
+		cgi_path	.php php-cgi
 	}
 }
