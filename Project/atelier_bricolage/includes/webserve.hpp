@@ -7,7 +7,11 @@
 # include <fstream>
 # include <string>
 # include <cstdlib>
-
+# include <sstream>
+# include <sys/types.h>
+# include <unistd.h>
+# include <algorithm>
+# include <vector>
 
 int parsing(server_conf *stc, int ac, char **av);
 

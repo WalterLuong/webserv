@@ -6,7 +6,7 @@
 /*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/05 08:33:16 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/07/05 10:51:18 by mlormois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class Response
 
 		void			createHeader(std::string & extension, std::vector<Server> & lst_server);
 		void			setBody( std::string body );
+		void			cgi_header(std::string body);
 
 };
 

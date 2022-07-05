@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wluong <wluong@student.42.fr>              +#+  +:+       +#+         #
+#    By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/18 18:53:23 by jdidier           #+#    #+#              #
-#    Updated: 2022/06/25 09:46:32 by wluong           ###   ########.fr        #
+#    Updated: 2022/07/05 10:52:42 by mlormois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS			= 	main.cpp \
 				srcs/parsing.cpp \
 				srcs/Response.cpp \
 				srcs/ResponseHeader.cpp \
-				srcs/utils.cpp
+				srcs/utils.cpp			\
+				srcs/cgi.cpp
 
 INCLUDE		=	-I./includes/
 
