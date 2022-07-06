@@ -29,7 +29,7 @@ server {
 			index todd/todd1.jpeg
 
 			location /bite {
-				index j.jpeg
+				index todd/todd2.jpeg
 			}
 		}
 	}
@@ -84,7 +84,7 @@ server {
 			index todd/todd1.jpeg
 
 			location /bite {
-				index j.jpeg
+				index todd/todd2.jpeg
 			}
 		}
 	}

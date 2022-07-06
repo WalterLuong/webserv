@@ -217,10 +217,12 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		}
 	}
 	std::cout << _RED << "JE SUIS LA WALTY"<< _NOR << std::endl;
+	std::cout << _RED << _request.filename << _NOR << std::endl;
 	if (_request.filename == "")
 		path_for_access += _request.location_path.index;
 	else
 		path_for_access += _request.filename;
+	std::cout << _RED << path_for_access << _NOR << std::endl;
 	size_t pos = path_for_access.find_last_of(".");
 	if (pos == std::string::npos) {
 		this->_header.setStatusCode(404);
@@ -243,11 +245,13 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 					return ;
 				}
 			}
-	if (access(path_for_access.c_str(), F_OK) == 0)
+	if (access(path_for_access.c_str(), F_OK) == 0 && _request.validity == 200)
 	{
 		this->_body += readFromFile(path_for_access);
 		createHeader(extension, lst_server);
+		return ;
 	}
+	return auto_response();
 }
 	
 // 	std::string ath_for_access;
