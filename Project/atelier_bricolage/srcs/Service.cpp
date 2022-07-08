@@ -180,9 +180,10 @@ void	Service::receive() {
 					resp.responseGet(_servers);
 				}
 				std::cout << resp.getResponse() << std::endl;
+//				if (resp.getBody().length() > max_body_size)
 				sending(i, resp);
 			// }
-			if (req.validity != 200)
+			if (req.validity != 0)
 			{
 				close(_clients_sd[i]);
 				_clients_sd[i] = 0;
@@ -201,6 +202,19 @@ void	Service::sending(int i, Response resp) {
 	// std::cout << "HELP" << std::endl;
 	std::string new_rep("HTTP/1.1 200 Ok\r\nContent-Length: 0\r\n\r\n");
 	send(_clients_sd[i], new_rep.c_str(), new_rep.length(), 0);
-
-
 }
+
+
+/* RUSH FINAL POUR CE WEEKEND
+
+- finir l'auto index pour /
+- integrer push et delete
+- chunck es requetes
+- verifier le max body size
+- faire une bonne hierarchie du dossier www, et du fichier conf
+- faire de belles pages html
+- integrer les bons codes d'erreurs en fonctons des erreurs (404 pour 404 et pas 400 pour tout)
+- clean le code
+- ramener Rayan
+
+*/

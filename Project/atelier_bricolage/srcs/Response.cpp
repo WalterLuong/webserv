@@ -169,11 +169,16 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	std::string path_for_access;
 	std::string	extension = "html";
 
+		std::cerr << _YEL <<this->_request.location_path.uri << _NOR << std::endl;
+		std::cerr << _YEL <<this->_request.path << _NOR << std::endl;
+		std::cout << this->_request.get_path() << std::endl;
+		std::cout << this->_request.filename << std::endl;
+	
 	path_for_access = _request.location_path.root;
-	std::cerr << _YEL << _request.path << _NOR << std::endl;
 	if (_request.path[_request.path.length() - 1] == '/'/*_request.location_path.autoindex == "on"*/)
 	{
 		std::cerr << _YEL << "HERE" << _NOR << std::endl;
+
 		if (_request.path.length() >= _request.location_path.uri.length() + 2)
 		{
 			std::string	directory;
@@ -189,7 +194,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 				return ;
 			}
 		}
-		else if (this->_request.autoindex_on)
+		else if (this->_request.autoindex_on || (lst_server[_request.cur_serv_index].infos.autoindex == "on" && _request.path == "/" && this->_request.filename == ""))
 		{
 			std::cout << _RED << "JE SUIS LA ABDOUL 2"<< _NOR << std::endl;
 			this->_body = AutoIndexGenerator(path_for_access);
