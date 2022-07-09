@@ -165,6 +165,24 @@ void	Response::cgi_header(std::string body) {
 }
 
 
+void			Response::responsePost(std::vector<Server> lst_server) {
+	if (_request.chunked == -1) {
+		std::cout << "request body :" << _request.body << std::endl;
+		_body = _request.body;
+				this->_header.setStatusCode(_request.validity);
+				this->_header.setStatus(this->_request.get_http_version(), "OK");
+				this->_header.setDate();
+				this->_header.setBodyLength(this->_body.length());
+				this->_header.setContentLength();
+				this->_header.setContentType(_request.instruction["Content-Type"]);
+		//		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);	
+		return ;
+	}
+	if (lst_server.size() != 0) {
+		return ;
+	}
+}
+
 void			Response::responseGet(std::vector<Server> lst_server) {
 	std::string path_for_access;
 	std::string	extension = "html";
@@ -477,18 +495,18 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 // }
 
 void			Response::createHeader( std::string & extension, std::vector<Server> & lst_server ) {
+		if (extension.size() ) {
+			std::cout << std::endl;
+		}
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
 				this->_header.setDate();
 				this->_header.setBodyLength(this->_body.length());
 				this->_header.setContentLength();
-				this->_header.setContentType(_request.map_file_type[extension]);
+				this->_header.setContentType(_request.instruction["Content-Type"]);
 				this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);
 }
 
-void			Response::responsePost() {
-	
-}
 
 void			Response::responseDelete() {
 	

@@ -20,9 +20,13 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 	init_file_type();
 	init_instruction();
 
+	if (line.size() != 0) {
+		std::cout << std::endl;
+	}
 
 //	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 //	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
+//	std::string test_request2 = "POST /test.html HTTP/1.1\r\nHost: localhost:8001\r\nContent-Type: application/json\r\nContent-Length: 67\r\n\r\n{\"Id\": 12345,\"Customer\": \"John Smith\",\"Quantity\": 1,\"Price\": 10.00}";
 
 
 	int res;
@@ -574,14 +578,16 @@ int	request::check_request() {
 }
 
 int	request::fill_body(std::string line) {
-	request_body += line;
+	body += line;
 	return 1;
 }
 
 int	request::pars_body(std::string line) {
+	std::cout << "line en question: " << line << std::endl;
+	std::cout << "line lenght en question: " << line.length() << std::endl;
 	fill_body(line);
 	if (line.length() != static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
-		std::cout << "Header Content-Length support only number" << std::endl;
+		std::cout << "Header Content-Length support only number:" << instruction["Content-Length"] << "|"<< std::endl;
 		return 400;
 	}
 	return 0;
