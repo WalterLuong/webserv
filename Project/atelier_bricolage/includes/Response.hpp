@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlormois <mlormois@student.42.fr>          +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/05 10:51:18 by mlormois         ###   ########.fr       */
+/*   Updated: 2022/07/09 03:20:42 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ class Response
 		std::string		getResponse();
 
 		void			responseGet(std::vector<Server> lst_server);
-		void			responsePost();
+		void			responsePost(std::vector<Server> lst_server);
 		void			responseDelete();
 		void			responseCGI();
 		void			responseAutoIndex();
