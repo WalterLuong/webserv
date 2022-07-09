@@ -166,8 +166,6 @@ void	Response::cgi_header(std::string body) {
 
 
 void			Response::responsePost(std::vector<Server> lst_server) {
-	if (_request.chunked == -1) {
-		std::cout << "request body :" << _request.body << std::endl;
 		_body = _request.body;
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
@@ -177,10 +175,6 @@ void			Response::responsePost(std::vector<Server> lst_server) {
 				this->_header.setContentType(_request.instruction["Content-Type"]);
 		//		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);	
 		return ;
-	}
-	if (lst_server.size() != 0) {
-		return ;
-	}
 }
 
 void			Response::responseGet(std::vector<Server> lst_server) {
@@ -511,20 +505,26 @@ void			Response::createHeader( std::string & extension, std::vector<Server> & ls
 void			Response::responseDelete() {
 	
 	//is method allowed
+	std::ifstream ifs;
+
+	ifs.open(_request.get_path().c_str());
+
+    if (!ifs) {
+		_request.validity = 404;
+		return auto_response();
+	}
+	ifs.close();
 	
-	if (std::remove(this->_request.get_path().c_str()))
+	if (std::remove(this->_request.get_path().c_str())) {
+		_request.validity =403;
 		this->_header.setStatus("403 ", "Forbidden");
+		return auto_response();
+	}
+	
 	//creer un body pour dire que c delete ?
 }
 
-void			Response::responseCGI() {
-	//jsp quoi faire ici
-}
 
-void			Response::responseAutoIndex() {
-	// j'attends victor
-	// 
-}
 
 std::string		Response::readFromFile(std::string path, int i) {
 	std::ifstream		ifs(path.c_str(), std::ifstream::binary);
