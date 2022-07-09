@@ -162,6 +162,27 @@ void	Service::receive() {
 			//do while
 
 			request req(_buffer, _servers);
+
+			
+			if (req.chunked != -1) {
+				while (req.chunked != 1) {
+					len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
+					if (len_recv < 0)
+					{
+						std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
+						break;
+					}
+					if (len_recv == 0)
+					{
+						FD_CLR(_clients_sd[i], &_fdset);
+						close(_clients_sd[i]);
+						_clients_sd[i] = 0;
+					}
+					_buffer[len_recv] = 0;
+				}
+			}
+
+
 			Response	resp(req);
 			// if (req.validity != 200) {
 			// 	resp.auto_response();
@@ -178,6 +199,12 @@ void	Service::receive() {
 				else if (req.methods == "GET")
 				{
 					resp.responseGet(_servers);
+				}
+				else if (req.methods == "POST") {
+					resp.responsePost(_servers);
+				}
+				else if (req.methods == "DELETE") {
+					resp.responseDelete();
 				}
 				std::cout << resp.getResponse() << std::endl;
 //				if (resp.getBody().length() > max_body_size)
