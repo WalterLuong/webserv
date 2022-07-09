@@ -511,7 +511,15 @@ void			Response::responseDelete() {
 	//is method allowed
 	std::ifstream ifs;
 
-	ifs.open(_request.get_path().c_str());
+	std::string path_for_access;
+	path_for_access = _request.location_path.root;
+	if (_request.filename == "")
+		path_for_access += _request.location_path.index;
+	else
+		path_for_access += _request.filename;
+	std::cout << "REQUEST DELETE" << std::endl;
+	std::cout << "path we try to delelte: " << path_for_access<< std::endl;
+	ifs.open(path_for_access.c_str());
 
     if (!ifs) {
 		_request.validity = 404;
@@ -519,7 +527,7 @@ void			Response::responseDelete() {
 	}
 	ifs.close();
 	
-	if (std::remove(this->_request.get_path().c_str())) {
+	if (std::remove(path_for_access.c_str())) {
 		_request.validity =403;
 		this->_header.setStatus("403 ", "Forbidden");
 		return auto_response();

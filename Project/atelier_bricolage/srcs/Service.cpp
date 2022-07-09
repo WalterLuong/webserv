@@ -166,7 +166,7 @@ void	Service::receive() {
 /// test valgrind /// */
 
 			
-	/*		if (req.chunked != -1) {
+			if (req.chunked != -1) {
 				while (req.chunked != 1) {
 					len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 					if (len_recv < 0)
@@ -182,22 +182,21 @@ void	Service::receive() {
 					}
 					_buffer[len_recv] = 0;
 				}
-				if (_buffer == "\0\r\n" || _buffer == "\0\r\n\r\n") {
+				std::string res(_buffer);
+				if (res == "\0\r\n" || res == "\0\r\n\r\n") {
 					req.chunked = 1;
 				}
+				req.body +=  _buffer;
 
 			}
-*/
-/// test valgrind /// /*
+
 
 			Response	resp(req);
-			// if (req.validity != 200) {
-			// 	resp.auto_response();
-			// }
-			// else 
-			// {
 				int is_valid_method = check_methods(req);
-				if (is_valid_method == 0) 
+			 if (req.validity  >= 400) {
+			 	resp.auto_response();
+			 }
+				else if (is_valid_method == 0) 
 				{
 					std::cout << "Mehtod not allowed" << std::endl;
 					resp.set_validity(405);
@@ -215,6 +214,7 @@ void	Service::receive() {
 				}
 				std::cout << resp.getResponse() << std::endl;
 //				if (resp.getBody().length() > max_body_size)
+				if (!(req.methods == "DELETE" && resp.is_request_valid() < 400))
 				sending(i, resp);
 			// }
 			if (req.validity != 0)
@@ -242,7 +242,7 @@ void	Service::sending(int i, Response resp) {
 /* RUSH FINAL POUR CE WEEKEND
 
 - finir l'auto index pour /
-- integrer push et delete
+- integrer delete
 - verifier le max body size
 - faire une bonne hierarchie du dossier www, et du fichier conf
 - faire de belles pages html

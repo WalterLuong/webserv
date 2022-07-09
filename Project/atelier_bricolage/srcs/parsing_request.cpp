@@ -676,8 +676,10 @@ int	request::fill_string(std::string str) {
 //		std::cout << "line a lire: " << line << "|" <<std::endl;
 		if (start == 0){
 			start++;
-			if (get_first_line(&line) != 0)
+			if (get_first_line(&line) != 0) {
+				std::cout << "first line no valide"<< std::endl;
 				return 400;
+			}
 		}
 		else if (start == 1) {
 			if (get_line(&line) != 0) 
