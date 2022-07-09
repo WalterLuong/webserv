@@ -212,10 +212,19 @@ void	Service::receive() {
 				else if (req.methods == "DELETE") {
 					resp.responseDelete();
 				}
+				std::cout << "BODY SIZE: " << resp.getBody().length() << std::endl;
+				std::cout << "max BODY SIZE: " << resp._request.location_path.max_client<< std::endl;
+				if (resp.getBody().length() > (unsigned long)resp._request.location_path.max_client) {
+					std::cout << "TEST" << std::endl;
+					resp._request.validity = 400;
+					resp._resp = "";
+					resp.auto_response();
+				}
 				std::cout << resp.getResponse() << std::endl;
-//				if (resp.getBody().length() > max_body_size)
-				if (!(req.methods == "DELETE" && resp.is_request_valid() < 400))
+				if (!(req.methods == "DELETE" && resp.is_request_valid() < 400)) {
+					std::cout << "send" << std::endl;
 				sending(i, resp);
+				}
 			// }
 			if (req.validity != 0)
 			{
@@ -242,7 +251,6 @@ void	Service::sending(int i, Response resp) {
 /* RUSH FINAL POUR CE WEEKEND
 
 - finir l'auto index pour /
-- integrer delete
 - verifier le max body size
 - faire une bonne hierarchie du dossier www, et du fichier conf
 - faire de belles pages html

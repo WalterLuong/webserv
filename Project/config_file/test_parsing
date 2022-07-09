@@ -60,14 +60,13 @@ server {
 	root ../www/image/todd/
 
 
-	max_body_client	1500
+	max_body_client	1000000
 
 	methods GET POST    DELETE
 	autoindex 		 on  
 
 	return   	301	  	 fkjlsljfk
 
-	error_page 400	../www/error_page/custom/error_page_403.html
 
 	location /cat {
 		root ../www/image/

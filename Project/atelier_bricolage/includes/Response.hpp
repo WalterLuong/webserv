@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 05:15:07 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/09 03:20:42 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/10 01:13:35 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ class Response
 
 		ResponseHeader	_header;
 		std::string		_body;
-		request			_request;
-		std::string		_resp;
 
 		Response();
 
 	public:
+		std::string		_resp;
+		request			_request;
 	
 		Response(request req);
 		~Response();

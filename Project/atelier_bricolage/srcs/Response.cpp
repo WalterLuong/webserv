@@ -13,7 +13,7 @@
 #include "../includes/Response.hpp"
 #include "../includes/utils.hpp"
 
-Response::Response(request req) : _header(), _body(), _request(req), _resp() {}
+Response::Response(request req) : _header(), _body(), _resp() , _request(req){}
 
 Response::~Response() {}
 
@@ -69,6 +69,7 @@ void		Response::auto_response() {
 
 		if (_request.cur_serv_index == -1) {
 			_header.setStatusCode(_request.validity);	
+			_body = "";
 			_body += generator_error_file(validity_c);
 			_header.setBodyLength(_body.length());
 			_header.setContentType("text/html");
@@ -87,6 +88,7 @@ void		Response::auto_response() {
 					std::string extension(ite->second.substr(pos));
 
 					_header.setStatusCode(_request.validity);	
+					_body = "";
 					_body += readFromFile(ite->second);
 					_header.setBodyLength(_body.length());
 					_header.setContentType(_request.map_file_type[extension]);
