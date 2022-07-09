@@ -142,7 +142,7 @@ void	Service::receive() {
 
 	for (int i(0); i < MAX_CLIENTS; i++)
 	{	
-		if(FD_ISSET(_clients_sd[i], &_fdset))
+		if(FD_ISSET(_clients_sd[i], &_fdset) && _clients_sd[i] != 0)
 		{
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 			if (len_recv < 0)

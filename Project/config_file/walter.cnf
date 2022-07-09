@@ -65,7 +65,7 @@ server {
 	max_body_client	1500
 
 	methods GET POST    DELETE
-	autoindex 		 on  
+	autoindex 		 on
 
 	return   	301	  	 fkjlsljfk
 
