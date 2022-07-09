@@ -165,8 +165,29 @@ void	Response::cgi_header(std::string body) {
 }
 
 
-void			Response::responsePost(std::vector<Server> lst_server) {
+void			Response::responsePost(std::vector<Server> lst_server) { // lol victor t'as inverser, ca va boucle inf
 		_body = _request.body;
+		std::string pathfilename = "/Downloads/webserve";
+		std::string tmpPath;
+		char buff[25];
+		pathfilename += _request.path;
+		int i = 0;
+		if (access(pathfilename.c_str(), F_OK) == 0){
+			std::ofstream postFileCreate(pathfilename.c_str());
+			postFileCreate << _body << std::endl;
+			postFileCreate.close();
+		}
+		else {
+			do {
+				itoa(i++, buff, 10);
+				tmpPath = pathfilename + buff;
+			} while (access(tmpPath.c_str(), F_OK) == 0);
+			std::ofstream postFileCreate(tmpPath.c_str());
+			postFileCreate << _body << std::endl;
+			postFileCreate.close();
+	
+		}
+
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
 				this->_header.setDate();
@@ -174,6 +195,8 @@ void			Response::responsePost(std::vector<Server> lst_server) {
 				this->_header.setContentLength();
 				this->_header.setContentType(_request.instruction["Content-Type"]);
 		//		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);	
+		if (lst_server.size() )
+			return ;
 		return ;
 }
 

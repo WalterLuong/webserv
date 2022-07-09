@@ -26,12 +26,12 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 
 //	std::string test_request1 = "GET /hello.html HTTP/1.1\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 //	std::string test_request2 = "GET /hello.html HTTP/1.1\r\nContent-Length: 8\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE5.01; Windows NT)\r\nHost: www.tutorialspoint.com\r\nAccept-Language: en-us\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\nbonjours";
-//	std::string test_request2 = "POST /test.html HTTP/1.1\r\nHost: localhost:8001\r\nContent-Type: application/json\r\nContent-Length: 67\r\n\r\n{\"Id\": 12345,\"Customer\": \"John Smith\",\"Quantity\": 1,\"Price\": 10.00}";
+	std::string test_request2 = "POST /test.html HTTP/1.1\r\nHost: localhost:8001\r\nContent-Type: application/json\r\nContent-Length: 67\r\n\r\n{\"Id\": 12345,\"Customer\": \"John Smith\",\"Quantity\": 1,\"Price\": 10.00}";
 
 
 	int res;
 
-	if ((res = pars_request(line)) != 0) {
+	if ((res = pars_request(test_request2)) != 0) {
 		std::cout << "bad request" << std::endl;
 		validity = 400;
 		return;

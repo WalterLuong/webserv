@@ -164,7 +164,7 @@ void	Service::receive() {
 			request req(_buffer, _servers);
 
 			
-			if (req.chunked != -1) {
+	/*		if (req.chunked != -1) {
 				while (req.chunked != 1) {
 					len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 					if (len_recv < 0)
@@ -180,8 +180,12 @@ void	Service::receive() {
 					}
 					_buffer[len_recv] = 0;
 				}
-			}
+				if (_buffer == "\0\r\n" || _buffer == "\0\r\n\r\n") {
+					req.chunked = 1;
+				}
 
+			}
+*/
 
 			Response	resp(req);
 			// if (req.validity != 200) {
@@ -236,7 +240,6 @@ void	Service::sending(int i, Response resp) {
 
 - finir l'auto index pour /
 - integrer push et delete
-- chunck es requetes
 - verifier le max body size
 - faire une bonne hierarchie du dossier www, et du fichier conf
 - faire de belles pages html
