@@ -39,6 +39,14 @@ std::string		Response::getBody() {
 std::string		Response::getResponse() {
 	_header.generateHeader();
 	_resp = _header.getHeader();
+	std::cout << "test" << std::endl;
+	if (_request.methods == "POST" && _request.instruction["Content-Disposition"] != "") {
+		_resp = _resp.substr(0, _resp.length() -2);
+		_resp += "Content-Disposition: ";
+		_resp += _request.instruction["Content-Disposition"];
+		_resp += "\r\n\r\n";
+
+	}
 	_resp += _body;
 	return _resp;
 }
@@ -57,14 +65,7 @@ void		Response::auto_response() {
 		itoa(_request.validity, buff, 10);
 		std::string validity_c(buff);
 		
-		/*		test cgi == json
-			_header.setStatusCode(_request.validity);	
-			_body += "{\"response\":\"success\", \"body\":{ \"status\": \"right\"}}\n\r\n";
-			_header.setBodyLength(_body.length());
-			_header.setContentType("application/json");
-			this->_header.setStatus("HTTP/1.1", "OK");
-return ;	
-*/
+
 
 		if (_request.cur_serv_index == -1) {
 			_header.setStatusCode(_request.validity);	
@@ -167,26 +168,7 @@ void	Response::cgi_header(std::string body) {
 
 void			Response::responsePost(std::vector<Server> lst_server) { // lol victor t'as inverser, ca va boucle inf
 		_body = _request.body;
-		std::string pathfilename = "/Downloads/webserve";
-		std::string tmpPath;
-		char buff[25];
-		pathfilename += _request.path;
-		int i = 0;
-		if (access(pathfilename.c_str(), F_OK) == 0){
-			std::ofstream postFileCreate(pathfilename.c_str());
-			postFileCreate << _body << std::endl;
-			postFileCreate.close();
-		}
-		else {
-			do {
-				itoa(i++, buff, 10);
-				tmpPath = pathfilename + buff;
-			} while (access(tmpPath.c_str(), F_OK) == 0);
-			std::ofstream postFileCreate(tmpPath.c_str());
-			postFileCreate << _body << std::endl;
-			postFileCreate.close();
 	
-		}
 
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
@@ -194,7 +176,6 @@ void			Response::responsePost(std::vector<Server> lst_server) { // lol victor t'
 				this->_header.setBodyLength(this->_body.length());
 				this->_header.setContentLength();
 				this->_header.setContentType(_request.instruction["Content-Type"]);
-		//		this->_header.setServerName(lst_server[_request.cur_serv_index].infos.server_name);	
 		if (lst_server.size() )
 			return ;
 		return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/07/01 02:20:08 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/10 00:07:48 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,23 @@
 # include "includes/Service.hpp"
 # include <signal.h>
 
+	server_conf		serv_conf;
+	Service			webserv;
+
 void	sig_handler(int signum) {
-	signum = 1;
-	std::cout << _BL_GRE << "\b\b  \nWebserv is correctly closed bg !\n\n" << _NOR << std::endl;
-	
-	exit(EXIT_SUCCESS);
+	std::cout << "value of signum: " << signum << std::endl;
+	if (signum == 2)
+	{
+		std::cout << _BL_GRE << "\b\b  \nWebserv is correctly closed bg !\n\n" << _NOR << std::endl;
+		exit(1);
+	}
+	return;
 }
 
 int		main(int ac, char **av) {
 	
-	server_conf		serv_conf;
-	Service			webserv;
+	//server_conf		serv_conf;
+	//Service			webserv;
 
 	if (parsing(&serv_conf, ac, av) != 0)
 	{
@@ -53,5 +59,7 @@ int		main(int ac, char **av) {
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, sig_handler);
 	webserv.run_service();
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 }
 

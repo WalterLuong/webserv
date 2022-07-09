@@ -11,7 +11,7 @@ server {
 
 	max_body_client	1500
 
-	methods GET          POST    DELETE
+	methods          POST    DELETE
 	autoindex 		 off  
 
 	return   	301	  	 fkjlsljfk
@@ -63,7 +63,7 @@ server {
 	max_body_client	1500
 
 	methods GET POST    DELETE
-	autoindex 		 off  
+	autoindex 		 on  
 
 	return   	301	  	 fkjlsljfk
 
@@ -71,7 +71,7 @@ server {
 
 	location /cat {
 		root ../www/image/
-		methods	POST GET
+		methods	POST GET DELETE
 
 	error_page 400	../www/error_page/custom/error_page_404.html
 		index	cat.jpeg

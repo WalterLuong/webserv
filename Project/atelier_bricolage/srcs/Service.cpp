@@ -161,7 +161,9 @@ void	Service::receive() {
 			
 			//do while
 
+/// test valgrind /// /*
 			request req(_buffer, _servers);
+/// test valgrind /// */
 
 			
 	/*		if (req.chunked != -1) {
@@ -186,6 +188,7 @@ void	Service::receive() {
 
 			}
 */
+/// test valgrind /// /*
 
 			Response	resp(req);
 			// if (req.validity != 200) {
