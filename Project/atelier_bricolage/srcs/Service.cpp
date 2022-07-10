@@ -142,7 +142,7 @@ void	Service::receive() {
 
 	for (int i(0); i < MAX_CLIENTS; i++)
 	{	
-		if(FD_ISSET(_clients_sd[i], &_fdset) && _clients_sd[i] != 0)
+		if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 		{
 			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 			if (len_recv < 0)
@@ -157,13 +157,39 @@ void	Service::receive() {
 				_clients_sd[i] = 0;
 			}
 			_buffer[len_recv] = 0;
-			std::cout << _buffer << std::endl;
+//			std::cout << "first buffer: " << _buffer << "|" << std::endl;
 			
-			//do while
 
-/// test valgrind /// /*
 			request req(_buffer, _servers);
-/// test valgrind /// */
+
+			int size(len_recv);
+			// plus req validity 200
+			if (req.methods == "POST") {
+	//			std::cout << "first step" << std::endl;
+
+				while (len_recv > 0) {
+		//		std::cout << "second step" << std::endl;
+					if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
+					{
+						len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
+						if (len_recv < 0)
+						{
+							break;
+						}
+						if (len_recv == 0)
+						{
+							FD_CLR(_clients_sd[i], &_fdset);
+							close(_clients_sd[i]);
+							_clients_sd[i] = 0;
+						}
+						_buffer[len_recv] = 0;
+						req.body += _buffer;
+						size += len_recv;
+					}
+					else
+						break;
+				}
+			}
 
 			
 			if (req.chunked != -1) {

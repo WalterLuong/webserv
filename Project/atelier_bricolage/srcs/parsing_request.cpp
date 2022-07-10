@@ -470,6 +470,13 @@ int	request::check_path_for_location(Server cur, std::string path) {
 			this->path = "/";
 			return 0;
 		}
+		if (pos != std::string::npos && cur.infos.cgi_path.size() != 0) {
+			if (cur.infos.cgi_path[0].first == path.substr(pos)) {
+			this->filename = path.substr(1);
+			this->path = "/";
+			return 0;
+			}
+		}
 		std::cout << "request check path for location :" << "path is not a file" << std::endl;
 	//	return 1;
 	}
@@ -586,10 +593,10 @@ int	request::pars_body(std::string line) {
 	std::cout << "line en question: " << line << std::endl;
 	std::cout << "line lenght en question: " << line.length() << std::endl;
 	fill_body(line);
-	if (line.length() != static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
+/*	if (line.length() != static_cast<unsigned long>(atoi(instruction["Content-Length"].c_str()))) {
 		std::cout << "Header Content-Length support only number:" << instruction["Content-Length"] << "|"<< std::endl;
 		return 400;
-	}
+	}*/
 	return 0;
 
 }
