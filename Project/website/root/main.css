@@ -1,0 +1,92 @@
+body
+{
+	background-image: url("https://as1.ftcdn.net/v2/jpg/01/90/52/52/1000_F_190525271_dvRab5GKPLJrFp2YhB2gmd1rKX6cf3V9.jpg");
+	background-attachment: fixed;
+	/* background-repeat:repeat-y ; */
+	background-size:cover;
+}
+
+@font-face {
+	font-family: "Luminari";
+	src: url("Luminari-Regular.ttf");
+}
+
+.yo
+{
+	background-image: url(bulle-removebg-preview.png);
+	background-repeat: no-repeat;
+	background-position: 300px;
+	background-size: 400px;
+}
+
+.jacktxt
+{
+	position: relative;
+	bottom: 200px; left: 120px;
+}
+
+.jacktxt2
+{
+	position: relative;
+	bottom: 180px; left: 360px;
+}
+
+.vic
+{
+	position: relative;
+	bottom: 170px; left: 380px;
+}
+
+h1
+{
+	font-family:'Luminari', fantasy;
+	text-align: center;
+	border: 5px darkred solid;
+	background-image: url(https://png.pngitem.com/pimgs/s/166-1660592_x-marks-the-spot-png-pictures-x-marks.png);
+	background-position: 100px;
+	background-repeat:repeat-x;
+	background-size: 300px;
+}
+
+.tresor
+{
+	color: brown;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+h2
+{
+	text-decoration: underline;
+	text-align:center;
+}
+
+.mont
+{
+	float:left;
+}
+
+.plage
+{
+	float: right;
+}
+
+.ville
+{
+	float: left;
+}
+
+.campagne
+{
+	float:right;
+}
+
+.foret
+{
+	float: left;
+}
+
+.desert
+{
+	float: right;
+}
