@@ -171,7 +171,36 @@ void	Response::cgi_header(std::string body) {
 void			Response::responsePost(std::vector<Server> lst_server) { // lol victor t'as inverser, ca va boucle inf
 		_body = _request.body;
 	
+	std::string path_for_access;
+	std::string extension;
+	path_for_access = _request.location_path.root;
+	if (_request.filename == "")
+		path_for_access += _request.location_path.index;
+	else
+		path_for_access += _request.filename;
 
+	size_t pos = path_for_access.find_last_of(".");
+	if (pos == std::string::npos) {
+		this->_header.setStatusCode(404);
+		return ;
+	}
+	extension = path_for_access.substr(pos);
+		std::cout << "CGI TEST TEST" << std::endl;
+	if (_request.location_path.cgi_path.size() != 0) {
+		std::cout << "CGI TEST TEST" << std::endl;
+		int pos_cgi;
+		if ((pos_cgi = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
+			createHeader(extension, lst_server);
+			std::cout << "go to exec cgi" << std::endl;
+			_body = cgi_handler(_request, path_for_access, pos_cgi);
+			std::cout << "ret of cgi hgandler:" << _body << "|" << std::endl;
+			std::cout << "go treat the body" << std::endl;
+			cgi_header(_body);
+		return ;
+		}
+	}
+
+	
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
 				this->_header.setDate();

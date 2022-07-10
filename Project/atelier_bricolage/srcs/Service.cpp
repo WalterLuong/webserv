@@ -251,7 +251,6 @@ void	Service::sending(int i, Response resp) {
 /* RUSH FINAL POUR CE WEEKEND
 
 - finir l'auto index pour /
-- verifier le max body size
 - faire une bonne hierarchie du dossier www, et du fichier conf
 - faire de belles pages html
 - integrer les bons codes d'erreurs en fonctons des erreurs (404 pour 404 et pas 400 pour tout)

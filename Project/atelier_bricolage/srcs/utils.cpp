@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/10 01:28:32 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/10 04:58:51 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ std::string generator_error_file(std::string error_status) {
 	request mes;
 	std::string ret;
 
-	ret += "<!DOCTYPE html>\r\n<html>\n<head>\n<title>";
+	ret += "<!DOCTYPE html>\n<html>\n<head>\n<title>";
 	ret += error_status;
 	ret += " ";
 	ret += mes.map_error[error_status];
