@@ -40,8 +40,8 @@ request::request(std::string line, std::vector<Server> lst_inf) : methods(), pat
 //		std::cout << "first line good" << std::endl;
 //	print_instruction();
 //	print_var();
-	
-//	if (res == 0)	
+
+//	if (res == 0)
 //		std::cout << "good request" << std::endl;
 	if (lst_inf.size() == 0) {
 		std::cout << "no server set" << std::endl;
@@ -148,7 +148,7 @@ request &request::operator=(request const & cpy) {
 	dependance = cpy.dependance;
 	filename = cpy.filename;
 	autoindex_on = cpy.autoindex_on;
-	
+
 	_end = cpy._end;
 	return (*this);
 }
@@ -160,7 +160,7 @@ request::~request() {}
 /*-------------printer-------------------*/
 void	request::print_instruction() {
 	for (std::map<std::string, std::string>::iterator ite(instruction.begin()) ; ite != instruction.end(); ite++) {
-	
+
 		std::cout << "instruction: " << ite->first << " , " ;
 		if (ite->second  != "")
 			std::cout << ite->second;
@@ -219,7 +219,7 @@ int	request::get_method(std::string *line) {
 		methods = line->substr(0, 3);
 		line->erase(0, 3);
 		return 0;
-	} 
+	}
 	if ((start = line->find("POST")) == 0) {
 		methods = line->substr(0, 4);
 		line->erase(0, 4);
@@ -265,7 +265,7 @@ int	request::get_first_line(std::string *line) {
 	}
 	if (get_path(line) != 0) {
 		return 1;
-	}	
+	}
 	if (get_http_version(line) != 0) {
 		return 1;
 	}
@@ -279,7 +279,7 @@ int	request::get_line(std::string *line) {
 	size_t	pos;
 	std::string		sub_line;
 	std::map<std::string, std::string>::iterator last(instruction.end());
-	std::map<std::string, std::string>::iterator	ite; 
+	std::map<std::string, std::string>::iterator	ite;
 
 	if ((pos = line->find(": ")) == std::string::npos) {
 		return 1;
@@ -336,7 +336,7 @@ int	request::check_method_post() {
 	return 0;
 }
 
-// case one path = /cat 
+// case one path = /cat
 //		go found /cat location in lst location
 //
 // case two path = /cat/bite
@@ -368,7 +368,7 @@ void	request::complete_location_path(std::vector<Server> lst_inf) {
 		ret.redirection = lst_inf[cur_serv_index].infos.redirection;
 	ret.autoindex = lst_inf[cur_serv_index].infos.autoindex;
 	ret.cgi_path = lst_inf[cur_serv_index].infos.cgi_path;
-	
+
 	while (ite != dependance.end()) {
 		if (ite->uri.size() != 0)
 			ret.uri = ite->uri;
@@ -413,7 +413,7 @@ int	request::deep_location(std::string path, location_block stc) {
 			autoindex_on = 1;
 			return 0;
 		}
-		// if path == "" && autoindex on alors go lst les dir 
+		// if path == "" && autoindex on alors go lst les dir
 		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
 		{
 //			std::cout << "BJR LES AMICHE in location" << std::endl;
@@ -443,7 +443,7 @@ int	request::deep_location(std::string path, location_block stc) {
 			if (ite->uri == new_str) {
 				std::string second_str(path, end+ 1);
 			dependance.push_back(*ite);
-				return (deep_location(second_str, *ite));			
+				return (deep_location(second_str, *ite));
 			}
 			ite++;
 		}
@@ -459,10 +459,10 @@ int	request::check_path_for_location(Server cur, std::string path) {
 	std::vector<location_block>::iterator ite = cur.infos.location.begin();
 
 	// check if path == /filename
-	// 
+	//
 	if (path.find_last_of("/") == 0){
 		size_t pos;
-//		std::cout << "BITE" << std::endl;
+		std::cout << __FUNCTION__ << " gate 0" << std::endl;
 		if ((pos = path.find(".")) != std::string::npos && map_file_type.find(path.substr(pos)) != map_file_type.end())
 		{
 //			std::cout << "BJR LES AMICHE" << std::endl;
@@ -494,7 +494,7 @@ int	request::check_path_for_location(Server cur, std::string path) {
 			return 0;
 		}
 		ite++;
-	}	
+	}
 	if (path.find_last_of("/") == 0) {
 		std::cout << _RED << "path doesn't exist"  << _NOR<< std::endl;
 	}
@@ -532,7 +532,7 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	{
 		i = check_host(ite->infos.server_name, ite->infos.port_ip);
 		if (i == 1)
-			break; 
+			break;
 		j++;
 		ite++;
 	}
@@ -545,16 +545,16 @@ int	request::set_current_server(std::vector<Server> lst_server){
 	cur_serv_index = j;
 //	std::cout << "cur server index:" << j << std::endl;
 
-		std::cout << "path in set_cureent_server:" << path << "|" << std::endl;
+	std::cout << "path in set_cureent_server:" << path << "|" << std::endl;
 	if (path != "/") {
 		std::cout << "go to check location " << std::endl;
-	if ((in_location = check_path_for_location(lst_server[j], path)) != 0) {
-//		std::cout << "no location found for this path" << std::endl;
-		return 1;
-	}
+		if ((in_location = check_path_for_location(lst_server[j], path)) != 0)\
+		{
+			std::cout << "no location found for this path" << std::endl;
+			return 1;
+		}
 	}
 	return 0;
-
 }
 
 int	request::check_request() {
@@ -607,10 +607,10 @@ int	request::pars_body(std::string line) {
 
 int		request::check_host(std::string server_name, std::vector<std::pair<int, std::string> > port) {
 
-	
+
 	std::string rd(int_to_str(port[0].first));
 	std::string localhost("localhost");
-	
+
 	std::string line(instruction["Host"]);
 	if (line == localhost + ":" + rd) {
 //		std::cout << "Host fund in server config file" << std::endl;
@@ -671,7 +671,7 @@ int	request::fill_string(std::string str) {
 	while (str.find("\r\n\r\n") != 0) {
 		line_len = str.find("\r\n");
 		end	= str.find("\r\n\r\n");
-		
+
 		line = str.substr(0, line_len);
 		if (line_len == 0) {
 			if (_end == 0) {
@@ -689,7 +689,7 @@ int	request::fill_string(std::string str) {
 			}
 		}
 		else if (start == 1) {
-			if (get_line(&line) != 0) 
+			if (get_line(&line) != 0)
 				return 400;
 		}
 		str = str.substr(line_len + 2);
@@ -708,7 +708,7 @@ int	request::fill_string(std::string str) {
 		}
 		std::cout << std::endl;
 		std::cout << "body request pars" << std::endl;
-		
+
 	}
 	std::cout << "go to responce" << std::endl;
 //	std::cout << responce() << std::endl;
@@ -732,7 +732,7 @@ int	request::pars_request(std::string str) {
 /*----------------------------------init instruction-----------------*/
 
 void	request::init_instruction() {
-	instruction["Accept-Charsets"] = ""; // list des caracteres 
+	instruction["Accept-Charsets"] = ""; // list des caracteres
 	instruction["Auth-Scheme"] = "";
 	instruction["Authorization"] = "";
 	instruction["Content-Language"] = "";

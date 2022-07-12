@@ -51,7 +51,15 @@ int run_bin(std::string bin, std::string argfile, std::string infilename, std::s
 
 int write_infile(std::string infile, std::string body)
 {
-	return system(("echo " + body + " > " + infile).c_str());
+	std::ofstream f;
+	f.open(infile.c_str());
+	if(!f.is_open())
+	{
+		std::cout << "error opening file" << std::endl;
+		return 0;
+	}
+	f << body;
+	return 1;
 }
 
 std::string get_file_content(std::string filename)
@@ -70,17 +78,23 @@ std::string cgi_execution(std::string bin, std::string arg, std::string body)
 
 	std::string outfile = create_tmpfile();
 	std::string infile = create_tmpfile();
-
-	write_infile(infile, body);
-
-	run_bin(bin, arg, infile, outfile);
-
-	std::string out = get_file_content(outfile);
+	std::cerr << "body :>" << body << "<" << std::endl;
+	std::cerr << "body length :>" << body.length() << "<" << std::endl;
+	if(write_infile(infile, body))
+	{
+		if(run_bin(bin, arg, infile, outfile) == 0)
+		{
+			return get_file_content(outfile);
+		}
+		std::cerr << "Error run" << std::endl;
+	}
+	else
+		std::cerr << "error writing file" << std::endl;
 
 	remove(infile.c_str());
 	remove(outfile.c_str());
 
-	return out;
+	return "ERROR";
 }
 
 std::string tostr(int k)
@@ -198,4 +212,4 @@ int get_cgi_path_pos(std::string extension, env_t cgi_path)
 	}
 	std::cerr << "CGI not found" << std::endl;
 	return -1;
-} 
+}
