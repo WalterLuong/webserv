@@ -153,7 +153,8 @@ void	Service::receive() {
 			if (len_recv == 0)
 			{
 				FD_CLR(_clients_sd[i], &_fdset);
-				close(_clients_sd[i]);
+				if (_clients_sd[i] != 0)
+					close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
 			_buffer[len_recv] = 0;
@@ -179,7 +180,8 @@ void	Service::receive() {
 						if (len_recv == 0)
 						{
 							FD_CLR(_clients_sd[i], &_fdset);
-							close(_clients_sd[i]);
+							if (_clients_sd[i] != 0)
+								close(_clients_sd[i]);
 							_clients_sd[i] = 0;
 						}
 						_buffer[len_recv] = 0;
@@ -203,7 +205,8 @@ void	Service::receive() {
 					if (len_recv == 0)
 					{
 						FD_CLR(_clients_sd[i], &_fdset);
-						close(_clients_sd[i]);
+						if (_clients_sd[i] != 0)
+							close(_clients_sd[i]);
 						_clients_sd[i] = 0;
 					}
 					_buffer[len_recv] = 0;
@@ -254,7 +257,9 @@ void	Service::receive() {
 			// }
 			if (req.validity != 0)
 			{
-				close(_clients_sd[i]);
+				FD_CLR(_clients_sd[i], &_fdset);
+				if (_clients_sd[i] != 0)
+					close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
 			// }
