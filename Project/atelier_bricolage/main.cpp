@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 14:30:26 by jdidier           #+#    #+#             */
-/*   Updated: 2022/07/10 00:07:48 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/14 01:48:48 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 	Service			webserv;
 
 void	sig_handler(int signum) {
-	std::cout << "value of signum: " << signum << std::endl;
+//	std::cout << "value of signum: " << signum << std::endl;
 	if (signum == 2)
 	{
-		std::cout << _BL_GRE << "\b\b  \nWebserv is correctly closed bg !\n\n" << _NOR << std::endl;
+//		std::cout << _BL_GRE << "\b\b  \nWebserv is correctly closed bg !\n\n" << _NOR << std::endl;
 		exit(1);
 	}
 	return;
@@ -33,12 +33,9 @@ void	sig_handler(int signum) {
 
 int		main(int ac, char **av) {
 	
-	//server_conf		serv_conf;
-	//Service			webserv;
 
 	if (parsing(&serv_conf, ac, av) != 0)
 	{
-		std::cout << "error config file" << std::endl;
 		return (1);
 	}
 	for (unsigned long i(0); i < serv_conf.server.size(); i++)
@@ -49,7 +46,7 @@ int		main(int ac, char **av) {
 		webserv._servers.push_back(Server(serv_conf.server.at(i).port_ip.at(0).first, serv_conf.server.at(i).port_ip.at(0).second,serv_conf.server.at(i)));
 	}
 
-	std::cout << webserv._servers.size() << std::endl;
+//	std::cout << webserv._servers.size() << std::endl;
 	for (unsigned long i(0); i < webserv._servers.size(); i++)
 	{
 		std::cout << "PORT OF SOCKET " << i + 1 << " = " << ntohs(webserv._servers.at(i)._serv_sock.getAddr().sin_port) << std::endl;

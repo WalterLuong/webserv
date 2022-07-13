@@ -19,7 +19,6 @@ int	read_conffile_fill_stc(server_conf *stc, char *file_name){
 	}
 
 	while (getline(file, line)) {
-		/*first for empty line*/
 		server_block	serv_to_fill;
 		if ((line.size() != 0) && (skip_white_space(line) != line.size())) {
 			index = line.find("server");
@@ -48,7 +47,6 @@ int	read_conffile_fill_stc(server_conf *stc,const  char *file_name){
 	}
 
 	while (getline(file, line)) {
-		/*first for empty line*/
 		server_block	serv_to_fill;
 		if ((line.size() != 0) && (skip_white_space(line) != line.size())) {
 			index = line.find("server");

@@ -125,7 +125,6 @@ int check_methods(std::string line, std::vector<std::string> *to_fill) {
 				}
 				else
 					to_fill->push_back(cpy);
-				//to_fill->push_back(cpy);
 				tf = 0;
 			}
 		}
@@ -579,11 +578,7 @@ int	check_location_line(std::string line, std::string *to_fill) {
 		std::cout << "bad arg in location line:" << line << "|" << std::endl;
 		return (1);
 	}
-	/*
-		std::cout << "location line need to end with '{'" << std::endl;
-		return (1);
-	}
-	*/
+
 	return (0);
 }
 
@@ -592,7 +587,6 @@ int	check_location_block(std::ifstream *file, std::string line, location_block *
 	std::vector<std::string>::iterator first;
 
 	std::string uri;
-	//check location line : start by /word white_space {
 	line = skip_word_and_ws(line, "location");
 
 	if (check_location_line(line, &uri) != 0) {

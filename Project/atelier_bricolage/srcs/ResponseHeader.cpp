@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 04:32:41 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/10 01:46:49 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/14 01:43:59 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ ResponseHeader::ResponseHeader( ResponseHeader const & src ) {
 
 ResponseHeader::~ResponseHeader() {}
 
-// ResponseHeader & ResponseHeader::operator=( ResponseHeader const & other ) {
-// 	*this = other;
-// 	return *this;
-// }
 
 std::string		ResponseHeader::getStatus() const {
 	return this->_status;
@@ -83,7 +79,6 @@ void			ResponseHeader::generateHeader() {
 	this->_header += this->_contentLength + N_LINE;
 	if (_contentType != "")
 	this->_header += this->_contentType + N_LINE;
-	//if (_header != "")
 	this->_header += N_LINE;
 }
 

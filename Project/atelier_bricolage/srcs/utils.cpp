@@ -6,7 +6,7 @@
 /*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/10 04:58:51 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/14 01:46:15 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,11 @@ std::string get_date() {
   timeinfo = localtime (&rawtime);
 
   strftime (buffer,80,"%a, %d %b %G %T GMT",timeinfo);
- // std::cout << (buffer) << std::endl;
 
 	std::string ret(buffer);
-//  std::cout << ret << std::endl;
   return ret;
  }
 
-/* How use it */
-/* Generator of body for responce */
-/* Give your error status as string */
-/* Get Content-Lenght by use string.size() */
 
 
 std::string generator_error_file(std::string error_status) {
@@ -132,7 +126,7 @@ std::string		AutoIndexGenerator( std::string path ) {
 	}
 	else
 	{
-		std::cout << "Can't open directory" << std::endl;
+//		std::cout << "Can't open directory" << std::endl;
 		return "";
 	}
 	list += "</body>\n</html>";

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Socket.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 03:14:46 by wluong            #+#    #+#             */
-/*   Updated: 2022/06/23 04:09:19 by wluong           ###   ########.fr       */
+/*   Updated: 2022/07/14 01:45:49 by viporten         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		Socket::create_socket() {
 		this->_server_fd = socket(this->_addr.sin_family, SOCK_STREAM, 0);
 		if (this->_server_fd <= 0)
 		{
-			std::cout << _RED << "ERROR : " << _NOR << "SOCKET CREATION FAILED" << std::endl;
+//			std::cout << _RED << "ERROR : " << _NOR << "SOCKET CREATION FAILED" << std::endl;
 			this->_error = SOCKET_ERROR;
 		}
 }
@@ -74,7 +74,7 @@ void	Socket::binding() {
 	ret = bind(this->_server_fd, this->castAddr(), this->_addr_len);
 	if (ret < 0)
 	{
-		std::cout << _RED << "ERROR : " << _NOR << "BIND FAILED" << std::endl;
+//		std::cout << _RED << "ERROR : " << _NOR << "BIND FAILED" << std::endl;
 		this->_error = BIND_ERROR;
 	}
 }
@@ -82,7 +82,7 @@ void	Socket::binding() {
 void		Socket::listening(int backlog) {
 	if (listen(this->_server_fd, backlog) < 0)
 	{
-		std::cout << _RED << "ERROR : " << _NOR << "LISTEN FAILED" << std::endl;
+//		std::cout << _RED << "ERROR : " << _NOR << "LISTEN FAILED" << std::endl;
 		this->_error = LISTEN_ERROR;
 	}
 }
@@ -94,7 +94,7 @@ int			Socket::setup(int backlog) {
 		return -1;
 	if ( setsockopt(this->getSocket(), SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0)
 	{
-		std::cout << _RED << "ERROR : " << _NOR << "SETSOCKOPT ERROR" << std::endl;
+//		std::cout << _RED << "ERROR : " << _NOR << "SETSOCKOPT ERROR" << std::endl;
 		return -1;
 	}
 	this->binding();
@@ -105,7 +105,7 @@ int			Socket::setup(int backlog) {
 		return -1;
 	if (fcntl(this->_server_fd, F_SETFL, O_NONBLOCK) < 0)
 	{
-		std::cout << _RED << "ERROR : " << _NOR << "FCNTL ERROR" << std::endl;
+//		std::cout << _RED << "ERROR : " << _NOR << "FCNTL ERROR" << std::endl;
 		return -1;
 	}
 	return 0;
