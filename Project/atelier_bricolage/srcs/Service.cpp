@@ -178,9 +178,11 @@ void	Service::receive() {
 				std::cout << "second step" << std::endl;
 					if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 					{
-						len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
+						len_recv = recv(_clients_sd[i], _buffer, 1, 0);
 						if (len_recv < 0)
 						{
+							std::cout << "BITEDENOIR" << std::endl;
+							std::cout << "_buffer :" << _buffer << std::endl;
 							break;
 						}
 						if (len_recv == 0)
@@ -189,13 +191,17 @@ void	Service::receive() {
 							if (_clients_sd[i] != 0)
 								close(_clients_sd[i]);
 							_clients_sd[i] = 0;
+							std::cout << "BITEDENOIR1" << std::endl;
 						}
+
 						_buffer[len_recv] = 0;
 						req.body += _buffer;
 						size += len_recv;
 					}
-					else
+					else {
+							std::cout << "BITEDENOIR1" << std::endl;
 						break;
+					}
 				}
 			}
 			std::cout << "size body + header: " << size<< std::endl;
@@ -226,7 +232,7 @@ void	Service::receive() {
 
 			}
 
-			std::cout << "body after :" << req.body << std::endl;
+			std::cout << "body after :" << req.body  << "|" << std::endl;
 
 			Response	resp(req);
 				int is_valid_method = check_methods(req);
