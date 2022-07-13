@@ -144,7 +144,7 @@ void	Service::receive() {
 	{	
 		if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 		{
-			len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
+			len_recv = recv(_clients_sd[i], _buffer, 1024, 0);
 			if (len_recv < 0)
 			{
 				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
@@ -161,7 +161,9 @@ void	Service::receive() {
 //			std::cout << "first buffer: " << _buffer << "|" << std::endl;
 			
 
+			std::cout << "buffer before:" << _buffer << std::endl;
 			request req(_buffer, _servers);
+			std::cout << "body before:" << req.body << std::endl;
 
 			int size(len_recv);
 			// plus req validity 200
@@ -169,7 +171,11 @@ void	Service::receive() {
 	//			std::cout << "first step" << std::endl;
 
 				while (len_recv > 0) {
-		//		std::cout << "second step" << std::endl;
+					
+					for (int i = 0; i < 10024; i++) {
+						_buffer[i] = '\0';
+					}
+				std::cout << "second step" << std::endl;
 					if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 					{
 						len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
@@ -192,6 +198,7 @@ void	Service::receive() {
 						break;
 				}
 			}
+			std::cout << "size body + header: " << size<< std::endl;
 
 			
 			if (req.chunked != -1) {
@@ -219,6 +226,7 @@ void	Service::receive() {
 
 			}
 
+			std::cout << "body after :" << req.body << std::endl;
 
 			Response	resp(req);
 				int is_valid_method = check_methods(req);

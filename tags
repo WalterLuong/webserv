@@ -1,0 +1,306 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AUDIO	Project/atelier_bricolage/Makefile	/^AUDIO = ~\/Downloads\/hearthstone-heroes-of-warcraft-travail-termine.wav$/;"	m
+AutoIndexGenerator	Project/atelier_bricolage/srcs/utils.cpp	/^std::string		AutoIndexGenerator( std::string path ) {$/;"	f
+BIN	Project/atelier_bricolage/Makefile	/^BIN		= .\/bin$/;"	m
+BIND_ERROR	Project/atelier_bricolage/includes/define.hpp	/^# define BIND_ERROR	/;"	d
+CXX	Project/atelier_bricolage/Makefile	/^CXX	= clang++$/;"	m
+CXXFLAGS	Project/atelier_bricolage/Makefile	/^CXXFLAGS = -Wall -Werror -Wextra -std=c++98$/;"	m
+DEFINE_HPP	Project/atelier_bricolage/includes/define.hpp	/^# define DEFINE_HPP$/;"	d
+DEP	Project/atelier_bricolage/Makefile	/^DEP = $(OBJS:%.o=%.d)$/;"	m
+FALSE	Project/atelier_bricolage/includes/define.hpp	/^# define FALSE	/;"	d
+INCLUDE	Project/atelier_bricolage/Makefile	/^INCLUDE		=	-I.\/includes\/$/;"	m
+LISTEN_ERROR	Project/atelier_bricolage/includes/define.hpp	/^# define LISTEN_ERROR	/;"	d
+MAX_CLIENTS	Project/atelier_bricolage/includes/define.hpp	/^# define MAX_CLIENTS	/;"	d
+NAME	Project/atelier_bricolage/Makefile	/^NAME		= webserv$/;"	m
+N_LINE	Project/atelier_bricolage/includes/define.hpp	/^# define N_LINE	/;"	d
+OBJS	Project/atelier_bricolage/Makefile	/^OBJS	= $(SRCS:%.cpp=$(BIN)\/%.o)$/;"	m
+PARSING_CONFFILE_HPP	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^#define PARSING_CONFFILE_HPP$/;"	d
+PARSING_REQUEST_HPP	Project/atelier_bricolage/includes/parsing_request.hpp	/^# define PARSING_REQUEST_HPP$/;"	d
+RESPONSEHEADER_HPP	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^# define RESPONSEHEADER_HPP$/;"	d
+RESPONSE_HPP	Project/atelier_bricolage/includes/Response.hpp	/^# define RESPONSE_HPP$/;"	d
+RM	Project/atelier_bricolage/Makefile	/^RM = rm -f$/;"	m
+Response	Project/atelier_bricolage/includes/Response.hpp	/^class Response$/;"	c
+Response	Project/atelier_bricolage/srcs/Response.cpp	/^Response::Response(request req) : _header(), _body(), _resp() , _request(req){}$/;"	f	class:Response
+ResponseHeader	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^class ResponseHeader$/;"	c
+ResponseHeader	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^ResponseHeader::ResponseHeader( ResponseHeader const & src ) {$/;"	f	class:ResponseHeader
+ResponseHeader	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^ResponseHeader::ResponseHeader() : _status(), _date(), _serverName(), _contentLength(), _contentType(), _header(), _statuscode(200), _bodyLength(0) {$/;"	f	class:ResponseHeader
+SERVER_HPP	Project/atelier_bricolage/includes/Server.hpp	/^# define SERVER_HPP$/;"	d
+SERVICE_HPP	Project/atelier_bricolage/includes/Service.hpp	/^# define SERVICE_HPP$/;"	d
+SOCKET_ERROR	Project/atelier_bricolage/includes/define.hpp	/^# define SOCKET_ERROR	/;"	d
+SOCKET_HPP	Project/atelier_bricolage/includes/Socket.hpp	/^# define SOCKET_HPP$/;"	d
+SRCS	Project/atelier_bricolage/Makefile	/^SRCS			= 	main.cpp \\$/;"	m
+Server	Project/atelier_bricolage/includes/Server.hpp	/^class Server$/;"	c
+Server	Project/atelier_bricolage/srcs/Server.cpp	/^Server::Server( int port, std::string ip, server_block serv_info ) : _serv_sock(port, ip), infos(serv_info) {}$/;"	f	class:Server
+Service	Project/atelier_bricolage/includes/Service.hpp	/^class Service$/;"	c
+Service	Project/atelier_bricolage/srcs/Service.cpp	/^Service::Service() : _max_sd(0), _servers() {$/;"	f	class:Service
+Socket	Project/atelier_bricolage/includes/Socket.hpp	/^class Socket$/;"	c
+Socket	Project/atelier_bricolage/srcs/Socket.cpp	/^Socket::Socket() {$/;"	f	class:Socket
+Socket	Project/atelier_bricolage/srcs/Socket.cpp	/^Socket::Socket(Socket const & src) {$/;"	f	class:Socket
+Socket	Project/atelier_bricolage/srcs/Socket.cpp	/^Socket::Socket(int port, std::string ip) {$/;"	f	class:Socket
+TRUE	Project/atelier_bricolage/includes/define.hpp	/^# define TRUE	/;"	d
+UTILS_HPP	Project/atelier_bricolage/includes/utils.hpp	/^# define UTILS_HPP$/;"	d
+WEBSERVE_HPP	Project/atelier_bricolage/includes/webserve.hpp	/^# define WEBSERVE_HPP /;"	d
+_BLU	Project/atelier_bricolage/includes/define.hpp	/^# define _BLU /;"	d
+_BL_GRE	Project/atelier_bricolage/includes/define.hpp	/^# define _BL_GRE	/;"	d
+_BL_RED	Project/atelier_bricolage/includes/define.hpp	/^# define _BL_RED	/;"	d
+_GRE	Project/atelier_bricolage/includes/define.hpp	/^# define _GRE /;"	d
+_NOR	Project/atelier_bricolage/includes/define.hpp	/^# define _NOR /;"	d
+_RED	Project/atelier_bricolage/includes/define.hpp	/^# define _RED /;"	d
+_YEL	Project/atelier_bricolage/includes/define.hpp	/^# define _YEL /;"	d
+_addr	Project/atelier_bricolage/includes/Socket.hpp	/^		sockaddr_in			_addr;$/;"	m	class:Socket
+_addr_len	Project/atelier_bricolage/includes/Socket.hpp	/^		socklen_t			_addr_len;$/;"	m	class:Socket
+_body	Project/atelier_bricolage/includes/Response.hpp	/^		std::string		_body;$/;"	m	class:Response
+_bodyLength	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		int				_bodyLength;$/;"	m	class:ResponseHeader
+_buffer	Project/atelier_bricolage/includes/Service.hpp	/^		char					_buffer[10025];$/;"	m	class:Service
+_clients_sd	Project/atelier_bricolage/includes/Service.hpp	/^		int						_clients_sd[512];$/;"	m	class:Service
+_contentLength	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_contentLength;$/;"	m	class:ResponseHeader
+_contentType	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_contentType;$/;"	m	class:ResponseHeader
+_date	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_date;$/;"	m	class:ResponseHeader
+_end	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int	_end;$/;"	m	class:request
+_error	Project/atelier_bricolage/includes/Socket.hpp	/^		int					_error;$/;"	m	class:Socket
+_fdset	Project/atelier_bricolage/includes/Service.hpp	/^		fd_set					_fdset;$/;"	m	class:Service
+_header	Project/atelier_bricolage/includes/Response.hpp	/^		ResponseHeader	_header;$/;"	m	class:Response
+_header	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_header;$/;"	m	class:ResponseHeader
+_max_sd	Project/atelier_bricolage/includes/Service.hpp	/^		int						_max_sd;$/;"	m	class:Service
+_request	Project/atelier_bricolage/includes/Response.hpp	/^		request			_request;$/;"	m	class:Response
+_resp	Project/atelier_bricolage/includes/Response.hpp	/^		std::string		_resp;$/;"	m	class:Response
+_serv_sock	Project/atelier_bricolage/includes/Server.hpp	/^		Socket			_serv_sock;$/;"	m	class:Server
+_serverName	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_serverName;$/;"	m	class:ResponseHeader
+_server_fd	Project/atelier_bricolage/includes/Socket.hpp	/^		int					_server_fd;$/;"	m	class:Socket
+_servers	Project/atelier_bricolage/includes/Service.hpp	/^		std::vector<Server>		_servers;$/;"	m	class:Service
+_status	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		std::string		_status;$/;"	m	class:ResponseHeader
+_statuscode	Project/atelier_bricolage/includes/ResponseHeader.hpp	/^		int				_statuscode;$/;"	m	class:ResponseHeader
+_timeout	Project/atelier_bricolage/includes/Service.hpp	/^		struct timeval 			_timeout;$/;"	m	class:Service	typeref:struct:Service::timeval
+accepting_connections	Project/atelier_bricolage/srcs/Service.cpp	/^bool	Service::accepting_connections() {$/;"	f	class:Service
+allow_methods	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::string>    allow_methods; \/\/(6.5)$/;"	m	class:server_block
+allow_methods	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::vector<std::string>             allow_methods; \/\/(6.1)$/;"	m	class:location_block
+auto_response	Project/atelier_bricolage/srcs/Response.cpp	/^void		Response::auto_response() {$/;"	f	class:Response
+autoindex	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::string     autoindex; \/\/ (6.4)$/;"	m	class:server_block
+autoindex	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::string     autoindex; \/\/(6.4)$/;"	m	class:location_block
+autoindex_on	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int autoindex_on;$/;"	m	class:request
+binding	Project/atelier_bricolage/srcs/Socket.cpp	/^void	Socket::binding() {$/;"	f	class:Socket
+body	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string	body;$/;"	m	class:request
+castAddr	Project/atelier_bricolage/srcs/Socket.cpp	/^sockaddr		*Socket::castAddr() const {$/;"	f	class:Socket
+cgi	Project/www/up.py	/^import cgi, sys, os$/;"	i
+cgi_execution	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string cgi_execution(std::string bin, std::string arg, std::string body)$/;"	f
+cgi_handler	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string cgi_handler(request &req, std::string path_for_access, int extension_pos)$/;"	f
+cgi_header	Project/atelier_bricolage/srcs/Response.cpp	/^void	Response::cgi_header(std::string body) {$/;"	f	class:Response
+cgi_path	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::pair<std::string, std::string> >	cgi_path;$/;"	m	class:server_block
+cgi_path	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^	std::vector<std::pair<std::string, std::string> >	cgi_path;$/;"	m	class:location_block
+cgitb	Project/www/up.py	/^import cgitb; cgitb.enable()$/;"	i
+check	Project/www/upload.php	/^  $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);$/;"	v
+check_autoindex	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int check_autoindex(std::string line, std::string *str) {$/;"	f
+check_cgi	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_cgi(std::string line, std::pair<std::string, std::string> *to_fill) {$/;"	f
+check_connection	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::check_connection() {$/;"	f	class:request
+check_declaration_server_line	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_declaration_server_line(std::string line) {$/;"	f
+check_error	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_error(std::string line, std::pair<std::string, std::string> *to_fill) {$/;"	f
+check_host	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int		request::check_host(std::string server_name, std::vector<std::pair<int, std::string> > port) {$/;"	f	class:request
+check_index	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int check_index(std::string line, std::string *str) {$/;"	f
+check_length	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::check_length() {$/;"	f	class:request
+check_listen	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_listen(std::string line, std::pair<int, std::string> *to_fill) {$/;"	f
+check_location_block	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_location_block(std::ifstream *file, std::string line, location_block *to_fill) {$/;"	f
+check_location_line	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_location_line(std::string line, std::string *to_fill) {$/;"	f
+check_max_body_client	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int check_max_body_client(std::string line, int *nbr) {$/;"	f
+check_method_post	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::check_method_post() {$/;"	f	class:request
+check_methods	Project/atelier_bricolage/srcs/Service.cpp	/^int	Service::check_methods(request req) {$/;"	f	class:Service
+check_methods	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int check_methods(std::string line, std::vector<std::string> *to_fill) {$/;"	f
+check_opened_sd	Project/atelier_bricolage/srcs/Service.cpp	/^void	Service::check_opened_sd() {$/;"	f	class:Service
+check_path_for_location	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::check_path_for_location(Server cur, std::string path) {$/;"	f	class:request
+check_redirection	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_redirection(std::string line, std::pair<std::string, std::string> *to_fill) {$/;"	f
+check_request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::check_request() {$/;"	f	class:request
+check_root	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int check_root(std::string line, std::string *str) {$/;"	f
+check_server_name	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	check_server_name(std::string line, std::string *ret) {$/;"	f
+chunked	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int		chunked;$/;"	m	class:request
+complete_location_path	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void	request::complete_location_path(std::vector<Server> lst_inf) {$/;"	f	class:request
+count_word	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	count_word(std::string line) {$/;"	f
+createHeader	Project/atelier_bricolage/srcs/Response.cpp	/^void			Response::createHeader( std::string & extension, std::vector<Server> & lst_server ) {$/;"	f	class:Response
+create_socket	Project/atelier_bricolage/srcs/Socket.cpp	/^void		Socket::create_socket() {$/;"	f	class:Socket
+create_tmpfile	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string create_tmpfile(void)$/;"	f
+cur_serv_index	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int cur_serv_index;$/;"	m	class:request
+deep_location	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::deep_location(std::string path, location_block stc) {$/;"	f	class:request
+default_conf	Project/atelier_bricolage/srcs/parsing.cpp	/^int	default_conf(server_conf *stc) {$/;"	f
+dependance	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::vector<location_block> dependance;$/;"	m	class:request
+enable	Project/www/up.py	/^import cgitb; cgitb.enable()$/;"	i
+env_t	Project/atelier_bricolage/srcs/cgi.cpp	/^typedef std::vector<std::pair<std::string, std::string> > env_t;$/;"	t	file:
+erase_ws_end_string	Project/atelier_bricolage/srcs/parsing_server.cpp	/^std::string	erase_ws_end_string(std::string line) {$/;"	f
+error_page	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::pair<std::string, std::string> >  error_page; \/\/(6.2) (4)  $/;"	m	class:server_block
+error_page	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::vector<std::pair<std::string, std::string> >  error_page;$/;"	m	class:location_block
+errors	Project/www/img-up.php	/^      $errors= array();$/;"	v
+extensions	Project/www/img-up.php	/^      $extensions= array("jpeg","jpg","png");$/;"	v
+file_ext	Project/www/img-up.php	/^      $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));$/;"	v
+file_name	Project/www/img-up.php	/^      $file_name = $_FILES['image']['name'];$/;"	v
+file_size	Project/www/img-up.php	/^      $file_size =$_FILES['image']['size'];$/;"	v
+file_tmp	Project/www/img-up.php	/^      $file_tmp =$_FILES['image']['tmp_name'];$/;"	v
+file_type	Project/www/img-up.php	/^      $file_type=$_FILES['image']['type'];$/;"	v
+fileitem	Project/www/up.py	/^    fileitem = form['filename']$/;"	v
+filename	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string filename;$/;"	m	class:request
+fill_body	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::fill_body(std::string line) {$/;"	f	class:request
+fill_serv	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	fill_serv(server_block *server_to_fill, std::ifstream *file, std::string line) {$/;"	f
+fill_sockaddr	Project/atelier_bricolage/srcs/Socket.cpp	/^void	Socket::fill_sockaddr(int port, std::string ip) {$/;"	f	class:Socket
+fill_string	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::fill_string(std::string str) {$/;"	f	class:request
+find_uri	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block	location_block::find_uri(std::string uri_to_find) {$/;"	f	class:location_block
+find_uri	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block	server_block::find_uri(std::string uri_to_find) {$/;"	f	class:server_block
+fn	Project/www/up.py	/^    fn = os.path.basename(fileitem.filename)$/;"	v
+form	Project/www/up.py	/^form = cgi.FieldStorage()$/;"	v
+generateHeader	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::generateHeader() {$/;"	f	class:ResponseHeader
+generator_error_file	Project/atelier_bricolage/srcs/utils.cpp	/^std::string generator_error_file(std::string error_status) {$/;"	f
+getAdLen	Project/atelier_bricolage/srcs/Socket.cpp	/^socklen_t		*Socket::getAdLen() {$/;"	f	class:Socket
+getAddr	Project/atelier_bricolage/srcs/Socket.cpp	/^sockaddr_in		Socket::getAddr() const {$/;"	f	class:Socket
+getBody	Project/atelier_bricolage/srcs/Response.cpp	/^std::string		Response::getBody() {$/;"	f	class:Response
+getContentLength	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getContentLength() const {$/;"	f	class:ResponseHeader
+getContentType	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getContentType() const {$/;"	f	class:ResponseHeader
+getDate	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getDate() const {$/;"	f	class:ResponseHeader
+getError	Project/atelier_bricolage/srcs/Socket.cpp	/^int				Socket::getError() const {$/;"	f	class:Socket
+getHeader	Project/atelier_bricolage/srcs/Response.cpp	/^std::string		Response::getHeader() {$/;"	f	class:Response
+getHeader	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getHeader() const {$/;"	f	class:ResponseHeader
+getResponse	Project/atelier_bricolage/srcs/Response.cpp	/^std::string		Response::getResponse() {$/;"	f	class:Response
+getServerName	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getServerName() const {$/;"	f	class:ResponseHeader
+getSocket	Project/atelier_bricolage/srcs/Socket.cpp	/^int				Socket::getSocket() const {$/;"	f	class:Socket
+getStatus	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^std::string		ResponseHeader::getStatus() const {$/;"	f	class:ResponseHeader
+get_argfile	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string get_argfile(void)$/;"	f
+get_body_size	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string request::get_body_size() {$/;"	f	class:request
+get_cgi_path_pos	Project/atelier_bricolage/srcs/cgi.cpp	/^int get_cgi_path_pos(std::string extension, env_t cgi_path)$/;"	f
+get_connection_status	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string request::get_connection_status() {$/;"	f	class:request
+get_date	Project/atelier_bricolage/srcs/utils.cpp	/^std::string get_date() {$/;"	f
+get_file_content	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string get_file_content(std::string filename)$/;"	f
+get_first_line	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::get_first_line(std::string *line) {$/;"	f	class:request
+get_host	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string request::get_host() {$/;"	f	class:request
+get_http_version	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::get_http_version(std::string *line) {$/;"	f	class:request
+get_http_version	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string request::get_http_version() {$/;"	f	class:request
+get_line	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::get_line(std::string *line) {$/;"	f	class:request
+get_method	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::get_method(std::string *line) {$/;"	f	class:request
+get_methods	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string	request::get_methods() {$/;"	f	class:request
+get_path	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::get_path(std::string *line) {$/;"	f	class:request
+get_path	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string	request::get_path() {$/;"	f	class:request
+get_sub_str	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string get_sub_str(std::string str, size_t pos)$/;"	f
+go_to_indicated_cmd	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	go_to_indicated_cmd(std::string cmd, std::string line, location_block *stc) {$/;"	f
+go_to_indicated_cmd	Project/atelier_bricolage/srcs/parsing_server.cpp	/^int	go_to_indicated_cmd(std::string cmd, std::string line, server_block *stc) {$/;"	f
+http_version	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string	http_version;$/;"	m	class:request
+i	Project/www/php/hello.php	/^	$i = 0;$/;"	v
+imageFileType	Project/www/upload.php	/^$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));$/;"	v
+in_location	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int in_location;$/;"	m	class:request
+index	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::string     index;$/;"	m	class:server_block
+index	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::string     index; \/\/(6.5)$/;"	m	class:location_block
+infos	Project/atelier_bricolage/includes/Server.hpp	/^		server_block	infos;$/;"	m	class:Server
+init_default_error	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void request::init_default_error() {$/;"	f	class:request
+init_env	Project/atelier_bricolage/srcs/cgi.cpp	/^std::vector<std::string> init_env(request &req, std::string &absolutepath)$/;"	f
+init_file_type	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void request::init_file_type() {$/;"	f	class:request
+init_instruction	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void	request::init_instruction() {$/;"	f	class:request
+init_lst_location_option	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^void	location_block::init_lst_location_option() {$/;"	f	class:location_block
+init_lst_location_option	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^void	server_block::init_lst_location_option() {$/;"	f	class:server_block
+init_lst_server_option	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^void	server_block::init_lst_server_option() {$/;"	f	class:server_block
+instruction	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::map<std::string, std::string>	instruction;$/;"	m	class:request
+int_to_str	Project/atelier_bricolage/srcs/utils.cpp	/^std::string		int_to_str(size_t size) {$/;"	f
+isDirectory	Project/atelier_bricolage/srcs/utils.cpp	/^bool	isDirectory( std::string path )$/;"	f
+is_request_valid	Project/atelier_bricolage/srcs/Response.cpp	/^int		Response::is_request_valid() {$/;"	f	class:Response
+itoa	Project/atelier_bricolage/srcs/utils.cpp	/^char *itoa(int num, char* buffer, int base) {$/;"	f
+joinstr	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string joinstr(std::string *strs, int n)$/;"	f
+listening	Project/atelier_bricolage/srcs/Socket.cpp	/^void		Socket::listening(int backlog) {$/;"	f	class:Socket
+location	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<location_block> location; \/\/(6.3)$/;"	m	class:server_block
+location	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^	std::vector<location_block>	location;$/;"	m	class:location_block
+location_block	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^class location_block {$/;"	c
+location_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block::location_block() :  uri(), root(), index(), autoindex(), max_client(0), allow_methods(), error_page(), redirection(), cgi_path(), location() {$/;"	f	class:location_block
+location_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block::location_block(location_block const &cpy) {$/;"	f	class:location_block
+location_path	Project/atelier_bricolage/includes/parsing_request.hpp	/^		location_block	location_path;$/;"	m	class:request
+lst_location_option	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::string> lst_location_option;$/;"	m	class:server_block
+lst_location_option	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^	std::vector<std::string> lst_location_option;$/;"	m	class:location_block
+lst_server_option	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::string> lst_server_option;$/;"	m	class:server_block
+main	Project/atelier_bricolage/main.cpp	/^int		main(int ac, char **av) {$/;"	f
+map_error	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::map<std::string, std::string>	map_error;$/;"	m	class:request
+map_file_type	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::map<std::string, std::string>	map_file_type;$/;"	m	class:request
+max_client	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		int             max_client; \/\/(5)$/;"	m	class:server_block
+max_client	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    int             max_client; \/\/(5)$/;"	m	class:location_block
+message	Project/www/up.py	/^    message = 'No file was uploaded'$/;"	v
+message	Project/www/up.py	/^    message = 'The file "' + fn + '" was uploaded successfully'$/;"	v
+message	Project/www/up.py	/^message = None$/;"	v
+methods	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string	methods;$/;"	m	class:request
+nbr_location	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^int	server_block::nbr_location() { return location.size(); }$/;"	f	class:server_block
+operator =	Project/atelier_bricolage/srcs/Socket.cpp	/^Socket& Socket::operator=(Socket const & other) {$/;"	f	class:Socket
+operator =	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block	&location_block::operator=(location_block const &cpy) {$/;"	f	class:location_block
+operator =	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_block &server_block::operator=(server_block const &cpy) {$/;"	f	class:server_block
+operator =	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_conf	&server_conf::operator=(server_conf const &cpy) {$/;"	f	class:server_conf
+operator =	Project/atelier_bricolage/srcs/parsing_request.cpp	/^request &request::operator=(request const & cpy) {$/;"	f	class:request
+os	Project/www/up.py	/^import cgi, sys, os$/;"	i
+pars_body	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::pars_body(std::string line) {$/;"	f	class:request
+pars_request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::pars_request(std::string str) {$/;"	f	class:request
+parsing	Project/atelier_bricolage/srcs/parsing.cpp	/^int	parsing(server_conf *stc, int ac, char **av) {$/;"	f
+path	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string path;$/;"	m	class:request
+path	Project/www/img-up.php	/^         $path = ".\/cgi-bin\/UPLOADS\/".$file_name ;$/;"	v
+port_ip	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::pair<int , std::string> >     port_ip; \/\/(1) un serveur peu listen sur plusieur port et ip$/;"	m	class:server_block
+pos_uri	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^int	server_block::pos_uri(std::string uri_to_find) {$/;"	f	class:server_block
+pos_uri	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^int location_block::pos_uri(std::string uri_to_find) {$/;"	f	class:location_block
+print_instruction	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void	request::print_instruction() {$/;"	f	class:request
+print_var	Project/atelier_bricolage/srcs/parsing_request.cpp	/^void	request::print_var() {$/;"	f	class:request
+randomdigits	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string randomdigits(int nb)$/;"	f
+readFromFile	Project/atelier_bricolage/srcs/Response.cpp	/^std::string		Response::readFromFile(std::string path) {$/;"	f	class:Response
+readFromFile	Project/atelier_bricolage/srcs/Response.cpp	/^std::string		Response::readFromFile(std::string path, int i) {$/;"	f	class:Response
+read_conffile_fill_stc	Project/atelier_bricolage/srcs/parsing.cpp	/^int	read_conffile_fill_stc(server_conf *stc, char *file_name){$/;"	f
+read_conffile_fill_stc	Project/atelier_bricolage/srcs/parsing.cpp	/^int	read_conffile_fill_stc(server_conf *stc,const  char *file_name){$/;"	f
+receive	Project/atelier_bricolage/srcs/Service.cpp	/^void	Service::receive() {$/;"	f	class:Service
+redirection	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::vector<std::pair<std::string, std::string> >  redirection; \/\/ (6.2)$/;"	m	class:server_block
+redirection	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::vector<std::pair<std::string, std::string> >  redirection;$/;"	m	class:location_block
+request	Project/atelier_bricolage/includes/parsing_request.hpp	/^class request {$/;"	c
+request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^request::request() : methods(), path(), http_version(), request_body(), body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(), _end(0) , dependance(){$/;"	f	class:request
+request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^request::request(request const & cpy) {$/;"	f	class:request
+request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^request::request(std::string line, std::vector<Server> lst_inf) : methods(), path(), http_version(), request_body(),body(), chunked(-1), validity(200), cur_serv_index(), in_location(), location_path(), autoindex_on(), filename(),_end(0), dependance(){$/;"	f	class:request
+request_body	Project/atelier_bricolage/includes/parsing_request.hpp	/^		std::string request_body;$/;"	m	class:request
+responce	Project/atelier_bricolage/srcs/parsing_request.cpp	/^std::string request::responce(){$/;"	f	class:request
+responseDelete	Project/atelier_bricolage/srcs/Response.cpp	/^void			Response::responseDelete() {$/;"	f	class:Response
+responseGet	Project/atelier_bricolage/srcs/Response.cpp	/^void			Response::responseGet(std::vector<Server> lst_server) {$/;"	f	class:Response
+responsePost	Project/atelier_bricolage/srcs/Response.cpp	/^void			Response::responsePost(std::vector<Server> lst_server) { \/\/ lol victor t'as inverser, ca va boucle inf$/;"	f	class:Response
+root	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::string     root; \/\/ (6.1)$/;"	m	class:server_block
+root	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::string     root; \/\/(6.1)$/;"	m	class:location_block
+run_bin	Project/atelier_bricolage/srcs/cgi.cpp	/^int run_bin(std::string bin, std::string argfile, std::string infilename, std::string outfilename)$/;"	f
+run_service	Project/atelier_bricolage/srcs/Service.cpp	/^void	Service::run_service() {$/;"	f	class:Service
+selecting	Project/atelier_bricolage/srcs/Service.cpp	/^bool	Service::selecting() {$/;"	f	class:Service
+sending	Project/atelier_bricolage/srcs/Service.cpp	/^void	Service::sending(int i, Response resp) {$/;"	f	class:Service
+serv_conf	Project/atelier_bricolage/main.cpp	/^	server_conf		serv_conf;$/;"	v
+server	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^    std::vector<server_block> server;$/;"	m	class:server_conf
+server_block	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^class   server_block {$/;"	c
+server_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_block::server_block() : server_name(), root(), index(), autoindex(), port_ip(), max_client(0), error_page(), redirection(), cgi_path(), allow_methods(), location() {$/;"	f	class:server_block
+server_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_block::server_block(server_block const &cpy) {$/;"	f	class:server_block
+server_conf	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^class   server_conf {$/;"	c
+server_conf	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_conf::server_conf() : server() {}$/;"	f	class:server_conf
+server_conf	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_conf::server_conf(server_conf const &cpy) {$/;"	f	class:server_conf
+server_name	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^		std::string     server_name; \/\/(2)$/;"	m	class:server_block
+setBody	Project/atelier_bricolage/srcs/Response.cpp	/^void			Response::setBody( std::string body ) {$/;"	f	class:Response
+setBodyLength	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setBodyLength( int length ) {$/;"	f	class:ResponseHeader
+setContentLength	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setContentLength() {$/;"	f	class:ResponseHeader
+setContentType	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setContentType( std::string const & str ) {$/;"	f	class:ResponseHeader
+setDate	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setDate() {$/;"	f	class:ResponseHeader
+setServerName	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setServerName( std::string const & str ) {$/;"	f	class:ResponseHeader
+setStatus	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setStatus( std::string const & protocol, std::string const & status ) {$/;"	f	class:ResponseHeader
+setStatusCode	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^void			ResponseHeader::setStatusCode( int code ) {$/;"	f	class:ResponseHeader
+set_current_server	Project/atelier_bricolage/srcs/parsing_request.cpp	/^int	request::set_current_server(std::vector<Server> lst_server){$/;"	f	class:request
+set_env	Project/atelier_bricolage/srcs/cgi.cpp	/^void set_env(std::vector<std::string> &envs)$/;"	f
+set_validity	Project/atelier_bricolage/srcs/Response.cpp	/^void	Response::set_validity(int value) {$/;"	f	class:Response
+setup	Project/atelier_bricolage/srcs/Socket.cpp	/^int			Socket::setup(int backlog) {$/;"	f	class:Socket
+setup_cluster	Project/atelier_bricolage/srcs/Service.cpp	/^void	Service::setup_cluster() {$/;"	f	class:Service
+sig_handler	Project/atelier_bricolage/main.cpp	/^void	sig_handler(int signum) {$/;"	f
+skip_white_space	Project/atelier_bricolage/srcs/utils_parsing.cpp	/^size_t skip_white_space(std::string str) {$/;"	f
+skip_word_and_ws	Project/atelier_bricolage/srcs/utils_parsing.cpp	/^std::string skip_word_and_ws(std::string line, std::string word) {$/;"	f
+sys	Project/www/up.py	/^import cgi, sys, os$/;"	i
+target_dir	Project/www/upload.php	/^$target_dir = ".\/";$/;"	v
+target_file	Project/www/upload.php	/^$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);$/;"	v
+tostr	Project/atelier_bricolage/srcs/cgi.cpp	/^std::string tostr(int k)$/;"	f
+uploadOk	Project/www/upload.php	/^    $uploadOk = 0;$/;"	v
+uploadOk	Project/www/upload.php	/^    $uploadOk = 1;$/;"	v
+uploadOk	Project/www/upload.php	/^$uploadOk = 1;$/;"	v
+uri	Project/atelier_bricolage/includes/parsing_conffile.hpp	/^	std::string     uri; \/\/(6.3)$/;"	m	class:location_block
+validity	Project/atelier_bricolage/includes/parsing_request.hpp	/^		int		validity; \/\/code status pour la map error;$/;"	m	class:request
+webserv	Project/atelier_bricolage/main.cpp	/^	Service			webserv;$/;"	v
+write_infile	Project/atelier_bricolage/srcs/cgi.cpp	/^int write_infile(std::string infile, std::string body)$/;"	f
+~Response	Project/atelier_bricolage/srcs/Response.cpp	/^Response::~Response() {}$/;"	f	class:Response
+~ResponseHeader	Project/atelier_bricolage/srcs/ResponseHeader.cpp	/^ResponseHeader::~ResponseHeader() {}$/;"	f	class:ResponseHeader
+~Server	Project/atelier_bricolage/srcs/Server.cpp	/^Server::~Server() {}$/;"	f	class:Server
+~Service	Project/atelier_bricolage/srcs/Service.cpp	/^Service::~Service() {}$/;"	f	class:Service
+~Socket	Project/atelier_bricolage/srcs/Socket.cpp	/^Socket::~Socket() {}$/;"	f	class:Socket
+~location_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^location_block::~location_block() {};$/;"	f	class:location_block
+~request	Project/atelier_bricolage/srcs/parsing_request.cpp	/^request::~request() {}$/;"	f	class:request
+~server_block	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_block::~server_block() {}$/;"	f	class:server_block
+~server_conf	Project/atelier_bricolage/srcs/parsing_conffile.cpp	/^server_conf::~server_conf() {}$/;"	f	class:server_conf

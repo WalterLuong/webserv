@@ -700,7 +700,7 @@ int	request::fill_string(std::string str) {
 	//std::cout << "heh:" << str << "|" << std::endl;
 	if (str != "\r\n") {
 		std::cout << "request pas fini, il y a un body:" << std::endl;
-		std::cout << str<< std::endl;
+		std::cout << str<<  "|" << std::endl;
 	//	std::cout << "il y a un body:" << str.substr(2) << "|"<<  std::endl;
 		if (pars_body(str.substr(2)) != 0) {
 			std::cout << "pars_body invalide" << std::endl;
