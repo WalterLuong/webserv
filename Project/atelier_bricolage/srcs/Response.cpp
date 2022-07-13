@@ -39,7 +39,6 @@ std::string		Response::getBody() {
 std::string		Response::getResponse() {
 	_header.generateHeader();
 	_resp = _header.getHeader();
-	std::cout << "test" << std::endl;
 	if (_request.methods == "POST" && _request.instruction["Content-Disposition"] != "") {
 		_resp = _resp.substr(0, _resp.length() -2);
 		_resp += "Content-Disposition: ";
@@ -50,14 +49,6 @@ std::string		Response::getResponse() {
 	_resp += _body;
 	return _resp;
 }
-
-// bool			Response::AllowedMethod() {
-// 	// if (this->_request.getMethod() == "GET")
-// 	// 	return true;
-//	chercher dans le path si la methode est allowed sinon
-//	si oui, return true
-//	si non error 405 et return false
-// }
 
 void		Response::auto_response() {
 		char buff[250];
@@ -96,7 +87,6 @@ void		Response::auto_response() {
 	
 					return ;
 				}
-				// je recup ite->first (string), je compare ca a _request.validity et si == _body =RFF(ite->second) 
 				
 				ite++;
 			}
@@ -139,32 +129,24 @@ void	Response::cgi_header(std::string body) {
 		if (body.find("\r\n") == 0) {
 			body = body.substr(2);
 			_body = body;
-//			std::cout << "tientientein body :" << body << std::endl;
 			break ;
 		}
 		if (pos == std::string::npos || pos == 0) {
-//			std::cout << "plus de newline found" << std::endl;
 			break;
 		}
 		str = body.substr(0, pos-1);
 		body = body.substr(pos + 1); 
 		size_t res;
 		if ((res = str.find("Content-type: ")) == 0) {
-//			std::cout << "i got the content type" << std::endl;
 			res = str.find(":");
-		//	std::string bite = "text/html";
 			std::string bite = str.substr(res + 2);
-	//		std::cout << "ce que je met dans le header:" << str.substr(res+2) << std::endl;
 			_header.setContentType(bite);
 		}
-//		std::cout << " str: " << str << "|" << std::endl;
-	//	std::cout << " body: " << body[0]<< "|" << std::endl;
 
 	}
 	_header.setBodyLength(_body.length());
 	_header.setContentLength();
 	
-//	_body = _body+"\r\n";
 }
 
 
@@ -185,16 +167,11 @@ void			Response::responsePost(std::vector<Server> lst_server) { // lol victor t'
 		return ;
 	}
 	extension = path_for_access.substr(pos);
-		std::cout << "CGI TEST TEST" << std::endl;
 	if (_request.location_path.cgi_path.size() != 0) {
-		std::cout << "CGI TEST TEST" << std::endl;
 		int pos_cgi;
 		if ((pos_cgi = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
 			createHeader(extension, lst_server);
-			std::cout << "go to exec cgi" << std::endl;
 			_body = cgi_handler(_request, path_for_access, pos_cgi);
-			std::cout << "ret of cgi hgandler:" << _body << "|" << std::endl;
-			std::cout << "go treat the body" << std::endl;
 			cgi_header(_body);
 		return ;
 		}
@@ -224,15 +201,13 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	path_for_access = _request.location_path.root;
 	if (_request.path[_request.path.length() - 1] == '/'/*_request.location_path.autoindex == "on"*/)
 	{
-		std::cerr << _YEL << "HERE" << _NOR << std::endl;
+//		std::cerr << _YEL << "HERE" << _NOR << std::endl;
 
 		if (_request.path.length() >= _request.location_path.uri.length() + 2)
 		{
 			std::string	directory;
-			std::cout << _RED << "JE SUIS LA ABDOUL"<< _NOR << std::endl;
 			directory = path_for_access +_request.path.substr(this->_request.location_path.uri.length() + 1, this->_request.path.length());
 			directory[directory.length() - 1] = 0;
-			std::cout <<_RED << directory << _NOR << std::endl;
 			if (isDirectory(directory))
 			{
 				this->_body = AutoIndexGenerator(directory);
@@ -243,7 +218,6 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 		}
 		else if (this->_request.autoindex_on || (lst_server[_request.cur_serv_index].infos.autoindex == "on" && _request.path == "/" && this->_request.filename == ""))
 		{
-			std::cout << _RED << "JE SUIS LA ABDOUL 2"<< _NOR << std::endl;
 			this->_body = AutoIndexGenerator(path_for_access);
 			this->_header.setContentType("text/html");
 			createHeader(extension, lst_server);
@@ -268,44 +242,33 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			return ;
 		}
 	}
-	std::cout << _RED << "JE SUIS LA WALTY"<< _NOR << std::endl;
-	std::cout << _RED << _request.filename << _NOR << std::endl;
 	if (_request.filename == "")
 		path_for_access += _request.location_path.index;
 	else
 		path_for_access += _request.filename;
-	std::cout << _RED << path_for_access << _NOR << std::endl;
+//	std::cout << _RED << path_for_access << _NOR << std::endl;
 	size_t pos = path_for_access.find_last_of(".");
 	if (pos == std::string::npos) {
 		this->_header.setStatusCode(404);
 		return ;
 	}
 	extension = path_for_access.substr(pos);
-	/*
-		cgi 
-
-	*/
 		if (_request.location_path.cgi_path.size() != 0) {
 				int pos_cgi;
 				if ((pos_cgi = get_cgi_path_pos(extension, _request.location_path.cgi_path)) != -1) {
 					createHeader(extension, lst_server);
-					std::cout << "go to exec cgi" << std::endl;
 					_body = cgi_handler(_request, path_for_access, pos_cgi);
-					std::cout << "ret of cgi hgandler:" << _body << "|" << std::endl;
-					std::cout << "go treat the body" << std::endl;
 					cgi_header(_body);
 					return ;
 				}
 			}
 	if (access(path_for_access.c_str(), F_OK) == 0 && _request.validity == 200)
 	{
-		std::cout << "TEST GET" << std::endl;
 		this->_body += readFromFile(path_for_access);
 		createHeader(extension, lst_server);
 		return ;
 	}
 	_request.validity = 404;
-	std::cout << "ACCESS DENIE" << std::endl;
 	return auto_response();
 }
 	
