@@ -299,10 +299,13 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 			}
 	if (access(path_for_access.c_str(), F_OK) == 0 && _request.validity == 200)
 	{
+		std::cout << "TEST GET" << std::endl;
 		this->_body += readFromFile(path_for_access);
 		createHeader(extension, lst_server);
 		return ;
 	}
+	_request.validity = 404;
+	std::cout << "ACCESS DENIE" << std::endl;
 	return auto_response();
 }
 	

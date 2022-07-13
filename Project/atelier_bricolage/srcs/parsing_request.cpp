@@ -732,23 +732,23 @@ int	request::pars_request(std::string str) {
 /*----------------------------------init instruction-----------------*/
 
 void	request::init_instruction() {
-	instruction["Accept-Charsets"] = ""; // list des caracteres
+	instruction["Accept-Charsets"] = "";
 	instruction["Auth-Scheme"] = "";
 	instruction["Authorization"] = "";
 	instruction["Content-Language"] = "";
-	instruction["Content-Length"] = ""; // max body size // only num
+	instruction["Content-Length"] = ""; 
 	instruction["Content-Location"] = "";
-	instruction["Content-Type"] = ""; // to pars aussi
+	instruction["Content-Type"] = ""; 
 	instruction["Date"] = "";
-	instruction["Host"] = ""; // Host: <host>:<port> post optionnel
+	instruction["Host"] = ""; 
 	instruction["Last-Modified"] = "";
 	instruction["Location"] = "";
 	instruction["Referer"] = "";
 	instruction["Retry-After"] = "";
-	instruction["Transfer-Encoding"] = ""; // if chunked follow by the lengt in hexa, 0 is the last chunked; Content-Lenght is ommited
+	instruction["Transfer-Encoding"] = ""; 
 	instruction["User-Agent"] = "";
-	instruction["Connection"] = ""; // keep-Alive || close; par defaut close en http/1.0 et keep-Alive en http1.1
-	instruction["Accept"] = ""; // map file type accepted
+	instruction["Connection"] = ""; 
+	instruction["Accept"] = ""; 
 	instruction["Accept-Encoding"] = "";
 	instruction["From"] = "";
 	instruction["Content-Disposition"] = "";

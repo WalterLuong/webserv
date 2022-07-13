@@ -16,19 +16,9 @@ Service::Service() : _max_sd(0), _servers() {
 	setup_cluster();
 }
 
-/*=======================================
-=				TO		DO				=
-=======================================*/
-
-// Service::Service( Service const & src ) {}
 
 Service::~Service() {}
 
-// Service & Service::operator=( Service const& other ) {}
-
-/*=======================================
-=					END					=
-=======================================*/
 
 void	Service::setup_cluster() {
 	for (int i(0); i < MAX_CLIENTS; i++)
@@ -73,7 +63,7 @@ bool	Service::selecting() {
 	std::cout << _RED << activity << std::endl;
 	if (activity < 0)
 	{
-		std::cout << _BL_RED << "ERROR : " << _NOR << "SELECT ERROR" << std::endl;
+	//	std::cout << _BL_RED << "ERROR : " << _NOR << "SELECT ERROR" << std::endl;
 		return false;
 	}
 	return true;
@@ -91,11 +81,11 @@ bool	Service::accepting_connections() {
 			new_connection = accept(it->_serv_sock.getSocket(), it->_serv_sock.castAddr(), it->_serv_sock.getAdLen());
 			if (new_connection < 0)
 			{
-				std::cout << _BL_RED << "ERROR : " << _NOR << "ACCEPT ERROR" << std::endl;
+	//			std::cout << _BL_RED << "ERROR : " << _NOR << "ACCEPT ERROR" << std::endl;
 				return false;
 			}
 			fcntl(new_connection, F_SETFL, O_NONBLOCK);
-			std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->_serv_sock.getAddr().sin_port) << std::endl;
+		//	std::cout << _GRE << "NEW CONNECTION" << _NOR << ", SOCKET FD IS " << new_connection << ", PORT IS: " << ntohs(it->_serv_sock.getAddr().sin_port) << std::endl;
 		}
 	}
 	for (int i(0); i < MAX_CLIENTS; i++)
@@ -106,11 +96,12 @@ bool	Service::accepting_connections() {
 			break ;
 		}
 	}
+	/*
 	for (int j(0); j < 200; j++)
 	{
 		std::cout << _GRE << _clients_sd[j] << " " << _NOR;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl; */
 	return true;
 }
 
@@ -158,7 +149,6 @@ void	Service::receive() {
 				_clients_sd[i] = 0;
 			}
 			_buffer[len_recv] = 0;
-//			std::cout << "first buffer: " << _buffer << "|" << std::endl;
 			
 
 			std::cout << "buffer before:" << _buffer << std::endl;
@@ -166,23 +156,18 @@ void	Service::receive() {
 			std::cout << "body before:" << req.body << std::endl;
 
 			int size(len_recv);
-			// plus req validity 200
 			if (req.methods == "POST") {
-	//			std::cout << "first step" << std::endl;
 
 				while (len_recv > 0) {
 					
 					for (int i = 0; i < 10024; i++) {
 						_buffer[i] = '\0';
 					}
-				std::cout << "second step" << std::endl;
 					if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 					{
 						len_recv = recv(_clients_sd[i], _buffer, 1, 0);
 						if (len_recv < 0)
 						{
-							std::cout << "BITEDENOIR" << std::endl;
-							std::cout << "_buffer :" << _buffer << std::endl;
 							break;
 						}
 						if (len_recv == 0)
@@ -191,7 +176,6 @@ void	Service::receive() {
 							if (_clients_sd[i] != 0)
 								close(_clients_sd[i]);
 							_clients_sd[i] = 0;
-							std::cout << "BITEDENOIR1" << std::endl;
 						}
 
 						_buffer[len_recv] = 0;
@@ -199,12 +183,10 @@ void	Service::receive() {
 						size += len_recv;
 					}
 					else {
-							std::cout << "BITEDENOIR1" << std::endl;
 						break;
 					}
 				}
 			}
-			std::cout << "size body + header: " << size<< std::endl;
 
 			
 			if (req.chunked != -1) {
@@ -212,7 +194,7 @@ void	Service::receive() {
 					len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 					if (len_recv < 0)
 					{
-						std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
+//						std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
 						break;
 					}
 					if (len_recv == 0)
@@ -232,7 +214,6 @@ void	Service::receive() {
 
 			}
 
-			std::cout << "body after :" << req.body  << "|" << std::endl;
 
 			Response	resp(req);
 				int is_valid_method = check_methods(req);
@@ -255,20 +236,15 @@ void	Service::receive() {
 				else if (req.methods == "DELETE") {
 					resp.responseDelete();
 				}
-				std::cout << "BODY SIZE: " << resp.getBody().length() << std::endl;
-				std::cout << "max BODY SIZE: " << resp._request.location_path.max_client<< std::endl;
 				if (resp.getBody().length() > (unsigned long)resp._request.location_path.max_client) {
-					std::cout << "TEST" << std::endl;
 					resp._request.validity = 400;
 					resp._resp = "";
 					resp.auto_response();
 				}
 				std::cout << resp.getResponse() << std::endl;
 				if (!(req.methods == "DELETE" && resp.is_request_valid() < 400)) {
-					std::cout << "send" << std::endl;
 				sending(i, resp);
 				}
-			// }
 			if (req.validity != 0)
 			{
 				FD_CLR(_clients_sd[i], &_fdset);
@@ -276,18 +252,15 @@ void	Service::receive() {
 					close(_clients_sd[i]);
 				_clients_sd[i] = 0;
 			}
-			// }
 		}	
 	}
 }
 
 void	Service::sending(int i, Response resp) {
 	if (resp.getResponse().size() != 0) {
-		std::cout << "size response:" << resp.getResponse().size() << std::endl;
 		send(_clients_sd[i], resp.getResponse().c_str(), resp.getResponse().length(), 0);
 		return ;
 	}
-	// std::cout << "HELP" << std::endl;
 	std::string new_rep("HTTP/1.1 200 Ok\r\nContent-Length: 0\r\n\r\n");
 	send(_clients_sd[i], new_rep.c_str(), new_rep.length(), 0);
 }
