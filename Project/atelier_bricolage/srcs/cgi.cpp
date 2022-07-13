@@ -45,7 +45,6 @@ int run_bin(std::string bin, std::string argfile, std::string infilename, std::s
 
 	std::string cmd = joinstr(payload, size);
 
-	std::cout << "go run cgi :" << cmd.c_str() << std::endl;
 	return system(cmd.c_str());
 }
 
@@ -55,7 +54,7 @@ int write_infile(std::string infile, std::string body)
 	f.open(infile.c_str());
 	if(!f.is_open())
 	{
-		std::cout << "error opening file" << std::endl;
+		std::cerr << "error opening file" << std::endl;
 		return 0;
 	}
 	f << body;
@@ -82,13 +81,7 @@ std::string cgi_execution(std::string bin, std::string arg, std::string body)
 	std::cerr << "body length :>" << body.length() << "<" << std::endl;
 	if(write_infile(infile, body))
 	{
-		// if(std::string(getenv("REQUEST_METHOD")) == "POST")
-		// {
-		// 	std::cerr << __FUNCTION__ << "gate if" << std::endl;
-		// 	run_bin(bin, arg, "/home/rmechety/work/we/Project/www/test", outfile);
-		// 	return get_file_content(outfile);
 
-		// }
 		if(run_bin(bin, arg, infile, outfile) == 0)
 		{
 			return get_file_content(outfile);
@@ -192,20 +185,13 @@ std::string get_argfile(void)
 
 std::string cgi_handler(request &req, std::string path_for_access, int extension_pos)
 {
-	std::cerr << __FUNCTION__ << std::endl;
+//	std::cerr << __FUNCTION__ << std::endl;
 	std::string bin = req.location_path.cgi_path[extension_pos].second;
 	if (bin != "")
 	{
 		std::vector<std::string> envs = init_env(req, path_for_access);
 		set_env(envs);
-		// le if sert a forcer le chargement du fichier cgi pour tester le chargement il est retirable completement
-		// if(std::string(getenv("REQUEST_METHOD")) == "POST")
-		// {
-		// 	std::ifstream ifs("/home/rmechety/work/we/Project/www/bg1test.png", std::ifstream::in);
-		// 	std::stringstream strStream;
-		// 	strStream << ifs.rdbuf();
-		// 	req.body = strStream.str();
-		// }
+
 		return cgi_execution(bin, get_argfile(), req.body);
 	}
 	std::cerr << "CGI not found" << std::endl;
