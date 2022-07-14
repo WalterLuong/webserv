@@ -220,7 +220,6 @@ void	Service::receive() {
 			//  }
 				/*else*/ if (is_valid_method == 0) 
 				{
-					std::cerr << "Mehtod not allowed" << std::endl;
 					resp.set_validity(405);
 					resp.responseGet(_servers);
 				}
