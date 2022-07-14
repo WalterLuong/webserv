@@ -18,12 +18,12 @@
 				font-size: 1000%;
 				color: palevioletred;
 			}
-			
+
 			@font-face {
 			font-family: "playa";
 			src: url("playa.ttf");
 		}
-		
+
 		@font-face {
 			font-family: "love";
 			src: url("Love.ttf");
@@ -34,7 +34,7 @@
 			float: right;
 			float: inline-end;
 		}
-		
+
 		.txt
 		{
 				font-family: love;
@@ -50,10 +50,11 @@
 		<h1>La Plage</h1>
 			<h2>TEST DE POST</h2>
 			<p>Pose ton parasol 🏖️ et va bronzer bg :</p>
-			<form action="/other_cgi">
-				<input type="file" id="parasol" name="petitparasol" value="Choisis ton parasol">
-				<input type="submit" value="Poser le parasol">
-			</form>
+			<form action="upload.php" method="post" enctype="multipart/form-data">
+				Select file to upload:
+				<input type="file" name="UserFile" id="UserFile">
+				<input type="submit" value="Upload file" name="submit">
+			  </form>
 			<p>
 			</br>
 			</br>
