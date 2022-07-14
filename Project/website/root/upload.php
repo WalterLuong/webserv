@@ -1,3 +1,17 @@
+<?php
+$uploaddir = './';
+$uploadfile = $uploaddir . basename($_FILES['UserFile']['name']);
+
+if (move_uploaded_file($_FILES['UserFile']['tmp_name'], $uploadfile)) {
+    echo "Le fichier est valide, et a été téléchargé
+           avec succès. Voici plus d'informations :\n";
+} else {
+    echo "Attaque potentielle par téléchargement de fichiers.
+          Voici plus d'informations :\n";
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -47,37 +61,8 @@
 	</head>
 
 	<body>
-		<h1>La Plage</h1>
-			<h2>TEST DE POST</h2>
-			<p>Pose ton parasol 🏖️ et va bronzer bg :</p>
-			<form action="upload.php" method="post" enctype="multipart/form-data">
-				Select file to upload:
-				<input type="file" name="UserFile" id="UserFile">
-				<input type="submit" value="Upload file" name="submit">
-			  </form>
-			<p>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-				<span class ="txt">
-					Et si tu essayais d'aller sur la location /passagesecret en mode autoindex bg ❤️ ?
-				</span>
-				<img class="pam" src="pamela.png" alt="meufjolie" />
-			</p>
+		<form>
+			<input type="button" onclick="window.location.href = '/';" value="Retour a l'acceuil" />
+		</form>
 	</body>
-</html>
-
-<!DOCTYPE html>
-<html>
-<body>
-
-
-
-</body>
 </html>
