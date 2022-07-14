@@ -60,7 +60,7 @@ bool	Service::selecting() {
 	int		activity = 0;
 
 	activity = select( _max_sd + 1, &_fdset, NULL, NULL, NULL);
-	std::cout << _RED << activity << std::endl;
+//	std::cout << _RED << activity << std::endl;
 	if (activity < 0)
 	{
 	//	std::cout << _BL_RED << "ERROR : " << _NOR << "SELECT ERROR" << std::endl;
@@ -138,7 +138,7 @@ void	Service::receive() {
 			len_recv = recv(_clients_sd[i], _buffer, 1024, 0);
 			if (len_recv < 0)
 			{
-				std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
+				std::cerr << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
 				break;
 			}
 			if (len_recv == 0)
@@ -151,9 +151,7 @@ void	Service::receive() {
 			_buffer[len_recv] = 0;
 			
 
-			std::cout << "buffer before:" << _buffer << std::endl;
 			request req(_buffer, _servers);
-			std::cout << "body before:" << req.body << std::endl;
 
 			int size(len_recv);
 			if (req.methods == "POST") {
@@ -165,7 +163,7 @@ void	Service::receive() {
 					}
 					if(_clients_sd[i] != 0 && FD_ISSET(_clients_sd[i], &_fdset))
 					{
-						len_recv = recv(_clients_sd[i], _buffer, 1, 0);
+						len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 						if (len_recv < 0)
 						{
 							break;
@@ -191,10 +189,12 @@ void	Service::receive() {
 			
 			if (req.chunked != -1) {
 				while (req.chunked != 1) {
+					for (int i = 0; i < 10024; i++) {
+						_buffer[i] = '\0';
+					}
 					len_recv = recv(_clients_sd[i], _buffer, 10024, 0);
 					if (len_recv < 0)
 					{
-//						std::cout << _BL_RED << "ERROR : " << _NOR << "RECV ERROR" << std::endl;
 						break;
 					}
 					if (len_recv == 0)
@@ -222,7 +222,7 @@ void	Service::receive() {
 			 }
 				else if (is_valid_method == 0) 
 				{
-					std::cout << "Mehtod not allowed" << std::endl;
+					std::cerr << "Mehtod not allowed" << std::endl;
 					resp.set_validity(405);
 					resp.responseGet(_servers);
 				}
@@ -241,9 +241,9 @@ void	Service::receive() {
 					resp._resp = "";
 					resp.auto_response();
 				}
-				std::cout << resp.getResponse() << std::endl;
+//				std::cout << resp.getResponse() << std::endl;
 				if (!(req.methods == "DELETE" && resp.is_request_valid() < 400)) {
-				sending(i, resp);
+					sending(i, resp);
 				}
 			if (req.validity != 0)
 			{

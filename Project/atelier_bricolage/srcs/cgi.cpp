@@ -211,6 +211,6 @@ int get_cgi_path_pos(std::string extension, env_t cgi_path)
 		res++;
 		i++;
 	}
-	std::cerr << "CGI not found" << std::endl;
+//	std::cerr << "CGI not found" << std::endl;
 	return -1;
 }

@@ -193,10 +193,10 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 	std::string path_for_access;
 	std::string	extension = "html";
 
-		std::cerr << _YEL <<this->_request.location_path.uri << _NOR << std::endl;
-		std::cerr << _YEL <<this->_request.path << _NOR << std::endl;
-		std::cout << this->_request.get_path() << std::endl;
-		std::cout << this->_request.filename << std::endl;
+//		std::cerr << _YEL <<this->_request.location_path.uri << _NOR << std::endl;
+//		std::cerr << _YEL <<this->_request.path << _NOR << std::endl;
+//		std::cout << this->_request.get_path() << std::endl;
+//		std::cout << this->_request.filename << std::endl;
 	
 	path_for_access = _request.location_path.root;
 	if (_request.path[_request.path.length() - 1] == '/'/*_request.location_path.autoindex == "on"*/)
@@ -491,7 +491,7 @@ void			Response::responseGet(std::vector<Server> lst_server) {
 
 void			Response::createHeader( std::string & extension, std::vector<Server> & lst_server ) {
 		if (extension.size() ) {
-			std::cout << std::endl;
+		//	std::cout << std::endl;
 		}
 				this->_header.setStatusCode(_request.validity);
 				this->_header.setStatus(this->_request.get_http_version(), "OK");
