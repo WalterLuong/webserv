@@ -16,6 +16,7 @@ class request {
 		
 		std::string	methods;
 		std::string path;
+		std::string walter_path;
 		std::string	http_version;
 		std::string request_body;
 		std::string	body;

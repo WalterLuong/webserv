@@ -150,7 +150,6 @@ void	Service::receive() {
 			}
 			_buffer[len_recv] = 0;
 			
-
 			request req(_buffer, _servers);
 
 			int size(len_recv);
@@ -214,13 +213,12 @@ void	Service::receive() {
 
 			}
 
-
 			Response	resp(req);
 				int is_valid_method = check_methods(req);
-			 if (req.validity  >= 400) {
-			 	resp.auto_response();
-			 }
-				else if (is_valid_method == 0) 
+			//  if (req.validity  >= 400) {
+			//  	resp.auto_response();
+			//  }
+				/*else*/ if (is_valid_method == 0) 
 				{
 					std::cerr << "Mehtod not allowed" << std::endl;
 					resp.set_validity(405);
@@ -235,6 +233,11 @@ void	Service::receive() {
 				}
 				else if (req.methods == "DELETE") {
 					resp.responseDelete();
+				}
+				else if (req.validity >= 400)
+					resp.auto_response();
+				{
+
 				}
 				if (resp.getBody().length() > (unsigned long)resp._request.location_path.max_client) {
 					resp._request.validity = 400;

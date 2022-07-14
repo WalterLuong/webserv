@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: viporten <viporten@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wluong <wluong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 09:45:51 by wluong            #+#    #+#             */
-/*   Updated: 2022/07/14 01:46:15 by viporten         ###   ########.fr       */
+/*   Updated: 2022/07/14 02:58:08 by wluong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,4 +142,14 @@ bool	isDirectory( std::string path )
 	if (directory)
 		return true;
 	return false;
+}
+
+std::string		ignore_slashes(std::string s)
+{
+	int		j = s.length() - 1;
+
+	while (s[j] == '/')
+		j--;
+	std::string ret = s.substr(0, j + 2);
+	return ret;
 }

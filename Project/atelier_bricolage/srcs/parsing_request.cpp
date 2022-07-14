@@ -476,13 +476,11 @@ int	request::set_current_server(std::vector<Server> lst_server){
 
 	cur_serv_index = j;
 
-//	std::cout << "path in set_cureent_server:" << path << "|" << std::endl;
+	this->walter_path = path;
 	if (path != "/") {
-		if ((in_location = check_path_for_location(lst_server[j], path)) != 0)\
-		{
+		if ((in_location = check_path_for_location(lst_server[j], path)) != 0)
 			return 1;
-		}
-	}
+	}	
 	return 0;
 }
 
